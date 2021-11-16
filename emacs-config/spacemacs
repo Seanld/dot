@@ -814,7 +814,7 @@ This function is called at the very end of Spacemacs initialization."
  '(global-auto-highlight-symbol-mode nil)
  '(global-hl-todo-mode t)
  '(helm-boring-buffer-regexp-list
-   '("\\` " "\\`\\*helm" "\\`\\*Echo Area" "\\`\\*Minibuf" "magit-.*: .*" "magit: .*" "\\*Messages\\*" "\\*lsp-log\\*" "\\*Backtrace\\*" "\\*epc con \\d+\\*" "\\.custom-settings"))
+   '("\\` " "\\`\\*helm" "\\`\\*Echo Area" "\\`\\*Minibuf" "magit-.*: .*" "magit: .*" "\\*Messages\\*" "\\*lsp-log\\*" "\\*Backtrace\\*" "\\*epc con" "\\.custom-settings" "\\*pyright"))
  '(helm-mode-handle-completion-in-region nil)
  '(helm-mode-no-completion-in-region-in-modes nil)
  '(hexl-bits 8)
