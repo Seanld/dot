@@ -1,0 +1,18 @@
+# Set scrollback buffer.
+defscrollback 5000
+
+# Customize the status line
+hardstatus alwayslastline "%{b kw}%H %{b kg}➜%{b kw} %S %{b kw} %{-b kw}%u %-Lw%{=b bK}%50> %n%f %t %{-}%+Lw%<"
+
+startup_message off
+altscreen on
+
+bind -k kl focus left
+bind -k ku focus up
+bind -k kr focus right
+bind -k kd focus down
+
+# bind k focus down
+# bind i focus up # This overrides the "info" binding. Find a good alternative for it later.
+# bind l focus right
+# bind j focus left
