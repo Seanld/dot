@@ -717,6 +717,23 @@ before packages are loaded."
   ;; MISC CUSTOM ;;
   ;;;;;;;;;;;;;;;;;
 
+  ;; Buffers that are constantly flooding Helm that I
+  ;; don't want to see. Burn them all.
+  (setq annoying-buffers-regexes '("\*Messages\*"
+                                   "\*lsp-log\*"
+                                   "\*Backtrace\*"
+                                   "\*epc con \d+\*"))
+
+  (defun clear-annoying-buffers ()
+    (interactive)
+    (loop for buffer-regex in annoying-buffers-regexes do
+          (condition-case nil
+              (kill-matching-buffers buffer-regex nil t)
+            (error nil))))
+
+  ;; Make the annoying buffer clearer callable from M-x.
+  (spacemacs/set-leader-keys (kbd "a !") 'clear-annoying-buffers)
+
   ;; Add indent markers to Web-mode (not there by default, I guess).
   (add-hook 'web-mode-hook #'highlight-indentation-mode)
 
