@@ -2,6 +2,32 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
+
+
+(defun scroll-up-several-lines ()
+  (interactive)
+  (scroll-up-line 5))
+
+(defun scroll-down-several-lines ()
+  (interactive)
+  (scroll-down-line 5))
+
+(defun lp-get-yank ()
+  "Prompts user from minibuffer to get LessPass password
+parameters, pass them to CLI, and yank the result.
+Requires `lesspass` terminal utility."
+  (interactive)
+  (let ((site (read-from-minibuffer "Site: "))
+        (login (read-from-minibuffer "Login: "))
+        (options (read-from-minibuffer "Options: "))
+        (password (read-passwd "Master: " t)))
+    (kill-new
+     (shell-command-to-string
+      (format "lesspass %s %s %s %s" site login password options))))
+  (message "Password copied!"))
+
+
+
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
@@ -619,6 +645,8 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
+
+
   ;;;;;;;;;;;;;;;;;;;;;
   ;; CUSTOM KEYBINDS ;;
   ;;;;;;;;;;;;;;;;;;;;;
@@ -644,8 +672,8 @@ before packages are loaded."
   ;; a little counter-intuitive for modern standards.
   (global-set-key (kbd "C-x >") 'scroll-left)
   (global-set-key (kbd "C-x <") 'scroll-right)
-  (global-set-key (kbd "<C-S-down>") 'scroll-up-line)
-  (global-set-key (kbd "<C-S-up>") 'scroll-down-line)
+  (global-set-key (kbd "<C-S-down>") 'scroll-up-several-lines)
+  (global-set-key (kbd "<C-S-up>") 'scroll-down-several-lines)
   ;; Scrolling with space bar isn't standard, but it's simple, and
   ;; it's one less key to press to do a simple motion.
   (spacemacs/set-leader-keys (kbd ">") 'scroll-left)
@@ -670,6 +698,8 @@ before packages are loaded."
   (spacemacs/set-leader-keys (kbd "a C") 'calc)
   ;; Get to ibuffer quicker.
   (spacemacs/set-leader-keys (kbd "%") 'ibuffer)
+  ;; Copy LessPass password to clipboard using minibuffer.
+  (spacemacs/set-leader-keys (kbd "a l") 'lp-get-yank)
 
 
 
@@ -806,7 +836,7 @@ This function is called at the very end of Spacemacs initialization."
  '(elpy-rpc-python-command "python3")
  '(elpy-rpc-timeout 1)
  '(elpy-rpc-virtualenv-path "/home/seanld/mainenv")
- '(evil-org-key-theme '(navigation textobjects additional calendar) t)
+ '(evil-org-key-theme '(navigation textobjects additional calendar))
  '(evil-want-Y-yank-to-eol nil)
  '(flycheck-global-modes
    '(json-mode web-mode slim-mode scss-mode sass-mode pug-mode less-mode haml-mode yaml-mode js2-mode))
@@ -814,7 +844,7 @@ This function is called at the very end of Spacemacs initialization."
  '(global-auto-highlight-symbol-mode nil)
  '(global-hl-todo-mode t)
  '(helm-boring-buffer-regexp-list
-   '("\\` " "\\`\\*helm" "\\`\\*Echo Area" "\\`\\*Minibuf" "magit-.*: .*" "magit: .*" "\\*Messages\\*" "\\*lsp-log\\*" "\\*Backtrace\\*" "\\*epc con" "\\.custom-settings" "\\*pyright"))
+   '("\\` " "\\`\\*helm" "\\`\\*Echo Area" "\\`\\*Minibuf" "magit-.*: .*" "magit: .*" "\\*Messages\\*" "\\*lsp-log\\*" "\\*Backtrace\\*" "\\*epc con" "\\.custom-settings" "\\*pyright" "magit-.*: .*" "magit: .*" "\\*.+-ls"))
  '(helm-mode-handle-completion-in-region nil)
  '(helm-mode-no-completion-in-region-in-modes nil)
  '(hexl-bits 8)
@@ -863,7 +893,7 @@ This function is called at the very end of Spacemacs initialization."
  '(send-mail-function 'smtpmail-send-it)
  '(smtpmail-smtp-server "smtp.google.com")
  '(smtpmail-smtp-service 25)
- '(toc-org-max-depth 10 t)
+ '(toc-org-max-depth 10)
  '(tool-bar-mode nil)
  '(web-mode-script-padding 4))
 (custom-set-faces
