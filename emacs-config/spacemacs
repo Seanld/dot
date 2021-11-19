@@ -22,8 +22,10 @@ Requires `lesspass` terminal utility."
         (options (read-from-minibuffer "Options: "))
         (password (read-passwd "Master: " t)))
     (kill-new
-     (shell-command-to-string
-      (format "lesspass %s %s %s %s" site login password options))))
+     (substring
+      (shell-command-to-string
+       (format "lesspass %s %s %s %s" site login password options))
+      0 -1)))
   (message "Password copied!"))
 
 
@@ -147,7 +149,8 @@ This function should only modify configuration layer settings."
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(evil-escape)
+   dotspacemacs-excluded-packages '(evil-escape
+                                    importmagic)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -836,7 +839,7 @@ This function is called at the very end of Spacemacs initialization."
  '(elpy-rpc-python-command "python3")
  '(elpy-rpc-timeout 1)
  '(elpy-rpc-virtualenv-path "/home/seanld/mainenv")
- '(evil-org-key-theme '(navigation textobjects additional calendar))
+ '(evil-org-key-theme '(navigation textobjects additional calendar) t)
  '(evil-want-Y-yank-to-eol nil)
  '(flycheck-global-modes
    '(json-mode web-mode slim-mode scss-mode sass-mode pug-mode less-mode haml-mode yaml-mode js2-mode))
@@ -887,13 +890,13 @@ This function is called at the very end of Spacemacs initialization."
  '(org-todo-keywords
    '((sequence "TODO" "ACTIVE" "POSTPONED" "|" "DONE" "CANCELLED")))
  '(package-selected-packages
-   '(enwc emamux coin-ticker carbon-now-sh ascii-table nasm-mode license-templates magit-popup dashboard-hackernews nnhackernews hackernews qrencode ox-pandoc ox-slack ox-gemini csv-mode hnreader go-autocomplete godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc flycheck-golangci-lint company-go go-mode restclient company-lua lua-mode memory-usage atom-dark-theme atom-one-dark-theme 0xc toml-mode ron-mode racer rust-mode flycheck-rust cargo zenity-color-picker webkit-color-picker elfeed sqlup-mode sql-indent company-jedi web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data company-quickhelp verb minimap magithub magit-libgit tabbar yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-cscope xcscope cython-mode company-anaconda blacken anaconda-mode pythonic xclip web-beautify tern prettier-js npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl impatient-mode htmlize simple-httpd helm-gtags ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode counsel-gtags counsel swiper ivy company add-node-modules-path filetree dracula-theme ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-compile aggressive-indent ace-link ace-jump-helm-line))
+   '(enwc emamux coin-ticker carbon-now-sh ascii-table nasm-mode license-templates magit-popup dashboard-hackernews nnhackernews hackernews qrencode ox-pandoc ox-slack ox-gemini csv-mode hnreader go-autocomplete godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc flycheck-golangci-lint company-go go-mode restclient company-lua lua-mode memory-usage atom-dark-theme atom-one-dark-theme 0xc toml-mode ron-mode racer rust-mode flycheck-rust cargo zenity-color-picker webkit-color-picker elfeed sqlup-mode sql-indent company-jedi web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data company-quickhelp verb minimap magithub magit-libgit tabbar yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose live-py-mode epc ctable concurrent deferred helm-pydoc helm-cscope xcscope cython-mode company-anaconda blacken anaconda-mode pythonic xclip web-beautify tern prettier-js npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl impatient-mode htmlize simple-httpd helm-gtags ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode counsel-gtags counsel swiper ivy company add-node-modules-path filetree dracula-theme ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-compile aggressive-indent ace-link ace-jump-helm-line))
  '(pdf-tools-enabled-modes
    '(pdf-history-minor-mode pdf-isearch-minor-mode pdf-links-minor-mode pdf-misc-minor-mode pdf-outline-minor-mode pdf-misc-size-indication-minor-mode pdf-misc-menu-bar-minor-mode pdf-annot-minor-mode pdf-sync-minor-mode pdf-misc-context-menu-minor-mode pdf-cache-prefetch-minor-mode pdf-occur-global-minor-mode pdf-virtual-global-minor-mode))
  '(send-mail-function 'smtpmail-send-it)
  '(smtpmail-smtp-server "smtp.google.com")
  '(smtpmail-smtp-service 25)
- '(toc-org-max-depth 10)
+ '(toc-org-max-depth 10 t)
  '(tool-bar-mode nil)
  '(web-mode-script-padding 4))
 (custom-set-faces
