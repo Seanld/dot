@@ -703,6 +703,8 @@ before packages are loaded."
   (spacemacs/set-leader-keys (kbd "%") 'ibuffer)
   ;; Copy LessPass password to clipboard using minibuffer.
   (spacemacs/set-leader-keys (kbd "a l") 'lp-get-yank)
+  ;; Add Black to Python mode leader keys.
+  (spacemacs/set-leader-keys-for-major-mode 'python-mode (kbd "= \`") 'blacken-buffer)
 
 
 
@@ -755,7 +757,8 @@ before packages are loaded."
   (setq annoying-buffers-regexes '("\*Messages\*"
                                    "\*lsp-log\*"
                                    "\*Backtrace\*"
-                                   "\*epc con \d+\*"))
+                                   "\*epc con \d+\*"
+                                   "\.custom\-settings"))
 
   (defun clear-annoying-buffers ()
     (interactive)
@@ -847,7 +850,7 @@ This function is called at the very end of Spacemacs initialization."
  '(global-auto-highlight-symbol-mode nil)
  '(global-hl-todo-mode t)
  '(helm-boring-buffer-regexp-list
-   '("\\` " "\\`\\*helm" "\\`\\*Echo Area" "\\`\\*Minibuf" "magit-.*: .*" "magit: .*" "\\*Messages\\*" "\\*lsp-log\\*" "\\*Backtrace\\*" "\\*epc con" "\\.custom-settings" "\\*pyright" "magit-.*: .*" "magit: .*" "\\*.+-ls"))
+   '("\\` " "\\`\\*helm" "\\`\\*Echo Area" "\\`\\*Minibuf" "magit-.*: .*" "magit: .*" "\\*Messages\\*" "\\*lsp-log\\*" "\\*Backtrace\\*" "\\*epc con" "\\.custom-settings" "\\*pyright" "magit-.*: .*" "magit: .*" "\\*.+-ls" "magit-.*: .*" "magit: .*" "\\*Completions\\*"))
  '(helm-mode-handle-completion-in-region nil)
  '(helm-mode-no-completion-in-region-in-modes nil)
  '(hexl-bits 8)
