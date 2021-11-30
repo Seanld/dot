@@ -300,12 +300,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-themes '(dracula
                          monokai-pro
                          monokai
-                         spacemacs-dark
-                         spacemacs-light
-                         darkburn
-                         inkpot
-                         spolsky
-                         ample)
+                         spacemacs-dark)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -314,7 +309,9 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
+   ;; ------
+   ;; My favorite separators: slant, roundstub, arrow, nil, wave
+   dotspacemacs-mode-line-theme '(spacemacs :separator arrow :separator-scale 1.5)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -697,14 +694,17 @@ before packages are loaded."
   (spacemacs/set-leader-keys (kbd "w V") 'split-window-right)
   (spacemacs/set-leader-keys (kbd "w -") 'split-window-below-and-focus)
   (spacemacs/set-leader-keys (kbd "w S") 'split-window-below)
-  ;; Get to Calc-mode quicker.
-  (spacemacs/set-leader-keys (kbd "a C") 'calc)
-  ;; Get to ibuffer quicker.
+  (spacemacs/set-leader-keys (kbd "a #") 'calc)
   (spacemacs/set-leader-keys (kbd "%") 'ibuffer)
   ;; Copy LessPass password to clipboard using minibuffer.
   (spacemacs/set-leader-keys (kbd "a l") 'lp-get-yank)
+  (spacemacs/set-leader-keys (kbd "a r f") 'elpher)
+  (spacemacs/set-leader-keys (kbd "a r g") 'elpher-go)
   ;; Add Black to Python mode leader keys.
   (spacemacs/set-leader-keys-for-major-mode 'python-mode (kbd "= \`") 'blacken-buffer)
+  ;; Alt+Tab for buffer switching, because I use Spacemacs to eliminate Emacs pinkie syndrome :)
+  ;; (global-set-key (kbd "<?\\M-\\t>") 'helm-buffers-list)
+  (global-set-key (kbd "<M-T>") 'helm-buffers-list)
 
 
 
@@ -746,11 +746,26 @@ before packages are loaded."
 
   (add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
 
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode (kbd ".") 'org-next-link)
+
+  ;; (add-hook 'org-mode-hook
+  ;;   (lambda ()
+  ;;     (local-set-key (kbd "<C-S-up>") 'scroll-down-several-lines)
+  ;;     (local-set-key (kbd "<C-S-down>")) 'scroll-up-several-lines))
+
+  ;; (with-eval-after-load 'org
+  ;;   (local-set-key (kbd "<C-S-up") 'scroll-down-several-lines)
+  ;;   (local-set-key (kbd "<C-S-down") 'scroll-up-several-lines))
+
 
 
   ;;;;;;;;;;;;;;;;;
   ;; MISC CUSTOM ;;
   ;;;;;;;;;;;;;;;;;
+
+  ;; Some glyphs are missing (like Chinese and Japanese symbols), so
+  ;; add a fallback font.
+  ;; (set-fontset-font "fontset-default" '(#x0 . #xd7f0) "Roboto Mono")
 
   ;; Buffers that are constantly flooding Helm that I
   ;; don't want to see. Burn them all.
@@ -835,6 +850,7 @@ This function is called at the very end of Spacemacs initialization."
    '("824d07981667fd7d63488756b6d6a4036bae972d26337babf7b56df6e42f2bcd" default))
  '(display-fill-column-indicator-column 81)
  '(elfeed-feeds '("https://lukesmith.xyz/rss.xml") t)
+ '(elpher-default-url-type "gemini")
  '(elpy-mode-hook nil)
  '(elpy-modules
    '(elpy-module-company elpy-module-folding elpy-module-pyvenv elpy-module-highlight-indentation elpy-module-yasnippet elpy-module-django elpy-module-sane-defaults))
@@ -850,7 +866,7 @@ This function is called at the very end of Spacemacs initialization."
  '(global-auto-highlight-symbol-mode nil)
  '(global-hl-todo-mode t)
  '(helm-boring-buffer-regexp-list
-   '("\\` " "\\`\\*helm" "\\`\\*Echo Area" "\\`\\*Minibuf" "magit-.*: .*" "magit: .*" "\\*Messages\\*" "\\*lsp-log\\*" "\\*Backtrace\\*" "\\*epc con" "\\.custom-settings" "\\*pyright" "magit-.*: .*" "magit: .*" "\\*.+-ls" "magit-.*: .*" "magit: .*" "\\*Completions\\*"))
+   '("\\` " "\\`\\*helm" "\\`\\*Echo Area" "\\`\\*Minibuf" "magit-.*: .*" "magit: .*" "\\*Messages\\*" "\\*lsp-log\\*" "\\*Backtrace\\*" "\\*epc con" "\\.custom-settings" "\\*pyright" "magit-.*: .*" "magit: .*" "\\*.+-ls" "magit-.*: .*" "magit: .*" "\\*Completions\\*" "magit-.*: .*" "magit: .*" "\\*sqls" "magit-.*: .*" "magit: .*" "\\*clang"))
  '(helm-mode-handle-completion-in-region nil)
  '(helm-mode-no-completion-in-region-in-modes nil)
  '(hexl-bits 8)
@@ -894,11 +910,22 @@ This function is called at the very end of Spacemacs initialization."
    '((sequence "TODO" "ACTIVE" "POSTPONED" "|" "DONE" "CANCELLED")))
  '(package-selected-packages
    '(enwc emamux coin-ticker carbon-now-sh ascii-table nasm-mode license-templates magit-popup dashboard-hackernews nnhackernews hackernews qrencode ox-pandoc ox-slack ox-gemini csv-mode hnreader go-autocomplete godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc flycheck-golangci-lint company-go go-mode restclient company-lua lua-mode memory-usage atom-dark-theme atom-one-dark-theme 0xc toml-mode ron-mode racer rust-mode flycheck-rust cargo zenity-color-picker webkit-color-picker elfeed sqlup-mode sql-indent company-jedi web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data company-quickhelp verb minimap magithub magit-libgit tabbar yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose live-py-mode epc ctable concurrent deferred helm-pydoc helm-cscope xcscope cython-mode company-anaconda blacken anaconda-mode pythonic xclip web-beautify tern prettier-js npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl impatient-mode htmlize simple-httpd helm-gtags ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode counsel-gtags counsel swiper ivy company add-node-modules-path filetree dracula-theme ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-compile aggressive-indent ace-link ace-jump-helm-line))
+ '(paradox-github-token t)
  '(pdf-tools-enabled-modes
    '(pdf-history-minor-mode pdf-isearch-minor-mode pdf-links-minor-mode pdf-misc-minor-mode pdf-outline-minor-mode pdf-misc-size-indication-minor-mode pdf-misc-menu-bar-minor-mode pdf-annot-minor-mode pdf-sync-minor-mode pdf-misc-context-menu-minor-mode pdf-cache-prefetch-minor-mode pdf-occur-global-minor-mode pdf-virtual-global-minor-mode))
+ '(safe-local-variable-values
+   '((org-blank-before-new-entry
+      (heading . auto)
+      (plain-list-item . auto))
+     (org-list-description-max-indent . 5)
+     (org-list-two-spaces-after-bullet-regexp)
+     (javascript-backend . tide)
+     (javascript-backend . tern)
+     (javascript-backend . lsp)))
  '(send-mail-function 'smtpmail-send-it)
  '(smtpmail-smtp-server "smtp.google.com")
  '(smtpmail-smtp-service 25)
+ '(sql-product 'postgres)
  '(toc-org-max-depth 10 t)
  '(tool-bar-mode nil)
  '(web-mode-script-padding 4))
