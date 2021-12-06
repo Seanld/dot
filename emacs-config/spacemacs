@@ -60,8 +60,7 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(rust
-     (javascript :variables
+   '((javascript :variables
                  javascript-backend 'lsp)
      csv
      (go :variables
@@ -117,7 +116,8 @@ This function should only modify configuration layer settings."
                     unicode-fonts-ligature-modes '(text-mode prog-mode))
      pass
      colors
-     mu4e)
+     mu4e
+     eww)
 
 
    ;; List of additional packages that will be installed without being wrapped
@@ -143,7 +143,9 @@ This function should only modify configuration layer settings."
      license-templates
      nasm-mode
      ascii-table
-     emamux)
+     emamux
+     nhexl-mode
+     zeal-at-point)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -262,8 +264,8 @@ It should only modify the values of Spacemacs settings."
    ;; pair of numbers, e.g. `(recents-by-project . (7 .  5))', where the first
    ;; number is the project limit and the second the limit on the recent files
    ;; within a project.
-   dotspacemacs-startup-lists '((recents . 5)
-                                (projects . 7))
+   dotspacemacs-startup-lists '((recents . 9)
+                                (projects . 3))
 
    ;; True if the home buffer should respond to resize events. (default t)
    dotspacemacs-startup-buffer-responsive t
@@ -375,7 +377,7 @@ It should only modify the values of Spacemacs settings."
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
-   dotspacemacs-large-file-size 1
+   dotspacemacs-large-file-size 2
 
    ;; Location where to auto-save files. Possible values are `original' to
    ;; auto-save the file in-place, `cache' to auto-save the file to another
@@ -411,7 +413,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
    ;; nil to boost the loading time. (default t)
-   dotspacemacs-loading-progress-bar t
+   dotspacemacs-loading-progress-bar nil
 
    ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
@@ -459,7 +461,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Show the scroll bar while scrolling. The auto hide time can be configured
    ;; by setting this variable to a number. (default t)
-   dotspacemacs-scroll-bar-while-scrolling t
+   dotspacemacs-scroll-bar-while-scrolling nil
 
    ;; Control line numbers activation.
    ;; If set to `t', `relative' or `visual' then line numbers are enabled in all
@@ -544,7 +546,7 @@ It should only modify the values of Spacemacs settings."
    ;; performance issues, instead of calculating the frame title by
    ;; `spacemacs/title-prepare' all the time.
    ;; (default "%I@%S")
-   dotspacemacs-frame-title-format "%I@%S"
+   dotspacemacs-frame-title-format "emacs:%b (%m)"
 
    ;; Format specification for setting the icon title format
    ;; (default nil - same as frame-title-format)
@@ -651,22 +653,36 @@ before packages are loaded."
   ;; CUSTOM KEYBINDS ;;
   ;;;;;;;;;;;;;;;;;;;;;
 
+  (spacemacs/set-leader-keys
+    (kbd "x \(") 'corral-parentheses-backward
+    (kbd "x \)") 'corral-parentheses-forward
+    (kbd "x [") 'corral-brackets-backward
+    (kbd "x ]") 'corral-brackets-forward
+    (kbd "x {") 'corral-braces-backward
+    (kbd "x }") 'corral-braces-forward
+    (kbd "x \"") 'corral-double-quotes-backward
+    (kbd "x '") 'corral-single-quotes-backward
+    (kbd ">") 'scroll-left
+    (kbd "<") 'scroll-right
+    (kbd "y") 'yas-insert-snippet
+    (kbd "x C") 'capitalize-region
+    (kbd "@") 'pop-global-mark
+    (kbd "w /") 'split-window-right-and-focus
+    (kbd "w V") 'split-window-right
+    (kbd "w -") 'split-window-below-and-focus
+    (kbd "w S") 'split-window-below
+    (kbd "a #") 'calc
+    (kbd "%") 'ibuffer
+    (kbd "a l") 'lp-get-yank
+    (kbd "a r f") 'elpher
+    (kbd "a r g") 'elpher-go)
+
   (global-set-key (kbd "<f12>") 'kill-this-buffer)
   (global-set-key (kbd "<f8>") 'lsp-ui-peek-find-references)
   (global-set-key (kbd "<C-f12>") 'kill-buffer-and-window)
   (global-set-key (kbd "<S-f12>") 'delete-window)
   (global-set-key (kbd "<f11>") 'delete-window)
-  (global-set-key (kbd "<f6>") 'comment-region)
-  (global-set-key (kbd "<S-f6>") 'uncomment-region)
-  (global-set-key (kbd "<f5>") 'evil-toggle-fold)
-  (spacemacs/set-leader-keys (kbd "x \(") 'corral-parentheses-backward)
-  (spacemacs/set-leader-keys (kbd "x \)") 'corral-parentheses-forward)
-  (spacemacs/set-leader-keys (kbd "x [") 'corral-brackets-backward)
-  (spacemacs/set-leader-keys (kbd "x ]") 'corral-brackets-forward)
-  (spacemacs/set-leader-keys (kbd "x {") 'corral-braces-backward)
-  (spacemacs/set-leader-keys (kbd "x }") 'corral-braces-forward)
-  (spacemacs/set-leader-keys (kbd "x \"") 'corral-double-quotes-backward)
-  (spacemacs/set-leader-keys (kbd "x '") 'corral-single-quotes-backward)
+  (global-set-key (kbd "<f5>") 'zeal-at-point)
   (global-set-key (kbd "<f7>") 'xref-find-definitions)
   ;; This reverses the scroll direction. The default behaviour is
   ;; a little counter-intuitive for modern standards.
@@ -674,32 +690,6 @@ before packages are loaded."
   (global-set-key (kbd "C-x <") 'scroll-right)
   (global-set-key (kbd "<C-S-down>") 'scroll-up-several-lines)
   (global-set-key (kbd "<C-S-up>") 'scroll-down-several-lines)
-  ;; Scrolling with space bar isn't standard, but it's simple, and
-  ;; it's one less key to press to do a simple motion.
-  (spacemacs/set-leader-keys (kbd ">") 'scroll-left)
-  (spacemacs/set-leader-keys (kbd "<") 'scroll-right)
-  (spacemacs/set-leader-keys (kbd "y") 'yas-insert-snippet)
-  ;; Make capitalization easy like uppering and lowering.
-  (spacemacs/set-leader-keys (kbd "x C") 'capitalize-region)
-  ;; Easier-access line truncation toggle. Because I don't want
-  ;; Ctrl+x as my leader key...
-  (spacemacs/set-leader-keys (kbd "$") 'toggle-truncate-lines)
-  ;; Quickly go back to the last cursor position (well, the last
-  ;; position that it was marked).
-  (spacemacs/set-leader-keys (kbd "@") 'pop-global-mark)
-  ;; By default, splitting windows in Spacemacs just splits the
-  ;; window, but does not move the focus. I want it to focus on
-  ;; the new window.
-  (spacemacs/set-leader-keys (kbd "w /") 'split-window-right-and-focus)
-  (spacemacs/set-leader-keys (kbd "w V") 'split-window-right)
-  (spacemacs/set-leader-keys (kbd "w -") 'split-window-below-and-focus)
-  (spacemacs/set-leader-keys (kbd "w S") 'split-window-below)
-  (spacemacs/set-leader-keys (kbd "a #") 'calc)
-  (spacemacs/set-leader-keys (kbd "%") 'ibuffer)
-  ;; Copy LessPass password to clipboard using minibuffer.
-  (spacemacs/set-leader-keys (kbd "a l") 'lp-get-yank)
-  (spacemacs/set-leader-keys (kbd "a r f") 'elpher)
-  (spacemacs/set-leader-keys (kbd "a r g") 'elpher-go)
   ;; Add Black to Python mode leader keys.
   (spacemacs/set-leader-keys-for-major-mode 'python-mode (kbd "= \`") 'blacken-buffer)
   ;; Alt+Tab for buffer switching, because I use Spacemacs to eliminate Emacs pinkie syndrome :)
@@ -763,6 +753,12 @@ before packages are loaded."
   ;; MISC CUSTOM ;;
   ;;;;;;;;;;;;;;;;;
 
+  ;; Put the best settings on NHexl mode when it opens,
+  ;; since it doesn't do that by default.
+  (add-hook 'nhexl-mode-hook (lambda ()
+                              (nhexl-overwrite-only-mode)
+                              (nhexl-nibble-edit-mode)))
+
   ;; Some glyphs are missing (like Chinese and Japanese symbols), so
   ;; add a fallback font.
   ;; (set-fontset-font "fontset-default" '(#x0 . #xd7f0) "Roboto Mono")
@@ -783,7 +779,7 @@ before packages are loaded."
             (error nil))))
 
   ;; Make the annoying buffer clearer callable from M-x.
-  (spacemacs/set-leader-keys (kbd "a !") 'clear-annoying-buffers)
+  (spacemacs/set-leader-keys (kbd "b !") 'clear-annoying-buffers)
 
   ;; Add indent markers to Web-mode (not there by default, I guess).
   (add-hook 'web-mode-hook #'highlight-indentation-mode)
@@ -805,15 +801,6 @@ before packages are loaded."
   (remove-hook 'prog-mode-hook 'auto-highlight-symbol-mode)
   (remove-hook 'markdown-mode-hook 'auto-highlight-symbol-mode)
 
-  ;; (defun bsl/filter-buffers (buffer-list)
-  ;;   (delq nil (mapcar
-  ;;              (lambda (buffer)
-  ;;                (cond
-  ;;                     ((eq (with-current-buffer buffer major-mode) ') nil)
-  ;;                     (t buffer)))
-  ;;              buffer-list)))
-
-  ;; (advice-add 'helm-skip-boring-buffers :filter-return 'bsl/filter-buffers)
   ;; Override the default Emacs garbage-collection behaviour. I don't mind
   ;; Emacs swallowing my memory, as most of the machines I run it on tend
   ;; to have plenty. If I'm in a constrained environment, I'll usually
@@ -827,7 +814,7 @@ before packages are loaded."
   ;; Vim has a default behaviour of making the cursor feel like
   ;; it's moving one character to the left when exiting insert
   ;; mode. While this makes sense for most cases, it's unintuitive
-  ;; and obnoxious, in my opinion, so I'll disbale that here.
+  ;; and obnoxious, in my opinion, so I'll disable that here.
   (setq evil-move-cursor-back nil))
 
 
@@ -873,6 +860,10 @@ This function is called at the very end of Spacemacs initialization."
  '(hexl-follow-ascii nil)
  '(highlight-parentheses-colors '("#50fa7b" "#ff79c6" "#bd93f9" "#ffb86c"))
  '(importmagic-python-interpreter "python3")
+ '(lsp-clients-lua-language-server-bin
+   "/home/seanld/repos/lua-language-server/bin/Linux/lua-language-server")
+ '(lsp-clients-lua-language-server-command '("lua-language-server"))
+ '(lsp-clients-lua-language-server-main-location "/home/seanld/repos/lua-language-server/bin/Linux/main.lua")
  '(magit-refresh-verbose t)
  '(magit-repository-directories '(("/home/seanld/repos" . 3)))
  '(menu-bar-mode nil)
@@ -909,7 +900,7 @@ This function is called at the very end of Spacemacs initialization."
  '(org-todo-keywords
    '((sequence "TODO" "ACTIVE" "POSTPONED" "|" "DONE" "CANCELLED")))
  '(package-selected-packages
-   '(enwc emamux coin-ticker carbon-now-sh ascii-table nasm-mode license-templates magit-popup dashboard-hackernews nnhackernews hackernews qrencode ox-pandoc ox-slack ox-gemini csv-mode hnreader go-autocomplete godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc flycheck-golangci-lint company-go go-mode restclient company-lua lua-mode memory-usage atom-dark-theme atom-one-dark-theme 0xc toml-mode ron-mode racer rust-mode flycheck-rust cargo zenity-color-picker webkit-color-picker elfeed sqlup-mode sql-indent company-jedi web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data company-quickhelp verb minimap magithub magit-libgit tabbar yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose live-py-mode epc ctable concurrent deferred helm-pydoc helm-cscope xcscope cython-mode company-anaconda blacken anaconda-mode pythonic xclip web-beautify tern prettier-js npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl impatient-mode htmlize simple-httpd helm-gtags ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode counsel-gtags counsel swiper ivy company add-node-modules-path filetree dracula-theme ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-compile aggressive-indent ace-link ace-jump-helm-line))
+   '(arduino-cli-mode zeal-at-point nhexl-mode flisp-mode enwc emamux coin-ticker carbon-now-sh ascii-table nasm-mode license-templates magit-popup dashboard-hackernews nnhackernews hackernews qrencode ox-pandoc ox-slack ox-gemini csv-mode hnreader go-autocomplete godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc flycheck-golangci-lint company-go go-mode restclient company-lua lua-mode memory-usage atom-dark-theme atom-one-dark-theme 0xc toml-mode ron-mode racer rust-mode flycheck-rust cargo zenity-color-picker webkit-color-picker elfeed sqlup-mode sql-indent company-jedi web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data company-quickhelp verb minimap magithub magit-libgit tabbar yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose live-py-mode epc ctable concurrent deferred helm-pydoc helm-cscope xcscope cython-mode company-anaconda blacken anaconda-mode pythonic xclip web-beautify tern prettier-js npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl impatient-mode htmlize simple-httpd helm-gtags ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode counsel-gtags counsel swiper ivy company add-node-modules-path filetree dracula-theme ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-compile aggressive-indent ace-link ace-jump-helm-line))
  '(paradox-github-token t)
  '(pdf-tools-enabled-modes
    '(pdf-history-minor-mode pdf-isearch-minor-mode pdf-links-minor-mode pdf-misc-minor-mode pdf-outline-minor-mode pdf-misc-size-indication-minor-mode pdf-misc-menu-bar-minor-mode pdf-annot-minor-mode pdf-sync-minor-mode pdf-misc-context-menu-minor-mode pdf-cache-prefetch-minor-mode pdf-occur-global-minor-mode pdf-virtual-global-minor-mode))
