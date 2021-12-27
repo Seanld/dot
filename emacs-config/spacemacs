@@ -313,7 +313,8 @@ It should only modify the values of Spacemacs settings."
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
    ;; ------
    ;; My favorite separators: slant, roundstub, arrow, nil, wave
-   dotspacemacs-mode-line-theme '(spacemacs :separator arrow :separator-scale 1.5)
+   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.8)
+   ;; dotspacemacs-mode-line-theme '(vanilla)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -324,7 +325,7 @@ It should only modify the values of Spacemacs settings."
    ;; Point size is recommended, because it's device independent. (default 10.0)
    dotspacemacs-default-font '("JetBrainsMono Nerd Font"
                                :size 12.0
-                               :weight normal
+                               :weight medium
                                :width normal)
 
    ;; The leader key (default "SPC")
@@ -626,11 +627,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
           ("DONE" . (:foreground "chartreuse"))))
   (setq org-tag-faces
         '(("urgent" . (:background "orange red" :slant italic))))
-  (setq org-use-sub-superscripts t)
+  (setq org-use-sub-superscripts t))
 
-  (spacemacs|use-package-add-hook auto-highlight
-    :post-init
-    (remove-hook 'prog-mode-hook auto-highlight-symbol-mode-hook)))
 
 
 (defun dotspacemacs/user-load ()
@@ -646,8 +644,6 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-
-
 
   ;;;;;;;;;;;;;;;;;;;;;
   ;; CUSTOM KEYBINDS ;;
@@ -666,6 +662,8 @@ before packages are loaded."
     (kbd "<") 'scroll-right
     (kbd "y") 'yas-insert-snippet
     (kbd "x C") 'capitalize-region
+    (kbd "x f") 'replace-string
+    (kbd "x F") 'replace-regexp
     (kbd "@") 'pop-global-mark
     (kbd "w /") 'split-window-right-and-focus
     (kbd "w V") 'split-window-right
@@ -753,6 +751,58 @@ before packages are loaded."
   ;; MISC CUSTOM ;;
   ;;;;;;;;;;;;;;;;;
 
+
+  ;; (setq-default mode-line-format
+  ;;       (list
+  ;;        '(:eval ())
+         
+  ;;        " %b "
+
+  ;;        ;; line and column
+  ;;        "(" ;; '%02' to set to 2 chars at least; prevents flickering
+  ;;        (propertize "%02l" 'face 'font-lock-type-face) ","
+  ;;        (propertize "%02c" 'face 'font-lock-type-face) 
+  ;;        ") "
+
+  ;;        ;; relative position, size of file
+  ;;        "["
+  ;;        (propertize "%p" 'face 'font-lock-constant-face) ;; % above top
+  ;;        "/"
+  ;;        (propertize "%I" 'face 'font-lock-constant-face) ;; size
+  ;;        "] "
+
+  ;;        ;; the current major mode for the buffer.
+  ;;        "["
+
+  ;;        '(:eval (propertize "%m" 'face 'font-lock-string-face
+  ;;                            'help-echo buffer-file-coding-system))
+  ;;        "] "
+
+
+  ;;        "[" ;; insert vs overwrite mode, input-method in a tooltip
+  ;;        '(:eval (propertize evil-state
+  ;;                            'face 'font-lock-preprocessor-face
+  ;;                            'help-echo (concat "Buffer is in "
+  ;;                                               (if overwrite-mode "overwrite" "insert") " mode")))
+
+  ;;        ;; was this buffer modified since the last save?
+  ;;        '(:eval (when (buffer-modified-p)
+  ;;                  (concat ","  (propertize "Mod"
+  ;;                                           'face 'font-lock-warning-face
+  ;;                                           'help-echo "Buffer has been modified"))))
+
+  ;;        ;; is this buffer read-only?
+  ;;        '(:eval (when buffer-read-only
+  ;;                  (concat ","  (propertize "RO"
+  ;;                                           'face 'font-lock-type-face
+  ;;                                           'help-echo "Buffer is read-only"))))  
+  ;;        "] "
+  ;;        ;; i don't want to see minor-modes; but if you want, uncomment this:
+  ;;        minor-mode-alist  ;; list of minor modes
+  ;;        ;; "%-" ;; fill with '-'
+  ;;        ))
+
+
   ;; Put the best settings on NHexl mode when it opens,
   ;; since it doesn't do that by default.
   (add-hook 'nhexl-mode-hook (lambda ()
@@ -761,7 +811,8 @@ before packages are loaded."
 
   ;; Some glyphs are missing (like Chinese and Japanese symbols), so
   ;; add a fallback font.
-  ;; (set-fontset-font "fontset-default" '(#x0 . #xd7f0) "Roboto Mono")
+  ;; (set-fontset-font "fontset-default" '(#x0 . #xd7f0) "Unifont")
+  ;; (set-fontset-font "fontset-default" '(#x0 . #xd7f0) "NotoSansMono Nerd Font Mono")
 
   ;; Buffers that are constantly flooding Helm that I
   ;; don't want to see. Burn them all.
@@ -832,11 +883,13 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(auto-highlight-symbol-mode-hook nil)
  '(blink-cursor-mode nil)
+ '(calc-multiplication-has-precedence nil)
  '(column-number-mode t)
  '(custom-safe-themes
    '("824d07981667fd7d63488756b6d6a4036bae972d26337babf7b56df6e42f2bcd" default))
  '(display-fill-column-indicator-column 81)
- '(elfeed-feeds '("https://lukesmith.xyz/rss.xml") t)
+ '(elfeed-feeds
+   '("https://occasionallycogent.com/feed.xml" "https://occasionallycogent.com/entries.html" "https://lukesmith.xyz/rss.xml") t)
  '(elpher-default-url-type "gemini")
  '(elpy-mode-hook nil)
  '(elpy-modules
@@ -860,10 +913,11 @@ This function is called at the very end of Spacemacs initialization."
  '(hexl-follow-ascii nil)
  '(highlight-parentheses-colors '("#50fa7b" "#ff79c6" "#bd93f9" "#ffb86c"))
  '(importmagic-python-interpreter "python3")
- '(lsp-clients-lua-language-server-bin
-   "/home/seanld/repos/lua-language-server/bin/Linux/lua-language-server")
+ '(lsp-clients-lua-language-server-bin "/usr/bin/lua-language-server")
  '(lsp-clients-lua-language-server-command '("lua-language-server"))
  '(lsp-clients-lua-language-server-main-location "/home/seanld/repos/lua-language-server/bin/Linux/main.lua")
+ '(lsp-disabled-clients
+   '(\(lua-mode\ \.\ lua-roblox-language-server\) \(lua-mode\ \.\ lsp-lua-roblox-language-server\)))
  '(magit-refresh-verbose t)
  '(magit-repository-directories '(("/home/seanld/repos" . 3)))
  '(menu-bar-mode nil)
@@ -900,10 +954,11 @@ This function is called at the very end of Spacemacs initialization."
  '(org-todo-keywords
    '((sequence "TODO" "ACTIVE" "POSTPONED" "|" "DONE" "CANCELLED")))
  '(package-selected-packages
-   '(arduino-cli-mode zeal-at-point nhexl-mode flisp-mode enwc emamux coin-ticker carbon-now-sh ascii-table nasm-mode license-templates magit-popup dashboard-hackernews nnhackernews hackernews qrencode ox-pandoc ox-slack ox-gemini csv-mode hnreader go-autocomplete godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc flycheck-golangci-lint company-go go-mode restclient company-lua lua-mode memory-usage atom-dark-theme atom-one-dark-theme 0xc toml-mode ron-mode racer rust-mode flycheck-rust cargo zenity-color-picker webkit-color-picker elfeed sqlup-mode sql-indent company-jedi web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data company-quickhelp verb minimap magithub magit-libgit tabbar yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose live-py-mode epc ctable concurrent deferred helm-pydoc helm-cscope xcscope cython-mode company-anaconda blacken anaconda-mode pythonic xclip web-beautify tern prettier-js npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl impatient-mode htmlize simple-httpd helm-gtags ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode counsel-gtags counsel swiper ivy company add-node-modules-path filetree dracula-theme ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-compile aggressive-indent ace-link ace-jump-helm-line))
+   '(helm-firefox slime arduino-cli-mode zeal-at-point nhexl-mode flisp-mode enwc emamux coin-ticker carbon-now-sh ascii-table nasm-mode license-templates magit-popup dashboard-hackernews nnhackernews hackernews qrencode ox-pandoc ox-slack ox-gemini csv-mode hnreader go-autocomplete godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc flycheck-golangci-lint company-go go-mode restclient company-lua lua-mode memory-usage atom-dark-theme atom-one-dark-theme 0xc toml-mode ron-mode racer rust-mode flycheck-rust cargo zenity-color-picker webkit-color-picker elfeed sqlup-mode sql-indent company-jedi web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data company-quickhelp verb minimap magithub magit-libgit tabbar yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose live-py-mode epc ctable concurrent deferred helm-pydoc helm-cscope xcscope cython-mode company-anaconda blacken anaconda-mode pythonic xclip web-beautify tern prettier-js npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl impatient-mode htmlize simple-httpd helm-gtags ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode counsel-gtags counsel swiper ivy company add-node-modules-path filetree dracula-theme ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-compile aggressive-indent ace-link ace-jump-helm-line))
  '(paradox-github-token t)
  '(pdf-tools-enabled-modes
    '(pdf-history-minor-mode pdf-isearch-minor-mode pdf-links-minor-mode pdf-misc-minor-mode pdf-outline-minor-mode pdf-misc-size-indication-minor-mode pdf-misc-menu-bar-minor-mode pdf-annot-minor-mode pdf-sync-minor-mode pdf-misc-context-menu-minor-mode pdf-cache-prefetch-minor-mode pdf-occur-global-minor-mode pdf-virtual-global-minor-mode))
+ '(powerline-height nil)
  '(safe-local-variable-values
    '((org-blank-before-new-entry
       (heading . auto)
