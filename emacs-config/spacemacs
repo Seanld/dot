@@ -89,7 +89,8 @@ This function should only modify configuration layer settings."
           lsp-lens-enable t
           lsp-use-lsp-ui t
           lsp-ui-sideline-enable nil
-          lsp-ui-doc-enable t
+          ;; lsp-ui-doc-enable t
+          lsp-ui-doc-enable nil
           lsp-ui-doc-position 'top
           lsp-ui-doc-show-with-cursor t
           lsp-ui-doc-header nil
@@ -144,8 +145,7 @@ This function should only modify configuration layer settings."
      nasm-mode
      ascii-table
      emamux
-     nhexl-mode
-     zeal-at-point)
+     smart-tabs-mode)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -561,14 +561,14 @@ It should only modify the values of Spacemacs settings."
    ;; `trailing' to delete only the whitespace at end of lines, `changed' to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil
+   dotspacemacs-whitespace-cleanup changed
 
    ;; If non nil activate `clean-aindent-mode' which tries to correct
    ;; virtual indentation of simple modes. This can interfer with mode specific
    ;; indent handling like has been reported for `go-mode'.
    ;; If it does deactivate it here.
    ;; (default t)
-   dotspacemacs-use-clean-aindent-mode t
+   dotspacemacs-use-clean-aindent-mode nil
 
    ;; Accept SPC as y for prompts if non nil. (default nil)
    dotspacemacs-use-SPC-as-y nil
@@ -681,6 +681,7 @@ before packages are loaded."
   (global-set-key (kbd "<S-f12>") 'delete-window)
   (global-set-key (kbd "<f11>") 'delete-window)
   (global-set-key (kbd "<f5>") 'zeal-at-point)
+  (global-set-key (kbd "<f6>") 'lsp-describe-thing-at-point)
   (global-set-key (kbd "<f7>") 'xref-find-definitions)
   ;; This reverses the scroll direction. The default behaviour is
   ;; a little counter-intuitive for modern standards.
@@ -736,14 +737,21 @@ before packages are loaded."
 
   (spacemacs/set-leader-keys-for-major-mode 'org-mode (kbd ".") 'org-next-link)
 
-  ;; (add-hook 'org-mode-hook
-  ;;   (lambda ()
-  ;;     (local-set-key (kbd "<C-S-up>") 'scroll-down-several-lines)
-  ;;     (local-set-key (kbd "<C-S-down>")) 'scroll-up-several-lines))
 
-  ;; (with-eval-after-load 'org
-  ;;   (local-set-key (kbd "<C-S-up") 'scroll-down-several-lines)
-  ;;   (local-set-key (kbd "<C-S-down") 'scroll-up-several-lines))
+
+  ;;;;;;;;;;;;;;;
+  ;; GO CUSTOM ;;
+  ;;;;;;;;;;;;;;;
+
+  ;; Disable auto-indenter for Go mode, as Go mode already
+  ;; implements its own, and this causes annoying indenting issues.
+  (add-hook 'go-mode-hook (lambda ()
+                            (clean-aindent-mode -1)
+                            ;; (indent-tabs-mode -1)
+                            (electric-indent-mode -1)
+                            (highlight-indentation-mode)
+                            (setq tab-width 4)
+                            (smart-tabs-mode)))
 
 
 
@@ -751,6 +759,31 @@ before packages are loaded."
   ;; MISC CUSTOM ;;
   ;;;;;;;;;;;;;;;;;
 
+  (defun calc-swap ()
+    "Swaps the top two items on the stack in Calc."
+    (interactive)
+    (let ((top nil)
+          (top2 nil))
+      (calc-store top)
+      (calc-pop)
+      (calc-store top2)
+      (calc-pop)
+      (calc-recall top)
+      (calc-recall top2)))
+
+  (setq lsp-doc-showing nil)
+
+  (defun toggle-lsp-doc ()
+    (interactive)
+    (if (equal lsp-doc-showing nil)
+        (progn
+          (setq lsp-doc-showing t)
+          (lsp-ui-doc-show))
+      (progn
+        (setq lsp-doc-showing nil)
+        (lsp-ui-doc-hide))))
+
+  (spacemacs/set-leader-keys (kbd "t b") 'toggle-lsp-doc)
 
   ;; (setq-default mode-line-format
   ;;       (list
@@ -906,7 +939,7 @@ This function is called at the very end of Spacemacs initialization."
  '(global-auto-highlight-symbol-mode nil)
  '(global-hl-todo-mode t)
  '(helm-boring-buffer-regexp-list
-   '("\\` " "\\`\\*helm" "\\`\\*Echo Area" "\\`\\*Minibuf" "magit-.*: .*" "magit: .*" "\\*Messages\\*" "\\*lsp-log\\*" "\\*Backtrace\\*" "\\*epc con" "\\.custom-settings" "\\*pyright" "magit-.*: .*" "magit: .*" "\\*.+-ls" "magit-.*: .*" "magit: .*" "\\*Completions\\*" "magit-.*: .*" "magit: .*" "\\*sqls" "magit-.*: .*" "magit: .*" "\\*clang"))
+   '("\\` " "\\`\\*helm" "\\`\\*Echo Area" "\\`\\*Minibuf" "magit-.*: .*" "magit: .*" "\\*Messages\\*" "\\*lsp-log\\*" "\\*Backtrace\\*" "\\*epc con" "\\.custom-settings" "\\*pyright" "magit-.*: .*" "magit: .*" "\\*.+-ls" "magit-.*: .*" "magit: .*" "\\*Completions\\*" "magit-.*: .*" "magit: .*" "\\*sqls" "magit-.*: .*" "magit: .*" "\\*clang" "magit-.*: .*" "magit: .*" "\\*Slack.*Log" "magit-.*: .*" "magit: .*" "magit-.*: .*" "magit: .*" "\\*gopls" "magit-.*: .*" "magit: .*" "magit-.*: .*" "magit: .*" "\\*rls"))
  '(helm-mode-handle-completion-in-region nil)
  '(helm-mode-no-completion-in-region-in-modes nil)
  '(hexl-bits 8)
@@ -954,7 +987,7 @@ This function is called at the very end of Spacemacs initialization."
  '(org-todo-keywords
    '((sequence "TODO" "ACTIVE" "POSTPONED" "|" "DONE" "CANCELLED")))
  '(package-selected-packages
-   '(helm-firefox slime arduino-cli-mode zeal-at-point nhexl-mode flisp-mode enwc emamux coin-ticker carbon-now-sh ascii-table nasm-mode license-templates magit-popup dashboard-hackernews nnhackernews hackernews qrencode ox-pandoc ox-slack ox-gemini csv-mode hnreader go-autocomplete godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc flycheck-golangci-lint company-go go-mode restclient company-lua lua-mode memory-usage atom-dark-theme atom-one-dark-theme 0xc toml-mode ron-mode racer rust-mode flycheck-rust cargo zenity-color-picker webkit-color-picker elfeed sqlup-mode sql-indent company-jedi web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data company-quickhelp verb minimap magithub magit-libgit tabbar yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose live-py-mode epc ctable concurrent deferred helm-pydoc helm-cscope xcscope cython-mode company-anaconda blacken anaconda-mode pythonic xclip web-beautify tern prettier-js npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl impatient-mode htmlize simple-httpd helm-gtags ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode counsel-gtags counsel swiper ivy company add-node-modules-path filetree dracula-theme ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-compile aggressive-indent ace-link ace-jump-helm-line))
+   '(powershell bmx-mode helm-firefox slime arduino-cli-mode zeal-at-point nhexl-mode flisp-mode enwc emamux coin-ticker carbon-now-sh ascii-table nasm-mode license-templates magit-popup dashboard-hackernews nnhackernews hackernews qrencode ox-pandoc ox-slack ox-gemini csv-mode hnreader go-autocomplete godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc flycheck-golangci-lint company-go go-mode restclient company-lua lua-mode memory-usage atom-dark-theme atom-one-dark-theme 0xc toml-mode ron-mode racer rust-mode flycheck-rust cargo zenity-color-picker webkit-color-picker elfeed sqlup-mode sql-indent company-jedi web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data company-quickhelp verb minimap magithub magit-libgit tabbar yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose live-py-mode epc ctable concurrent deferred helm-pydoc helm-cscope xcscope cython-mode company-anaconda blacken anaconda-mode pythonic xclip web-beautify tern prettier-js npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl impatient-mode htmlize simple-httpd helm-gtags ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode counsel-gtags counsel swiper ivy company add-node-modules-path filetree dracula-theme ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-compile aggressive-indent ace-link ace-jump-helm-line))
  '(paradox-github-token t)
  '(pdf-tools-enabled-modes
    '(pdf-history-minor-mode pdf-isearch-minor-mode pdf-links-minor-mode pdf-misc-minor-mode pdf-outline-minor-mode pdf-misc-size-indication-minor-mode pdf-misc-menu-bar-minor-mode pdf-annot-minor-mode pdf-sync-minor-mode pdf-misc-context-menu-minor-mode pdf-cache-prefetch-minor-mode pdf-occur-global-minor-mode pdf-virtual-global-minor-mode))
@@ -1448,6 +1481,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(completions-common-part ((t (:foreground "#8be9fd"))))
  '(hexl-address-region ((t (:inherit header-line :weight semi-bold))))
+ '(highlight-indentation-face ((t (:background "#6272a4"))))
  '(hl-todo ((t (:foreground "#cc9393" :weight bold :height 0.7))))
  '(org-level-1 ((t (:height 1.2 :foreground "#ff79c6" :extend nil :inherit bold))))
  '(org-meta-line ((t (:inherit font-lock-comment-face))))
