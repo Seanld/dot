@@ -75,7 +75,7 @@ end
 
 -- Running Picom with `--experimental-backends` allows for Gaussian blur on
 -- the background of windows, but introduces a lot of lag, at least on a GT 710.
-run_once({ "picom &", "unclutter --timeout 2 &"}) -- comma-separated entries
+run_once({ "picom --experimental-backends &", "unclutter --timeout 2 &"}) -- comma-separated entries
 
 -- This function implements the XDG autostart specification
 --[[
@@ -476,6 +476,25 @@ globalkeys = mytable.join(
             beautiful.volume.update()
         end,
         {description = "volume 0%", group = "hotkeys"}),
+
+	-- Spotify controls, via https://gist.github.com/wandernauta/6800547
+	-- (you're a legend for this script, thanks).
+    awful.key({}, "XF86AudioPlay",
+		function ()			
+			os.execute("sp play")
+		end,
+		{description = "spotify play/pause", group = "hotkeys"}),
+    awful.key({}, "XF86AudioNext",
+		function ()			
+			os.execute("sp next")
+		end,
+		{description = "spotify next track", group = "hotkeys"}),
+    awful.key({}, "XF86AudioPrev",
+		function ()			
+			os.execute("sp prev")
+		end,
+		{description = "spotify previous track", group = "hotkeys"}),
+
 
     -- MPD control
     awful.key({ altkey, "Control" }, "Up",
