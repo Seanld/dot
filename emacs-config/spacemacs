@@ -118,7 +118,8 @@ This function should only modify configuration layer settings."
      pass
      colors
      eww
-     c-c++)
+     c-c++
+     restclient)
 
 
    ;; List of additional packages that will be installed without being wrapped
@@ -137,7 +138,6 @@ This function should only modify configuration layer settings."
      company-quickhelp
      elpher
      gemini-mode
-     restclient
      logview
      ox-gemini
      qrencode
@@ -146,7 +146,8 @@ This function should only modify configuration layer settings."
      ascii-table
      emamux
      smart-tabs-mode
-     gcode-mode)
+     know-your-http-well
+     company-restclient)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -595,7 +596,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-home-shorten-agenda-source nil
 
    ;; If non-nil then byte-compile some of Spacemacs files.
-   dotspacemacs-byte-compile nil))
+   dotspacemacs-byte-compile t))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -720,31 +721,34 @@ before packages are loaded."
   (bind-key* "<C-S-up>" 'scroll-down-several-lines)
   (bind-key* "<C-S-down>" 'scroll-up-several-lines)
 
-  ;; Allow certain languages to run in the SRC blocks
-  ;; of Orgmode files.
-  (org-babel-do-load-languages
-   'org-babel-load-languages '((C . t)
-                               (python . t)
-                               (sql . t)))
+  (with-eval-after-load 'org
+    (setq org-default-notes-file "~/docs/notes.org")
 
-  (setq org-fontify-quote-and-verse-blocks t)
+    ;; Allow certain languages to run in the SRC blocks
+    ;; of Orgmode files.
+    (org-babel-do-load-languages
+     'org-babel-load-languages '((C . t)
+                                 (python . t)
+                                 (sql . t)))
 
-  ;; Leaves a line of spacing when headers are folded.
-  (setq org-cycle-separator-lines -1)
-  ;; Self explanatory -- hitting enter on a link follows
-  ;; the link.
-  (setq org-return-follows-link t)
-  (setq org-superstar-headline-bullets-list '("◉" "◈" "▶"))
+    (setq org-fontify-quote-and-verse-blocks t)
 
-  ;; This is currently unfunctional for some reason. It's from the Org docs.
-  (defun org-summary-todo (n-done n-not-done)
-    "Switch entry to DONE when all subentries are done, to TODO otherwise."
-    (let (org-log-done org-log-states)   ; turn off logging
-      (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+    ;; Leaves a line of spacing when headers are folded.
+    (setq org-cycle-separator-lines -1)
+    ;; Self explanatory -- hitting enter on a link follows
+    ;; the link.
+    (setq org-return-follows-link t)
+    (setq org-superstar-headline-bullets-list '("◉" "◈" "▶"))
 
-  (add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
+    ;; This is currently unfunctional for some reason. It's from the Org docs.
+    (defun org-summary-todo (n-done n-not-done)
+      "Switch entry to DONE when all subentries are done, to TODO otherwise."
+      (let (org-log-done org-log-states)   ; turn off logging
+        (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
-  (spacemacs/set-leader-keys-for-major-mode 'org-mode (kbd ".") 'org-next-link)
+    (add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
+
+    (spacemacs/set-leader-keys-for-major-mode 'org-mode (kbd ".") 'org-next-link))
 
 
 
@@ -793,6 +797,9 @@ before packages are loaded."
 
   (setq c-backspace-function 'unindent-or-backspace)
 
+  (add-hook 'c-mode-hook (lambda ()
+                           (electric-pair-mode)))
+
 
 
   ;;;;;;;;;;;;;;;;
@@ -811,6 +818,17 @@ before packages are loaded."
   (define-derived-mode zpl-mode text-mode "ZPL"
     "Major mode for editing ZPL code."
     (setq font-lock-defaults '(zpl-highlights)))
+
+
+
+  ;;;;;;;;;;;;;;;;;;;;;;;
+  ;; RESTCLIENT CUSTOM ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;
+
+  (add-to-list 'company-backends 'company-restclient)
+
+  (add-hook 'restclient-mode-hook (lambda ()
+                                    (display-line-numbers-mode)))
 
 
 
@@ -844,56 +862,51 @@ before packages are loaded."
 
   (spacemacs/set-leader-keys (kbd "t b") 'toggle-lsp-doc)
 
-  ;; (setq-default mode-line-format
-  ;;       (list
-  ;;        '(:eval ())
-         
-  ;;        " %b "
+  (setq mode-line-format
+                (list
 
-  ;;        ;; line and column
-  ;;        "(" ;; '%02' to set to 2 chars at least; prevents flickering
-  ;;        (propertize "%02l" 'face 'font-lock-type-face) ","
-  ;;        (propertize "%02c" 'face 'font-lock-type-face) 
-  ;;        ") "
+                 '(:eval (propertize (if (eq 'emacs evil-state) "  " "  ")
+                                     'face (cogent/evil-state-face)))
 
-  ;;        ;; relative position, size of file
-  ;;        "["
-  ;;        (propertize "%p" 'face 'font-lock-constant-face) ;; % above top
-  ;;        "/"
-  ;;        (propertize "%I" 'face 'font-lock-constant-face) ;; size
-  ;;        "] "
+                 " "
+                 mode-line-misc-info ; for eyebrowse
 
-  ;;        ;; the current major mode for the buffer.
-  ;;        "["
+                 '(:eval (when-let (vc vc-mode)
+                           (list " "
+                                 (propertize (substring vc 5)
+                                             'face 'font-lock-comment-face)
+                                 " ")))
 
-  ;;        '(:eval (propertize "%m" 'face 'font-lock-string-face
-  ;;                            'help-echo buffer-file-coding-system))
-  ;;        "] "
+                 '(:eval (list
+                          ;; the buffer name; the file name as a tool tip
+                          (propertize " %b" 'face 'font-lock-type-face
+                                      'help-echo (buffer-file-name))
+                          (when (buffer-modified-p)
+                            (propertize
+                             " "
+                             'face (if (cogent-line-selected-window-active-p)
+                                       'cogent-line-modified-face
+                                     'cogent-line-modified-face-inactive)))
+                          (when buffer-read-only
+                            (propertize
+                             ""
+                             'face (if (cogent-line-selected-window-active-p)
+                                       'cogent-line-read-only-face
+                                     'cogent-line-read-only-face-inactive)))
+                          " "))
 
+                 ;; relative position in file
+                 '(:eval (list (nyan-create))) ;; from the nyan-mode package
+                 (propertize "%p" 'face 'font-lock-constant-face)
 
-  ;;        "[" ;; insert vs overwrite mode, input-method in a tooltip
-  ;;        '(:eval (propertize evil-state
-  ;;                            'face 'font-lock-preprocessor-face
-  ;;                            'help-echo (concat "Buffer is in "
-  ;;                                               (if overwrite-mode "overwrite" "insert") " mode")))
+                 ;; spaces to align right
+                 '(:eval (propertize
+                          " " 'display
+                          `((space :align-to (- (+ right right-fringe right-margin)
+                                                ,(+ 3 (string-width mode-name)))))))
 
-  ;;        ;; was this buffer modified since the last save?
-  ;;        '(:eval (when (buffer-modified-p)
-  ;;                  (concat ","  (propertize "Mod"
-  ;;                                           'face 'font-lock-warning-face
-  ;;                                           'help-echo "Buffer has been modified"))))
-
-  ;;        ;; is this buffer read-only?
-  ;;        '(:eval (when buffer-read-only
-  ;;                  (concat ","  (propertize "RO"
-  ;;                                           'face 'font-lock-type-face
-  ;;                                           'help-echo "Buffer is read-only"))))  
-  ;;        "] "
-  ;;        ;; i don't want to see minor-modes; but if you want, uncomment this:
-  ;;        minor-mode-alist  ;; list of minor modes
-  ;;        ;; "%-" ;; fill with '-'
-  ;;        ))
-
+                 ;; the current major mode
+                 (propertize " %m " 'face 'font-lock-string-face)))
 
   ;; Put the best settings on NHexl mode when it opens,
   ;; since it doesn't do that by default.
@@ -992,7 +1005,7 @@ This function is called at the very end of Spacemacs initialization."
  '(elpy-rpc-python-command "python3")
  '(elpy-rpc-timeout 1)
  '(elpy-rpc-virtualenv-path "/home/seanld/mainenv")
- '(evil-org-key-theme '(navigation textobjects additional calendar))
+ '(evil-org-key-theme '(navigation textobjects additional calendar) t)
  '(evil-want-Y-yank-to-eol nil)
  '(flycheck-global-modes
    '(json-mode web-mode slim-mode scss-mode sass-mode pug-mode less-mode haml-mode yaml-mode js2-mode))
@@ -1050,7 +1063,6 @@ This function is called at the very end of Spacemacs initialization."
    '((sequence "TODO" "ACTIVE" "POSTPONED" "|" "DONE" "CANCELLED")))
  '(package-selected-packages
    '(powershell bmx-mode helm-firefox slime arduino-cli-mode zeal-at-point nhexl-mode flisp-mode enwc emamux coin-ticker carbon-now-sh ascii-table nasm-mode license-templates magit-popup dashboard-hackernews nnhackernews hackernews qrencode ox-pandoc ox-slack ox-gemini csv-mode hnreader go-autocomplete godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc flycheck-golangci-lint company-go go-mode restclient company-lua lua-mode memory-usage atom-dark-theme atom-one-dark-theme 0xc toml-mode ron-mode racer rust-mode flycheck-rust cargo zenity-color-picker webkit-color-picker elfeed sqlup-mode sql-indent company-jedi web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data company-quickhelp verb minimap magithub magit-libgit tabbar yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose live-py-mode epc ctable concurrent deferred helm-pydoc helm-cscope xcscope cython-mode company-anaconda blacken anaconda-mode pythonic xclip web-beautify tern prettier-js npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl impatient-mode htmlize simple-httpd helm-gtags ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode counsel-gtags counsel swiper ivy company add-node-modules-path filetree dracula-theme ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-compile aggressive-indent ace-link ace-jump-helm-line))
- '(paradox-github-token t)
  '(pdf-tools-enabled-modes
    '(pdf-history-minor-mode pdf-isearch-minor-mode pdf-links-minor-mode pdf-misc-minor-mode pdf-outline-minor-mode pdf-misc-size-indication-minor-mode pdf-misc-menu-bar-minor-mode pdf-annot-minor-mode pdf-sync-minor-mode pdf-misc-context-menu-minor-mode pdf-cache-prefetch-minor-mode pdf-occur-global-minor-mode pdf-virtual-global-minor-mode))
  '(powerline-height nil)
@@ -1067,7 +1079,7 @@ This function is called at the very end of Spacemacs initialization."
  '(smtpmail-smtp-server "smtp.google.com")
  '(smtpmail-smtp-service 25)
  '(sql-product 'postgres)
- '(toc-org-max-depth 10)
+ '(toc-org-max-depth 10 t)
  '(tool-bar-mode nil)
  '(unicode-fonts-block-font-mapping
    '(("Aegean Numbers"
