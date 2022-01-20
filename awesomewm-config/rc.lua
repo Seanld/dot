@@ -57,11 +57,11 @@ do
     end)
 end
 
-client.connect_signal("manage", function (c)
-    c.shape = function(cr,w,h)
-        gears.shape.rounded_rect(cr, w, h, 8)
-    end
-end)
+-- client.connect_signal("manage", function (c)
+    -- c.shape = function(cr,w,h)
+        -- gears.shape.rounded_rect(cr, w, h, 8)
+    -- end
+-- end)
 -- }}}
 
 -- {{{ Autostart windowless processes
@@ -107,6 +107,7 @@ local themes = {
 local chosen_theme = themes[7]
 local modkey       = "Mod4"
 local altkey       = "Mod1"
+local ctrlkey      = "Ctrl"
 local terminal     = "alacritty"
 local vi_focus     = false -- vi-like client focus https://github.com/lcpz/awesome-copycats/issues/275
 local cycle_prev   = true  -- cycle with only the previously focused client or all https://github.com/lcpz/awesome-copycats/issues/274
@@ -211,6 +212,8 @@ local mymainmenu = freedesktop.menu.build {
 --menubar.utils.terminal = terminal
 
 -- }}}
+
+pctl_ff_filter_cmd = "playerctl -l | grep firefox"
 
 -- {{{ Screen
 
@@ -445,19 +448,6 @@ globalkeys = mytable.join(
     awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xbacklight -dec 10") end,
               {description = "-10%", group = "hotkeys"}),
 
-    -- ALSA volume control
-    awful.key({ altkey }, "Up",
-        function ()
-            os.execute(string.format("amixer -q set %s 1%%+", beautiful.volume.channel))
-            beautiful.volume.update()
-        end,
-        {description = "volume up", group = "hotkeys"}),
-    awful.key({ altkey }, "Down",
-        function ()
-            os.execute(string.format("amixer -q set %s 1%%-", beautiful.volume.channel))
-            beautiful.volume.update()
-        end,
-        {description = "volume down", group = "hotkeys"}),
     awful.key({ altkey }, "m",
         function ()
             os.execute(string.format("amixer -q set %s toggle", beautiful.volume.togglechannel or beautiful.volume.channel))
@@ -477,23 +467,60 @@ globalkeys = mytable.join(
         end,
         {description = "volume 0%", group = "hotkeys"}),
 
-	-- Spotify controls, via https://gist.github.com/wandernauta/6800547
-	-- (you're a legend for this script, thanks).
+	-- Firefox-specific media control bindings.
     awful.key({}, "XF86AudioPlay",
-		function ()			
-			os.execute("sp play")
-		end,
-		{description = "spotify play/pause", group = "hotkeys"}),
+      function ()
+        os.execute("playerctl play-pause -p $(" .. pctl_ff_filter_cmd .. ")")
+      end,
+      {description = "Firefox play/pause", group = "hotkeys"}),
     awful.key({}, "XF86AudioNext",
-		function ()			
-			os.execute("sp next")
-		end,
-		{description = "spotify next track", group = "hotkeys"}),
+      function ()
+        os.execute("playerctl next -p $(" .. pctl_ff_filter_cmd .. ")")
+      end,
+      {description = "Firefox next track", group = "hotkeys"}),
     awful.key({}, "XF86AudioPrev",
-		function ()			
-			os.execute("sp prev")
-		end,
-		{description = "spotify previous track", group = "hotkeys"}),
+      function ()
+        os.execute("Firefox previous -p $(" .. pctl_ff_filter_cmd .. ")")
+      end,
+      {description = "Audio previous track", group = "hotkeys"}),
+    awful.key({ ctrlkey }, "XF86AudioNext",
+      function ()
+        os.execute("playerctl position 5+ -p $(" .. pctl_ff_filter_cmd .. ")")
+      end,
+      {description = "Firefox seek 5 seconds forward", group = "hotkeys"}),
+    awful.key({ ctrlkey }, "XF86AudioPrev",
+      function ()
+        os.execute("playerctl position 5- -p $(" .. pctl_ff_filter_cmd .. ")")
+      end,
+      {description = "Firefox seek 5 seconds backward", group = "hotkeys"}),
+
+	-- Spotify-specific audio control bindings
+    awful.key({ modkey }, "XF86AudioPlay",
+      function ()
+        os.execute("playerctl play-pause -p spotify")
+      end,
+      {description = "Spotify play/pause", group = "hotkeys"}),
+    awful.key({ modkey }, "XF86AudioNext",
+      function ()
+        os.execute("playerctl next -p spotify")
+      end,
+      {description = "Spotify next track", group = "hotkeys"}),
+    awful.key({ modkey }, "XF86AudioPrev",
+      function ()
+        os.execute("playerctl previous -p spotify")
+      end,
+      {description = "Spotify previous track", group = "hotkeys"}),
+    awful.key({ ctrlkey, modkey }, "XF86AudioNext",
+      function ()
+        os.execute("playerctl position 5+ -p spotify")
+      end,
+      {description = "Spotify seek 5 seconds forward", group = "hotkeys"}),
+    awful.key({ ctrlkey, modkey }, "XF86AudioPrev",
+      function ()
+        os.execute("playerctl position 5- -p spotify")
+      end,
+      {description = "Spotify seek 5 seconds backward", group = "hotkeys"}),
+
 
 
     -- MPD control
