@@ -404,6 +404,8 @@ globalkeys = mytable.join(
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, altkey   }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
+    awful.key({ modkey }, "e", function () awful.spawn("emacs") end,
+              {description = "start emacs", group = "launcher"}),
 
     awful.key({ modkey, "Control" }, "Up",     function () awful.tag.incmwfact( 0.02)         end,
               {description = "increase master width factor", group = "layout"}),
