@@ -15,7 +15,10 @@
 (defun lp-get-yank ()
   "Prompts user from minibuffer to get LessPass password
 parameters, pass them to CLI, and yank the result.
-Requires `lesspass` terminal utility."
+Requires `lesspassgo' CLI.
+
+`lesspassgo' was chosen over normal `lesspass' because `lesspass'
+is written in JS, and requires NPM packages which are an insecure pain."
   (interactive)
   (let ((site (read-from-minibuffer "Site: "))
         (login (read-from-minibuffer "Login: "))
@@ -24,7 +27,7 @@ Requires `lesspass` terminal utility."
     (kill-new
      (substring
       (shell-command-to-string
-       (format "lesspass %s %s %s %s" site login password options))
+       (format "lesspassgo --site %s --login %s --password %s %s" site login password options))
       0 -1)))
   (message "Password copied!"))
 
@@ -60,12 +63,17 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '((javascript :variables
+   '(systemd
+     (javascript :variables
                  javascript-backend 'lsp)
      csv
      (go :variables
          go-tab-width 4)
-     lua
+     (lua :variables
+          lua-backend 'lsp
+          lua-lsp-server 'lua-language-server
+          lsp-clients-lua-language-server-bin "~/.lua-lsp/lua-language-server"
+          lsp-clients-lua-language-server-main-location "~/.lua-lsp/main.lua")
      (sql :variables
           sql-backend 'lsp
           sql-lsp-sqls-workspace-config-path 'workspace
@@ -325,6 +333,15 @@ It should only modify the values of Spacemacs settings."
    ;; Default font or prioritized list of fonts. The `:size' can be specified as
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
+   ;; See `SPC h d f' on `set-face-attribute' for details on options.
+   ;; dotspacemacs-default-font '("Iosevka Custom"
+   ;;                             :size 13.0
+   ;;                             :weight normal
+   ;;                             :width normal)
+   ;; dotspacemacs-default-font '("VictorMono Nerd Font"
+   ;;                             :size 12.0
+   ;;                             :weight semi-bold
+   ;;                             :width normal)
    dotspacemacs-default-font '("JetBrainsMono Nerd Font"
                                :size 12.0
                                :weight medium
@@ -676,7 +693,8 @@ before packages are loaded."
     (kbd "a l") 'lp-get-yank
     (kbd "a r f") 'elpher
     (kbd "a r g") 'elpher-go
-    (kbd "f m") 'make-directory)
+    (kbd "f m") 'make-directory
+    (kbd "k !") 'evil-lisp-state)
 
   (global-set-key (kbd "<f12>") 'kill-this-buffer)
   (global-set-key (kbd "<f8>") 'lsp-ui-peek-find-references)
@@ -723,6 +741,14 @@ before packages are loaded."
   (bind-key* "<C-S-down>" 'scroll-up-several-lines)
 
   (with-eval-after-load 'org
+    (add-hook 'org-mode-hook (lambda ()
+                               ;; ;; Make Org mode use its own font face (Victor Mono).
+                               ;; (setq buffer-face-mode-face '(:family "VictorMono Nerd Font" :weight semi-bold :height 120))
+                               ;; (buffer-face-mode)
+                               ;; (diminish 'buffer-face-mode)
+
+                               (electric-indent-mode t)))
+
     (setq org-default-notes-file "~/docs/notes.org")
 
     ;; Allow certain languages to run in the SRC blocks
@@ -999,6 +1025,7 @@ This function is called at the very end of Spacemacs initialization."
  '(elfeed-feeds
    '("https://occasionallycogent.com/feed.xml" "https://occasionallycogent.com/entries.html" "https://lukesmith.xyz/rss.xml") t)
  '(elpher-default-url-type "gemini")
+ '(elpher-ipv4-always t)
  '(elpy-mode-hook nil)
  '(elpy-modules
    '(elpy-module-company elpy-module-folding elpy-module-pyvenv elpy-module-highlight-indentation elpy-module-yasnippet elpy-module-django elpy-module-sane-defaults))
@@ -1006,7 +1033,7 @@ This function is called at the very end of Spacemacs initialization."
  '(elpy-rpc-python-command "python3")
  '(elpy-rpc-timeout 1)
  '(elpy-rpc-virtualenv-path "/home/seanld/mainenv")
- '(evil-org-key-theme '(navigation textobjects additional calendar))
+ '(evil-org-key-theme '(navigation textobjects additional calendar) t)
  '(evil-want-Y-yank-to-eol nil)
  '(flycheck-global-modes
    '(json-mode web-mode slim-mode scss-mode sass-mode pug-mode less-mode haml-mode yaml-mode js2-mode))
@@ -1021,11 +1048,13 @@ This function is called at the very end of Spacemacs initialization."
  '(hexl-follow-ascii nil)
  '(highlight-parentheses-colors '("#50fa7b" "#ff79c6" "#bd93f9" "#ffb86c"))
  '(importmagic-python-interpreter "python3")
- '(lsp-clients-lua-language-server-bin "/usr/bin/lua-language-server")
+ '(lsp-clients-lua-language-server-bin "~/.lua-lsp/lua-language-server")
  '(lsp-clients-lua-language-server-command '("lua-language-server"))
- '(lsp-clients-lua-language-server-main-location "/home/seanld/repos/lua-language-server/bin/Linux/main.lua")
+ '(lsp-clients-lua-language-server-install-dir "~/.lua-lsp")
+ '(lsp-clients-lua-language-server-main-location "~/.lua-lsp/main.lua")
  '(lsp-disabled-clients
    '(\(lua-mode\ \.\ lua-roblox-language-server\) \(lua-mode\ \.\ lsp-lua-roblox-language-server\)))
+ '(lua-indent-level 4 t)
  '(magit-refresh-verbose t)
  '(magit-repository-directories '(("/home/seanld/repos" . 3)))
  '(menu-bar-mode nil)
@@ -1039,7 +1068,7 @@ This function is called at the very end of Spacemacs initialization."
      ("~" org-code verbatim)
      ("+"
       (:strike-through t))))
- '(org-enforce-todo-dependencies t)
+ '(org-enforce-todo-dependencies t t)
  '(org-export-with-author nil)
  '(org-export-with-toc nil)
  '(org-fontify-whole-block-delimiter-line t)
@@ -1059,12 +1088,13 @@ This function is called at the very end of Spacemacs initialization."
      ("ACTIVE" :foreground "yellow" :height 0.7)
      ("CANCELLED" :foreground "grey" :slant italic :height 0.7)
      ("POSTPONED" :foreground "orange" :slant italic :height 0.7)
-     ("DONE" :foreground "chartreuse" :height 0.7)))
+     ("DONE" :foreground "chartreuse" :height 0.7)) t)
  '(org-todo-keywords
-   '((sequence "TODO" "ACTIVE" "POSTPONED" "|" "DONE" "CANCELLED")))
+   '((sequence "TODO" "ACTIVE" "POSTPONED" "|" "DONE" "CANCELLED")) t)
  '(package-native-compile t)
  '(package-selected-packages
-   '(powershell bmx-mode helm-firefox slime arduino-cli-mode zeal-at-point nhexl-mode flisp-mode enwc emamux coin-ticker carbon-now-sh ascii-table nasm-mode license-templates magit-popup dashboard-hackernews nnhackernews hackernews qrencode ox-pandoc ox-slack ox-gemini csv-mode hnreader go-autocomplete godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc flycheck-golangci-lint company-go go-mode restclient company-lua lua-mode memory-usage atom-dark-theme atom-one-dark-theme 0xc toml-mode ron-mode racer rust-mode flycheck-rust cargo zenity-color-picker webkit-color-picker elfeed sqlup-mode sql-indent company-jedi web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data company-quickhelp verb minimap magithub magit-libgit tabbar yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose live-py-mode epc ctable concurrent deferred helm-pydoc helm-cscope xcscope cython-mode company-anaconda blacken anaconda-mode pythonic xclip web-beautify tern prettier-js npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl impatient-mode htmlize simple-httpd helm-gtags ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode counsel-gtags counsel swiper ivy company add-node-modules-path filetree dracula-theme ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-compile aggressive-indent ace-link ace-jump-helm-line))
+   '(systemd powershell bmx-mode helm-firefox slime arduino-cli-mode zeal-at-point nhexl-mode flisp-mode enwc emamux coin-ticker carbon-now-sh ascii-table nasm-mode license-templates magit-popup dashboard-hackernews nnhackernews hackernews qrencode ox-pandoc ox-slack ox-gemini csv-mode hnreader go-autocomplete godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc flycheck-golangci-lint company-go go-mode restclient company-lua lua-mode memory-usage atom-dark-theme atom-one-dark-theme 0xc toml-mode ron-mode racer rust-mode flycheck-rust cargo zenity-color-picker webkit-color-picker elfeed sqlup-mode sql-indent company-jedi web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data company-quickhelp verb minimap magithub magit-libgit tabbar yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose live-py-mode epc ctable concurrent deferred helm-pydoc helm-cscope xcscope cython-mode company-anaconda blacken anaconda-mode pythonic xclip web-beautify tern prettier-js npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl impatient-mode htmlize simple-httpd helm-gtags ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode counsel-gtags counsel swiper ivy company add-node-modules-path filetree dracula-theme ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-compile aggressive-indent ace-link ace-jump-helm-line))
+ '(paradox-github-token t)
  '(pdf-tools-enabled-modes
    '(pdf-history-minor-mode pdf-isearch-minor-mode pdf-links-minor-mode pdf-misc-minor-mode pdf-outline-minor-mode pdf-misc-size-indication-minor-mode pdf-misc-menu-bar-minor-mode pdf-annot-minor-mode pdf-sync-minor-mode pdf-misc-context-menu-minor-mode pdf-cache-prefetch-minor-mode pdf-occur-global-minor-mode pdf-virtual-global-minor-mode))
  '(powerline-height nil)
@@ -1081,7 +1111,7 @@ This function is called at the very end of Spacemacs initialization."
  '(smtpmail-smtp-server "smtp.google.com")
  '(smtpmail-smtp-service 25)
  '(sql-product 'postgres)
- '(toc-org-max-depth 10)
+ '(toc-org-max-depth 10 t)
  '(tool-bar-mode nil)
  '(unicode-fonts-block-font-mapping
    '(("Aegean Numbers"
