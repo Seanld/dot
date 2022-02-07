@@ -66,18 +66,23 @@ is written in JS, and requires NPM packages which are an insecure pain."
   (message "Password copied!"))
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; FACES & APPEARANCE ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
 ;;;;;;;;;;;;;;
 ;; KEYBINDS ;;
 ;;;;;;;;;;;;;;
 
 (map! :leader
       "y" #'yas-insert-snippet)
-;; (map! :leader
-;;       "x C" #'capitalize-region)
-;; (map! :leader
-;;       "x f" #'replace-string)
 (map! :leader
-      "y" #'replace-regexp)
+      "S" #'replace-string)
+(map! :leader
+      "R" #'replace-regexp)
 (map! :leader
       "w /" #'+evil/window-vsplit-and-follow)
 (map! :leader
@@ -102,6 +107,7 @@ is written in JS, and requires NPM packages which are an insecure pain."
 (map! "<f11>" #'delete-window)
 (map! "<M-S-down>" #'scroll-up-several-lines)
 (map! "<M-S-up>" #'scroll-down-several-lines)
+
 
 
 ;;;;;;;;;;;;;;;;
