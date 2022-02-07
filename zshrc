@@ -52,6 +52,9 @@ function notify_formatted {
 
 source $ZSH/oh-my-zsh.sh
 
+export PATH=$PATH:/home/seanld/repos/lua-language-server/bin/Linux
+export PATH=$PATH:/home/seanld/.emacs.d/bin # Doom Emacs command
+
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 export LC_ALL="en_US.UTF-8"
@@ -87,6 +90,12 @@ alias dbeaver="/usr/share/dbeaver/dbeaver"
 alias calc-mode="emacs -f full-calc"
 alias calc-term="emacs -nw -f full-calc"
 
+# Shortcuts for launching a client of a running Emacs daemon in a new
+# frame , but using Spacemacs naming, since that's the flavor I use.
+alias sm="emacsclient -c"
+alias spacemacs="emacsclient -c"
+alias ec="emacsclient"
+
 # Ensure that every time I use the `screen` command, it starts the
 # 256 color mode, because muh color.
 alias screen="screen -T screen-256color"
@@ -98,3 +107,5 @@ alias qc="git clone ";
 # Add Go stuff to make it function properly.
 export GOPATH="$(go env GOPATH)"
 export PATH="${PATH}:${GOPATH}/bin"
+
+alias luamake=/home/seanld/repos/lua-language-server/3rd/luamake/luamake
