@@ -118,6 +118,15 @@ is written in JS, and requires NPM packages which are an insecure pain."
   '((sequence "TODO" "ACTIVE" "POSTPONED" "|" "DONE" "CANCELLED")))
 (setq org-enforce-todo-dependencies t)
 
+(with-eval-after-load 'org
+  (setq org-fontify-quote-and-verse-blocks t)
+  (setq org-cycle-separator-lines -1)
+  (setq org-return-follows-link t)
+  (setq org-superstar-headline-bullets-list '("◉" "◈" "▶"))
+  (add-hook 'org-mode-hook (lambda ()
+                             (org-indent-mode -1)
+                             (highlight-indent-guides-mode -1))))
+
 
 
 ;;;;;;;;;;;;;;
@@ -181,20 +190,6 @@ is written in JS, and requires NPM packages which are an insecure pain."
 
 (add-hook 'restclient-mode-hook (lambda ()
                                   (display-line-numbers-mode)))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
