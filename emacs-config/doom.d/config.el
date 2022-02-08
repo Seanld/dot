@@ -30,7 +30,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/docs/org/")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -67,15 +67,12 @@ is written in JS, and requires NPM packages which are an insecure pain."
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;
-;; FACES & APPEARANCE ;;
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
 ;;;;;;;;;;;;;;
 ;; KEYBINDS ;;
 ;;;;;;;;;;;;;;
+
+(setq doom-localleader-key ",")
+(setq doom-localleader-alt-key "M-,")
 
 (map! :leader
       "y" #'yas-insert-snippet)
@@ -101,6 +98,10 @@ is written in JS, and requires NPM packages which are an insecure pain."
       "w <left>" #'evil-window-left)
 (map! :leader
       "w <right>" #'evil-window-right)
+(map! :leader
+      "s E" #'iedit-mode)
+(map! :leader
+      "@" #'pop-global-mark)
 
 (map! "<f12>" #'kill-this-buffer)
 (map! "<C-f12>" #'kill-buffer-and-window)
@@ -114,15 +115,45 @@ is written in JS, and requires NPM packages which are an insecure pain."
 ;; ORG CONFIG ;;
 ;;;;;;;;;;;;;;;;
 
-(setq org-todo-keywords
-  '((sequence "TODO" "ACTIVE" "POSTPONED" "|" "DONE" "CANCELLED")))
-(setq org-enforce-todo-dependencies t)
+(custom-set-faces!
+  ;; Titles
+  '(org-document-title :height 155)
+  '(org-level-1        :height 145)
+  '(org-level-2        :height 130)
+  '(org-level-3        :height 115)
+  '(org-level-4        :height 105)
+  '(org-level-5        :height 100)
+  '(org-level-6        :height 95)
+  '(org-level-7        :height 80)
+  '(org-level-8        :height 75)
 
-(with-eval-after-load 'org
+  ;; Other
+  '(org-meta-line :inherit font-lock-comment-face))
+
+(after! org
+  (map! :localleader
+        :map org-mode-map
+        "," #'org-ctrl-c-ctrl-c)
+  (map! :localleader
+        :map org-mode-map
+        (:prefix ("B" . "babel")
+         "h" #'org-babel-insert-header-arg))
+
   (setq org-fontify-quote-and-verse-blocks t)
   (setq org-cycle-separator-lines -1)
   (setq org-return-follows-link t)
   (setq org-superstar-headline-bullets-list '("◉" "◈" "▶"))
+  (setq org-adapt-indentation t)
+  (setq org-export-with-toc nil)
+  (setq org-todo-keywords
+    '((sequence "TODO" "ACTIVE" "POSTPONED" "|" "DONE" "CANCELLED")))
+  (setq org-todo-keyword-faces
+    '(("TODO" :foreground "grey" :height 0.85)
+      ("ACTIVE" :foreground "yellow" :height 0.85)
+      ("CANCELLED" :foreground "grey" :slant italic :height 0.85)
+      ("POSTPONED" :foreground "orange" :slant italic :height 0.85)
+      ("DONE" :foreground "chartreuse" :height 0.85)))
+  (setq org-enforce-todo-dependencies t)
   (add-hook 'org-mode-hook (lambda ()
                              (org-indent-mode -1)
                              (highlight-indent-guides-mode -1))))
