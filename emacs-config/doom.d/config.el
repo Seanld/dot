@@ -136,8 +136,13 @@ is written in JS, and requires NPM packages which are an insecure pain."
         "," #'org-ctrl-c-ctrl-c)
   (map! :localleader
         :map org-mode-map
+        ";" #'org-next-link)
+  (map! :localleader
+        :map org-mode-map
         (:prefix ("B" . "babel")
          "h" #'org-babel-insert-header-arg))
+  (map! :map org-mode-map "<M-S-down>" #'scroll-up-several-lines)
+  (map! :map org-mode-map "<M-S-up>" #'scroll-down-several-lines)
 
   (setq org-fontify-quote-and-verse-blocks t)
   (setq org-cycle-separator-lines -1)
@@ -221,6 +226,23 @@ is written in JS, and requires NPM packages which are an insecure pain."
 
 (add-hook 'restclient-mode-hook (lambda ()
                                   (display-line-numbers-mode)))
+
+
+
+;;;;;;;;;;;;;;;;;
+;; CALC CUSTOM ;;
+;;;;;;;;;;;;;;;;;
+
+(setq math-additional-units '(
+  (PB "1024 * TB" "Petabyte")
+  (TB "1024 * GB" "Terabyte")
+  (GB "1024 * MB" "Gigabyte")
+  (MB "1024 * kB" "Megabyte")
+  (kB "1024 * byte" "Kilobyte")
+  (B "byte" "8 bit byte")
+  (byte "8 * bit" "8 bit byte")
+  (bit nil "Binary digit")
+))
 
 
 
