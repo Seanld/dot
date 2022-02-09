@@ -65,6 +65,20 @@ is written in JS, and requires NPM packages which are an insecure pain."
       0 -1)))
   (message "Password copied!"))
 
+(defun magit-status-side ()
+  "Open Magit's status buffer in the other window, rather than
+the current one (like in Spacemacs)."
+  (interactive)
+  (let ((window-count (count-windows)))
+    (if (file-directory-p ".git")
+        (progn
+          (if (= window-count 1)
+              (split-window-right))
+          (other-window 1)
+          (magit-status))
+      (message "Not a Git repository!"))))
+
+
 
 
 ;;;;;;;;;;;;;;
