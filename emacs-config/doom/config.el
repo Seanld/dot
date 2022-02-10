@@ -241,6 +241,18 @@ the current one (like in Spacemacs)."
 
 
 
+;;;;;;;;;;;;;;;;
+;; WEB CONFIG ;;
+;;;;;;;;;;;;;;;;
+
+;; TODO make `web-mode' more effective at auto-complete, without
+;; inserting extraneous symbols, and add handy `:localleader' keys.
+(add-hook 'web-mode-hook (lambda ()
+                           (smartparens-mode -1)
+                           (setq company-backends '(company-web-html))))
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; RESTCLIENT CONFIG ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
