@@ -91,7 +91,13 @@ the current one (like in Spacemacs)."
 (setq doom-localleader-key ",")
 (setq doom-localleader-alt-key "M-,")
 
-(map! :leader
+(map! "<f12>" #'kill-this-buffer
+      "<C-f12>" #'kill-buffer-and-window
+      "<f11>" #'delete-window
+      "<M-S-down>" #'scroll-up-several-lines
+      "<M-S-up>" #'scroll-down-several-lines
+
+      :leader
       "y" #'yas-insert-snippet
       "S" #'replace-string
       "R" #'replace-regexp
@@ -111,13 +117,8 @@ the current one (like in Spacemacs)."
       "l" #'lp-get-yank
       "f m" #'make-directory
       "s E" #'iedit-mode
-      "@" #'pop-global-mark
+      "@" #'pop-global-mark)
 
-      "<f12>" #'kill-this-buffer
-      "<C-f12>" #'kill-buffer-and-window
-      "<f11>" #'delete-window
-      "<M-S-down>" #'scroll-up-several-lines
-      "<M-S-up>" #'scroll-down-several-lines)
 
 
 
