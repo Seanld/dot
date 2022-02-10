@@ -9,6 +9,13 @@
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 
+(package! gist)
+(package! focus) ;; Handy for non-code writing.
+(package! tree-edit)
+(package! evil-tree-edit)
+(package! nasm-mode)
+(package! csv-mode)
+
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
 ;; https://github.com/raxod502/straight.el#the-recipe-format

@@ -147,12 +147,8 @@ the current one (like in Spacemacs)."
 (after! org
   (map! :localleader
         :map org-mode-map
-        "," #'org-ctrl-c-ctrl-c)
-  (map! :localleader
-        :map org-mode-map
-        ";" #'org-next-link)
-  (map! :localleader
-        :map org-mode-map
+        "," #'org-ctrl-c-ctrl-c
+        ";" #'org-next-link
         (:prefix ("B" . "babel")
          "h" #'org-babel-insert-header-arg))
   (map! :map org-mode-map "<M-S-down>" #'scroll-up-several-lines)
@@ -214,7 +210,7 @@ the current one (like in Spacemacs)."
 
 
 ;;;;;;;;;;;;;;;;
-;; ZPL CUSTOM ;;
+;; ZPL CONFIG ;;
 ;;;;;;;;;;;;;;;;
 
 ;; ZPL is a primitive programming language for Zebra printers
@@ -232,8 +228,21 @@ the current one (like in Spacemacs)."
 
 
 
+;;;;;;;;;;;;;;;;
+;; CSV CONFIG ;;
+;;;;;;;;;;;;;;;;
+
+(map! :localleader
+      :map csv-mode-map
+      "a" #'csv-align-fields
+      "A" #'csv-unalign-fields
+      "s" #'csv-sort-fields
+      "d" #'csv-toggle-descending)
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;
-;; RESTCLIENT CUSTOM ;;
+;; RESTCLIENT CONFIG ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
 
 (add-to-list 'company-backends 'company-restclient)
@@ -244,7 +253,7 @@ the current one (like in Spacemacs)."
 
 
 ;;;;;;;;;;;;;;;;;
-;; CALC CUSTOM ;;
+;; CALC CONFIG ;;
 ;;;;;;;;;;;;;;;;;
 
 (setq math-additional-units '(
@@ -257,6 +266,20 @@ the current one (like in Spacemacs)."
   (byte "8 * bit" "8 bit byte")
   (bit nil "Binary digit")
 ))
+
+
+
+;;;;;;;;;;;;;;;;;;
+;; DIRED CONFIG ;;
+;;;;;;;;;;;;;;;;;;
+
+(after! dired
+  ;; Override the default commands for opening files with ENTER in Dired.
+  (add-hook 'dired-mode-hook
+            (lambda ()
+              ;; Open images in `sxiv'
+              (setq dired-guess-shell-alist-user
+                    '(("\\.\\(?:jpe?g\\|png\\|gif\\|xpm\\)\\'" "sxiv"))))))
 
 
 
