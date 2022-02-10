@@ -30,13 +30,17 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/docs/org/")
+(setq org-directory "~/docs/")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;
+;; CUSTOM FUNCTIONS ;;
+;;;;;;;;;;;;;;;;;;;;;;
 
 (defun scroll-up-several-lines ()
   (interactive)
@@ -80,7 +84,6 @@ the current one (like in Spacemacs)."
 
 
 
-
 ;;;;;;;;;;;;;;
 ;; KEYBINDS ;;
 ;;;;;;;;;;;;;;
@@ -89,39 +92,32 @@ the current one (like in Spacemacs)."
 (setq doom-localleader-alt-key "M-,")
 
 (map! :leader
-      "y" #'yas-insert-snippet)
-(map! :leader
-      "S" #'replace-string)
-(map! :leader
-      "R" #'replace-regexp)
-(map! :leader
-      "w /" #'+evil/window-vsplit-and-follow)
-(map! :leader
-      "w -" #'+evil/window-split-and-follow)
-(map! :leader
-      "#" #'calc)
-(map! :leader
-      "l" #'lp-get-yank)
-(map! :leader
-      "f m" #'make-directory)
-(map! :leader
-      "w <up>" #'evil-window-up)
-(map! :leader
-      "w <down>" #'evil-window-down)
-(map! :leader
-      "w <left>" #'evil-window-left)
-(map! :leader
-      "w <right>" #'evil-window-right)
-(map! :leader
-      "s E" #'iedit-mode)
-(map! :leader
-      "@" #'pop-global-mark)
+      "y" #'yas-insert-snippet
+      "S" #'replace-string
+      "R" #'replace-regexp
 
-(map! "<f12>" #'kill-this-buffer)
-(map! "<C-f12>" #'kill-buffer-and-window)
-(map! "<f11>" #'delete-window)
-(map! "<M-S-down>" #'scroll-up-several-lines)
-(map! "<M-S-up>" #'scroll-down-several-lines)
+      "w /" #'+evil/window-vsplit-and-follow
+      "w -" #'+evil/window-split-and-follow
+      "w <up>" #'evil-window-up
+      "w <down>" #'evil-window-down
+      "w <left>" #'evil-window-left
+      "w <right>" #'evil-window-right
+      "w <S-up>" #'+evil/window-move-up
+      "w <S-down>" #'+evil/window-move-down
+      "w <S-left>" #'+evil/window-move-left
+      "w <S-right>" #'+evil/window-move-right
+
+      "#" #'calc
+      "l" #'lp-get-yank
+      "f m" #'make-directory
+      "s E" #'iedit-mode
+      "@" #'pop-global-mark
+
+      "<f12>" #'kill-this-buffer
+      "<C-f12>" #'kill-buffer-and-window
+      "<f11>" #'delete-window
+      "<M-S-down>" #'scroll-up-several-lines
+      "<M-S-up>" #'scroll-down-several-lines)
 
 
 
@@ -205,6 +201,7 @@ the current one (like in Spacemacs)."
 (setq c-backspace-function 'unindent-or-backspace)
 
 (add-hook 'c-mode-hook (lambda ()
+                         (smartparens-mode -1)
                          (electric-pair-mode)))
 
 
