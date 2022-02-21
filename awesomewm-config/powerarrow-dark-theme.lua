@@ -66,8 +66,9 @@ theme.widget_vol_no                             = theme.dir .. "/icons/vol_no.pn
 theme.widget_vol_mute                           = theme.dir .. "/icons/vol_mute.png"
 theme.widget_mail                               = theme.dir .. "/icons/mail.png"
 theme.widget_mail_on                            = theme.dir .. "/icons/mail_on.png"
-theme.tasklist_plain_task_name                  = true
-theme.tasklist_disable_icon                     = true
+theme.tasklist_plain_task_name                  = false
+theme.tasklist_disable_icon                     = false
+-- theme.tasklist_bg_focus                         = theme.bg_focus
 theme.useless_gap                               = 12.6
 theme.useless_gap_width                         = 10
 theme.titlebar_close_button_focus               = theme.dir .. "/icons/titlebar/close_focus.png"
@@ -299,7 +300,28 @@ function theme.at_screen_connect(s)
     s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons)
 
     -- Create a tasklist widget
-    s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
+    s.mytasklist = awful.widget.tasklist{
+      screen = s,
+      filter = awful.widget.tasklist.filter.currenttags,
+      buttons = awful.util.tasklist_buttons,
+      layout = {
+          spacing = 15,
+          spacing_widget = {
+              {
+                  color        = theme.bg_focus,
+                  forced_width = 5,
+                  shape        = function(cr, width, height)
+                      gears.shape.parallelogram(cr, width, height, 3)
+                  end,
+                  widget       = wibox.widget.separator,
+              },
+              valign = "center",
+              halign = "center",
+              widget = wibox.container.place,
+          },
+          layout = wibox.layout.fixed.horizontal
+      }
+    }
 
     -- The surrounding padding of the wibar.
     local bar_padding = 10

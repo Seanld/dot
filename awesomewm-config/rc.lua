@@ -165,18 +165,18 @@ awful.util.taglist_buttons = mytable.join(
 )
 
 awful.util.tasklist_buttons = mytable.join(
-     awful.button({ }, 1, function(c)
-         if c == client.focus then
-             c.minimized = true
-         else
-             c:emit_signal("request::activate", "tasklist", { raise = true })
-         end
-     end),
-     awful.button({ }, 3, function()
-         awful.menu.client_list({ theme = { width = 250 } })
-     end),
-     awful.button({ }, 4, function() awful.client.focus.byidx(1) end),
-     awful.button({ }, 5, function() awful.client.focus.byidx(-1) end)
+    awful.button({ }, 1, function(c)
+        if c == client.focus then
+            c.minimized = true
+        else
+            c:emit_signal("request::activate", "tasklist", { raise = true })
+        end
+    end),
+    awful.button({ }, 3, function()
+        awful.menu.client_list({ theme = { width = 250 } })
+    end),
+    awful.button({ }, 4, function() awful.client.focus.byidx(1) end),
+    awful.button({ }, 5, function() awful.client.focus.byidx(-1) end)
 )
 
 beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme))
@@ -187,11 +187,11 @@ beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv
 
 -- Create a launcher widget and a main menu
 local myawesomemenu = {
-   { "Hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
-   { "Manual", string.format("%s -e man awesome", terminal) },
-   { "Edit config", string.format("%s -e %s %s", terminal, editor, awesome.conffile) },
-   { "Restart", awesome.restart },
-   { "Quit", function() awesome.quit() end },
+    { "Hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
+    { "Manual", string.format("%s -e man awesome", terminal) },
+    { "Edit config", string.format("%s -e %s %s", terminal, editor, awesome.conffile) },
+    { "Restart", awesome.restart },
+    { "Quit", function() awesome.quit() end },
 }
 
 local mymainmenu = freedesktop.menu.build {
@@ -261,7 +261,7 @@ root.buttons(mytable.join(
 
 globalkeys = mytable.join(
     -- Destroy all notifications
-    awful.key({ "Control",     }, "space", function() naughty.destroy_all_notifications() end,
+    awful.key({ altkey }, "space", function() naughty.destroy_all_notifications() end,
               {description = "destroy all notifications", group = "hotkeys"}),
     -- Take a screenshot
     -- https://github.com/lcpz/dots/blob/master/bin/screenshot
@@ -362,14 +362,14 @@ globalkeys = mytable.join(
 
     -- Show/hide wibox
     awful.key({ modkey }, "b", function ()
-            for s in screen do
-                s.mywibox.visible = not s.mywibox.visible
-                if s.mybottomwibox then
-                    s.mybottomwibox.visible = not s.mybottomwibox.visible
-                end
+        for s in screen do
+            s.mywibox.visible = not s.mywibox.visible
+            if s.mybottomwibox then
+                s.mybottomwibox.visible = not s.mybottomwibox.visible
             end
-        end,
-        {description = "toggle wibox", group = "awesome"}),
+        end
+    end,
+      {description = "toggle wibox", group = "awesome"}),
 
     -- On-the-fly useless gaps change
     awful.key({ modkey, "Control" }, "=", function () lain.util.useless_gaps_resize(0.5) end,
@@ -379,9 +379,9 @@ globalkeys = mytable.join(
 
     -- Quicker useless gaps change
     awful.key({ modkey, "Control", "Shift" }, "=", function () lain.util.useless_gaps_resize(2) end,
-      {description = "increment useless gaps", group = "tag"}),
+              {description = "increment useless gaps", group = "tag"}),
     awful.key({ modkey, "Control", "Shift" }, "-", function () lain.util.useless_gaps_resize(-2) end,
-      {description = "decrement useless gaps", group = "tag"}),
+              {description = "decrement useless gaps", group = "tag"}),
 
     -- Dynamic tagging
     --[[
@@ -469,59 +469,59 @@ globalkeys = mytable.join(
         end,
         {description = "volume 0%", group = "hotkeys"}),
 
-	-- Firefox-specific media control bindings.
+    -- Firefox-specific media control bindings.
     awful.key({}, "XF86AudioPlay",
-      function ()
-        os.execute("playerctl play-pause -p $(" .. pctl_ff_filter_cmd .. ")")
-      end,
-      {description = "Firefox play/pause", group = "hotkeys"}),
+        function ()
+            os.execute("playerctl play-pause -p $(" .. pctl_ff_filter_cmd .. ")")
+        end,
+        {description = "Firefox play/pause", group = "hotkeys"}),
     awful.key({}, "XF86AudioNext",
-      function ()
-        os.execute("playerctl next -p $(" .. pctl_ff_filter_cmd .. ")")
-      end,
-      {description = "Firefox next track", group = "hotkeys"}),
+        function ()
+            os.execute("playerctl next -p $(" .. pctl_ff_filter_cmd .. ")")
+        end,
+        {description = "Firefox next track", group = "hotkeys"}),
     awful.key({}, "XF86AudioPrev",
-      function ()
-        os.execute("Firefox previous -p $(" .. pctl_ff_filter_cmd .. ")")
-      end,
-      {description = "Audio previous track", group = "hotkeys"}),
+        function ()
+            os.execute("Firefox previous -p $(" .. pctl_ff_filter_cmd .. ")")
+        end,
+        {description = "Audio previous track", group = "hotkeys"}),
     awful.key({ ctrlkey }, "XF86AudioNext",
-      function ()
-        os.execute("playerctl position 5+ -p $(" .. pctl_ff_filter_cmd .. ")")
-      end,
-      {description = "Firefox seek 5 seconds forward", group = "hotkeys"}),
+        function ()
+            os.execute("playerctl position 5+ -p $(" .. pctl_ff_filter_cmd .. ")")
+        end,
+        {description = "Firefox seek 5 seconds forward", group = "hotkeys"}),
     awful.key({ ctrlkey }, "XF86AudioPrev",
-      function ()
-        os.execute("playerctl position 5- -p $(" .. pctl_ff_filter_cmd .. ")")
-      end,
-      {description = "Firefox seek 5 seconds backward", group = "hotkeys"}),
+        function ()
+            os.execute("playerctl position 5- -p $(" .. pctl_ff_filter_cmd .. ")")
+        end,
+        {description = "Firefox seek 5 seconds backward", group = "hotkeys"}),
 
-	-- Spotify-specific audio control bindings
+    -- Spotify-specific audio control bindings
     awful.key({ modkey }, "XF86AudioPlay",
-      function ()
-        os.execute("playerctl play-pause -p spotify")
-      end,
-      {description = "Spotify play/pause", group = "hotkeys"}),
+        function ()
+            os.execute("playerctl play-pause -p spotify")
+        end,
+        {description = "Spotify play/pause", group = "hotkeys"}),
     awful.key({ modkey }, "XF86AudioNext",
-      function ()
-        os.execute("playerctl next -p spotify")
-      end,
-      {description = "Spotify next track", group = "hotkeys"}),
+        function ()
+            os.execute("playerctl next -p spotify")
+        end,
+        {description = "Spotify next track", group = "hotkeys"}),
     awful.key({ modkey }, "XF86AudioPrev",
-      function ()
-        os.execute("playerctl previous -p spotify")
-      end,
-      {description = "Spotify previous track", group = "hotkeys"}),
+        function ()
+            os.execute("playerctl previous -p spotify")
+        end,
+        {description = "Spotify previous track", group = "hotkeys"}),
     awful.key({ ctrlkey, modkey }, "XF86AudioNext",
-      function ()
-        os.execute("playerctl position 5+ -p spotify")
-      end,
-      {description = "Spotify seek 5 seconds forward", group = "hotkeys"}),
+        function ()
+            os.execute("playerctl position 5+ -p spotify")
+        end,
+        {description = "Spotify seek 5 seconds forward", group = "hotkeys"}),
     awful.key({ ctrlkey, modkey }, "XF86AudioPrev",
-      function ()
-        os.execute("playerctl position 5- -p spotify")
-      end,
-      {description = "Spotify seek 5 seconds backward", group = "hotkeys"}),
+        function ()
+            os.execute("playerctl position 5- -p spotify")
+        end,
+        {description = "Spotify seek 5 seconds backward", group = "hotkeys"}),
 
 
 
@@ -590,15 +590,15 @@ globalkeys = mytable.join(
               {description = "run prompt", group = "launcher"}),
 
     awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run {
-                    prompt       = "Run Lua code: ",
-                    textbox      = awful.screen.focused().mypromptbox.widget,
-                    exe_callback = awful.util.eval,
-                    history_path = awful.util.get_cache_dir() .. "/history_eval"
-                  }
-              end,
-              {description = "lua execute prompt", group = "awesome"})
+        function ()
+            awful.prompt.run {
+                prompt       = "Run Lua code: ",
+                textbox      = awful.screen.focused().mypromptbox.widget,
+                exe_callback = awful.util.eval,
+                history_path = awful.util.get_cache_dir() .. "/history_eval"
+            }
+        end,
+        {description = "lua execute prompt", group = "awesome"})
     --]]
 )
 
@@ -766,6 +766,7 @@ awful.rules.rules = {
           "AlarmWindow",  -- Thunderbird's calendar.
           "ConfigManager",  -- Thunderbird's about:config.
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
+          "GtkFileChooserDialog"
         }
       }, properties = { floating = true, placement = awful.placement.centered }},
 
@@ -783,7 +784,7 @@ awful.rules.rules = {
         instance = {
           "qemu",
         }
-    }, properties = { tag = "5", screen = 1, focus = true, floating = false } },
+    }, properties = { tag = "5", screen = 2, focus = true, floating = false } },
 
     -- Tag 4 clients.
     { rule_any = {
