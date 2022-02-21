@@ -82,6 +82,12 @@ the current one (like in Spacemacs)."
           (magit-status))
       (message "Not a Git repository!"))))
 
+(defun make-last-and-close ()
+  "Run makefile, and close the output buffer (it's in the way)."
+  (interactive)
+  (+make/run-last)
+  (+popup/close-all))
+
 
 
 ;;;;;;;;;;;;;;
@@ -112,6 +118,10 @@ the current one (like in Spacemacs)."
       "w <S-down>" #'+evil/window-move-down
       "w <S-left>" #'+evil/window-move-left
       "w <S-right>" #'+evil/window-move-right
+      "w P" #'+popup/close-all
+
+      "c M" #'+make/run
+      "c m" 'make-last-and-close
 
       "#" #'calc
       "l" #'lp-get-yank
@@ -119,9 +129,15 @@ the current one (like in Spacemacs)."
       "s E" #'iedit-mode
       "@" #'pop-global-mark
 
+      ;; These are other bigger applications that aren't simple
+      ;; small functions (RSS reader, email, browser, etc)
+      (:prefix ("A" . "applications")
+       "e" #'elpher-go
+       "E" #'elpher)
+
       (:prefix ("c F" . "Flycheck")
-         "[" #'flycheck-previous-error
-         "]" #'flycheck-next-error))
+       "[" #'flycheck-previous-error
+       "]" #'flycheck-next-error))
 
 
 
@@ -131,15 +147,16 @@ the current one (like in Spacemacs)."
 
 (custom-set-faces!
   ;; Titles
-  '(org-document-title :height 155)
-  '(org-level-1        :height 145)
-  '(org-level-2        :height 130)
-  '(org-level-3        :height 115)
-  '(org-level-4        :height 105)
-  '(org-level-5        :height 100)
-  '(org-level-6        :height 95)
-  '(org-level-7        :height 80)
-  '(org-level-8        :height 75)
+  '(org-headline-default :inherit org-agenda-structure)
+  '(org-document-title   :inherit outline-1 :height 170)
+  '(org-level-1          :inherit outline-2 :height 160)
+  '(org-level-2          :inherit outline-3 :height 150)
+  '(org-level-3          :inherit outline-4 :height 140)
+  '(org-level-4          :inherit outline-5 :height 130)
+  '(org-level-5          :inherit outline-6 :height 120)
+  '(org-level-6          :inherit outline-7 :height 110)
+  '(org-level-7          :inherit outline-8 :height 100)
+  '(org-level-8          :inherit outline-4 :height 90)
 
   ;; Other
   '(org-meta-line :inherit font-lock-comment-face))
@@ -175,38 +192,74 @@ the current one (like in Spacemacs)."
 
 
 
+;;;;;;;;;;;;;;;;;;;;;
+;; MARKDOWN CONFIG ;;
+;;;;;;;;;;;;;;;;;;;;;
+
+(custom-set-faces!
+  ;; Titles
+  '(markdown-header-delimiter-face :inherit org-agenda-structure)
+  '(markdown-header-face-1 :inherit org-level-1)
+  '(markdown-header-face-2 :inherit org-level-2)
+  '(markdown-header-face-3 :inherit org-level-3)
+  '(markdown-header-face-4 :inherit org-level-4)
+  '(markdown-header-face-5 :inherit org-level-5)
+  '(markdown-header-face-6 :inherit org-level-6))
+
+
+
 ;;;;;;;;;;;;;;
 ;; C CONFIG ;;
 ;;;;;;;;;;;;;;
 
-(setq c-style-indent-amount 4)
-
-(setq-default c-basic-offset c-style-indent-amount)
-
-;; Will check to see if everything preceding the cursor is whitespace. If so,
-;; then unindent to the previous indentation level.
-(defun unindent-or-backspace (ARG &optional KILLP)
-  (interactive)
-  (let ((current-column (current-column)))
-    (if (eq 0 current-column)
-        (evil-delete-backward-char-and-join 1)
-      (let* ((all-spaces (equal (string-limit
-                                 (thing-at-point 'line t)
-                                 (1- current-column))
-                                (make-string (1- current-column) 32)))
-             (column-remainder (% current-column c-style-indent-amount))
-             (delete-amount (if (eq 0 column-remainder)
-                                c-style-indent-amount
-                              column-remainder)))
-        (if all-spaces
-            (delete-char (- delete-amount))
-          (delete-char -1))))))
-
-(setq c-backspace-function 'unindent-or-backspace)
-
 (add-hook 'c-mode-hook (lambda ()
-                         (smartparens-mode -1)
-                         (electric-pair-mode)))
+                         (setq c-style-indent-amount 4)))
+
+;; (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+;; ;; Will check to see if everything preceding the cursor is whitespace. If so,
+;; ;; then unindent to the previous indentation level.
+;; (defun unindent-or-backspace (ARG &optional KILLP)
+;;   (interactive)
+;;   (let ((current-column (current-column)))
+;;     (if (eq 0 current-column)
+;;         (evil-delete-backward-char-and-join 1)
+;;       (let* ((all-spaces (equal (string-limit
+;;                                  (thing-at-point 'line t)
+;;                                  (1- current-column))
+;;                                 (make-string (1- current-column) 32)))
+;;              (column-remainder (% current-column c-style-indent-amount))
+;;              (delete-amount (if (eq 0 column-remainder)
+;;                                 c-style-indent-amount
+;;                               column-remainder)))
+;;         (if all-spaces
+;;             (delete-char (- delete-amount))
+;;           (delete-char -1))))))
+
+;; (setq c-backspace-function 'unindent-or-backspace)
+
+;; (add-hook 'c-mode-hook (lambda ()
+;;                          (smartparens-mode -1)
+;;                          (electric-pair-mode)))
+
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;; ASSEMBLY CONFIG ;;
+;;;;;;;;;;;;;;;;;;;;;
+
+; `nasm-mode' is much better for NASM than the generic assembly mode.
+(add-hook 'asm-mode-hook (lambda ()
+                           (nasm-mode)))
+
+
+
+;;;;;;;;;;;;;;;;
+;; LUA CONFIG ;;
+;;;;;;;;;;;;;;;;
+
+(add-hook 'lua-mode-hook (lambda ()
+  (setq lua-indent-level 4)))
 
 
 
@@ -270,11 +323,16 @@ the current one (like in Spacemacs)."
 ;;;;;;;;;;;;;;;;;
 
 (setq math-additional-units '(
+  (PiB "1024 * TB" "Pebibyte")
+  (TiB "1024 * GB" "Tebibyte")
+  (GiB "1024 * MB" "Gibibyte")
+  (MiB "1024 * KB" "Mebibyte")
+  (KiB "1024 * byte" "Kibibyte")
   (PB "1024 * TB" "Petabyte")
   (TB "1024 * GB" "Terabyte")
   (GB "1024 * MB" "Gigabyte")
-  (MB "1024 * kB" "Megabyte")
-  (kB "1024 * byte" "Kilobyte")
+  (MB "1024 * KB" "Megabyte")
+  (KB "1024 * byte" "Kilobyte")
   (B "byte" "8 bit byte")
   (byte "8 * bit" "8 bit byte")
   (bit nil "Binary digit")
@@ -293,6 +351,15 @@ the current one (like in Spacemacs)."
               ;; Open images in `sxiv'
               (setq dired-guess-shell-alist-user
                     '(("\\.\\(?:jpe?g\\|png\\|gif\\|xpm\\)\\'" "sxiv"))))))
+
+
+
+;;;;;;;;;;;;;;;;;;;
+;; ELPHER CONFIG ;;
+;;;;;;;;;;;;;;;;;;;
+
+(setq elpher-ipv4-always t)
+(setq elpher-default-url-type "gemini")
 
 
 

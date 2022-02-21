@@ -9,12 +9,17 @@
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 
-(package! gist)
 (package! focus) ;; Handy for non-code writing.
 (package! tree-edit)
 (package! evil-tree-edit)
 (package! nasm-mode)
+(package! flymake-nasm)
 (package! csv-mode)
+
+(package! company-irony)
+;; (package! irony-mode)
+
+(package! elpher)
 
 (package! web-mode)
 (package! company-web)
