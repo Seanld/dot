@@ -244,8 +244,12 @@ globalkeys = mytable.join(
               {description = "destroy all notifications", group = "hotkeys"}),
     -- Take a screenshot
     -- https://github.com/lcpz/dots/blob/master/bin/screenshot
-    awful.key({ modkey }, "p", function() os.execute("gnome-screenshot -a") end,
-              {description = "take a screenshot", group = "hotkeys"}),
+    awful.key({ modkey }, "p", function()
+            -- Run gnome-screenshot asynchronously, but don't do anything
+            -- with the output. Calling it non-async freezes the WM.
+            awful.spawn.easy_async("gnome-screenshot -a", function() end)
+        end,
+        {description = "take a screenshot", group = "hotkeys"}),
 
     -- X screen locker
     -- awful.key({ modkey,     }, "l", function () os.execute(scrlocker) end,
@@ -555,20 +559,25 @@ globalkeys = mytable.join(
               {description = "run browser", group = "launcher"}),
 
     -- Default
-    --[[ Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
-    --]]
-    -- dmenu
-    awful.key({ modkey }, "d", function ()
-            os.execute("dmenu_run -i")
+    awful.key({ modkey }, "i", function()
+            awful.spawn.easy_async_with_shell(
+                'echo "/home/seanld/Pictures/$(ls ~/Pictures | rofi -dmenu)" | sxiv -i',
+                function() end -- Do nothing with output.
+            )
         end,
-        {description = "show dmenu", group = "launcher"}),
+        {description = "view image from ~/Pictures", group = "launcher"}),
+
+    -- Rofi
+    awful.key({ modkey }, "r", function ()
+            os.execute("rofi -show run -show-icons -matching regex")
+        end,
+        {description = "rofi run menu", group = "launcher"}),
+
     -- Prompt
-    awful.key({ modkey }, "r", function () awful.screen.focused().mypromptbox:run() end,
+    awful.key({ modkey }, "x", function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),
 
-    awful.key({ modkey }, "x",
+    awful.key({ modkey }, "l",
         function ()
             awful.prompt.run {
                 prompt       = "Run Lua code: ",
