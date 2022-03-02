@@ -21,6 +21,8 @@
 
 (package! elpher)
 
+(package! cycle-at-point)
+
 (package! web-mode)
 (package! company-web)
 

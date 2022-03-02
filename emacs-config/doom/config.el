@@ -26,7 +26,8 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-dracula)
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 14))
+;; (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 14))
+(setq doom-font (font-spec :family "Iosevka Custom Medium" :size 16))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -123,7 +124,6 @@ the current one (like in Spacemacs)."
       "c M" #'+make/run
       "c m" 'make-last-and-close
 
-      "#" #'calc
       "l" #'lp-get-yank
       "f m" #'make-directory
       "s E" #'iedit-mode
@@ -133,7 +133,8 @@ the current one (like in Spacemacs)."
       ;; small functions (RSS reader, email, browser, etc)
       (:prefix ("A" . "applications")
        "e" #'elpher-go
-       "E" #'elpher)
+       "E" #'elpher
+       "#" #'calc)
 
       (:prefix ("c F" . "Flycheck")
        "[" #'flycheck-previous-error
@@ -282,6 +283,19 @@ the current one (like in Spacemacs)."
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;
+;; JAVASCRIPT CONFIG ;;
+;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq lsp-eslint-enable nil)
+
+;; For some reason, `js-mode' wants to handle ligatures for arrow symbols
+;; on its own, when that's not its job. Disable.
+(eval-after-load 'js '(progn
+                        (setq js--prettify-symbols-alist nil)))
+
+
+
 ;;;;;;;;;;;;;;;;
 ;; CSV CONFIG ;;
 ;;;;;;;;;;;;;;;;
@@ -304,6 +318,9 @@ the current one (like in Spacemacs)."
 (add-hook 'web-mode-hook (lambda ()
                            (smartparens-mode -1)
                            (setq company-backends '(company-web-html))))
+
+;; This is the indentation value used by `mhtml-mode' as well.
+(setq sgml-basic-offset 4)
 
 
 
@@ -360,6 +377,17 @@ the current one (like in Spacemacs)."
 
 (setq elpher-ipv4-always t)
 (setq elpher-default-url-type "gemini")
+
+
+
+;;;;;;;;;;;;;;;;;
+;; MISC CONFIG ;;
+;;;;;;;;;;;;;;;;;
+
+;; Expand region bindings, similar to those in
+;; Spacemacs (this is an invaluable feature to me).
+(map! :leader "v" #'er/expand-region)
+(setq expand-region-contract-fast-key "c")
 
 
 
