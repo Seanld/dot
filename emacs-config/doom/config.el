@@ -355,6 +355,8 @@ the current one (like in Spacemacs)."
   (bit nil "Binary digit")
 ))
 
+(setq calc-window-height 8)
+
 
 
 ;;;;;;;;;;;;;;;;;;

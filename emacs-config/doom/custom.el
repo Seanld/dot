@@ -10,6 +10,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ ;; '(diff-refine-added ((t (:inverse-video nil :inherit diff-added))))
+ ;; '(diff-refine-changed ((t (:inverse-video nil :inherit diff-changed))))
+ ;; '(diff-refine-removed ((t (:inverse-video nil :inherit diff-removed))))
  '(markdown-header-delimiter-face ((t (:inherit org-agenda-structure))))
  '(markdown-header-face-1 ((t (:inherit org-level-1))))
  '(markdown-header-face-2 ((t (:inherit org-level-2))))
