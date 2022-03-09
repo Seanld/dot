@@ -389,7 +389,7 @@ the current one (like in Spacemacs)."
 (setq doom-modeline-height 10)
 (setq doom-modeline-env-enable-python nil)
 (setq doom-modeline-icon nil)
-(setq doom-modeline-bar-width 2)
+(setq doom-modeline-bar-width -1)
 
 
 
