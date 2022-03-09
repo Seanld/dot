@@ -382,6 +382,17 @@ the current one (like in Spacemacs)."
 
 
 
+;;;;;;;;;;;;;;;;;;;;;
+;; MODELINE CONFIG ;;
+;;;;;;;;;;;;;;;;;;;;;
+
+(setq doom-modeline-height 10)
+(setq doom-modeline-env-enable-python nil)
+(setq doom-modeline-icon nil)
+(setq doom-modeline-bar-width 2)
+
+
+
 ;;;;;;;;;;;;;;;;;
 ;; MISC CONFIG ;;
 ;;;;;;;;;;;;;;;;;
