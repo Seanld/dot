@@ -402,6 +402,10 @@ the current one (like in Spacemacs)."
 (map! :leader "v" #'er/expand-region)
 (setq expand-region-contract-fast-key "c")
 
+;; Don't say the annoying "LSP connected" message every time
+;; I open a file. It's so janky.
+(setq lsp--show-message nil)
+
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:
