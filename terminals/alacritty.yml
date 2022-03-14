@@ -3,15 +3,11 @@
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
 # set by alacritty it self.
-# env:
-  # TERM env customization.
-  #
-  # If this property is not set, alacritty will set it to xterm-256color.
-  #
+env:
   # Note that some xterm terminfo databases don't declare support for italics.
   # You can verify this by checking for the presence of `smso` and `sitm` in
   # `infocmp xterm-256color`.
-  # TERM: xterm-256color-italic
+  TERM: xterm-256color
 
 window:
   # Window dimensions (changes require restart)
@@ -370,15 +366,17 @@ key_bindings:
   - { key: Back,     mods: Alt,           chars: "\x1b\x7f"                    }
   - { key: Insert,                        chars: "\x1b[2~"                     }
   - { key: Delete,                        chars: "\x1b[3~"                     }
+  - { key: PageUp,   mods: Super,         action: ScrollPageUp                 }
+  - { key: PageDown, mods: Super,         action: ScrollPageDown               }
 
     # shortcuts for tmux. the leader key is control-b (0x02)
-  - { key: W,        mods: Command,       chars: "\x02&"                       }  # close tab (kill)
-  - { key: T,        mods: Command,       chars: "\x02c"                       }  # new tab
-  - { key: RBracket, mods: Command|Shift, chars: "\x02n"                       }  # select next tab
-  - { key: LBracket, mods: Command|Shift, chars: "\x02p"                       }  # select previous tab
-  - { key: RBracket, mods: Command,       chars: "\x02o"                       }  # select next pane
-  - { key: LBracket, mods: Command,       chars: "\x02;"                       }  # select last (previously used) pane
-  - { key: F,        mods: Command,       chars: "\x02/"                       }  # search (upwards) (see tmux.conf)
+  # - { key: W,        mods: Command,       chars: "\x02&"                       }  # close tab (kill)
+  # - { key: T,        mods: Command,       chars: "\x02c"                       }  # new tab
+  # - { key: RBracket, mods: Command|Shift, chars: "\x02n"                       }  # select next tab
+  # - { key: LBracket, mods: Command|Shift, chars: "\x02p"                       }  # select previous tab
+  # - { key: RBracket, mods: Command,       chars: "\x02o"                       }  # select next pane
+  # - { key: LBracket, mods: Command,       chars: "\x02;"                       }  # select last (previously used) pane
+  # - { key: F,        mods: Command,       chars: "\x02/"                       }  # search (upwards) (see tmux.conf)
 
 mouse:
   # Click settings
@@ -449,7 +447,7 @@ cursor:
   # window is not focused.
   unfocused_hollow: true
 
-# dynamic_title: false
+dynamic_title: true
 
 # Live config reload (changes require restart)
 live_config_reload: true
@@ -484,8 +482,5 @@ debug:
 
   # Record all characters and escape sequences as test data.
   ref_test: false
-
-import:
-  - "./dracula.yml"
 
 # vim: nospell
