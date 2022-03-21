@@ -160,7 +160,29 @@ the current one (like in Spacemacs)."
   '(org-level-8          :inherit outline-4 :height 90)
 
   ;; Other
+  '(org-inline-src-block :inherit org-inline-src-block :family "Iosevka Custom")
   '(org-meta-line :inherit font-lock-comment-face))
+
+(defun org-face-mode-variable ()
+  "Set Org mode to use variable-width font, and adjust some of the
+font settings to look better with variable-width (like sizing)."
+  (interactive)
+  (custom-set-faces!
+    ;; Titles
+    '(org-headline-default :inherit org-agenda-structure)
+    '(org-document-title   :inherit outline-1 :height 230)
+    '(org-level-1          :inherit outline-2 :height 200)
+    '(org-level-2          :inherit outline-3 :height 170)
+    '(org-level-3          :inherit outline-4 :height 140)
+    '(org-level-4          :inherit outline-5 :height 140)
+    '(org-level-5          :inherit outline-6 :height 140)
+    '(org-level-6          :inherit outline-7 :height 140)
+    '(org-level-7          :inherit outline-8 :height 140)
+    '(org-level-8          :inherit outline-4 :height 140)
+    ;; Other
+    '(org-meta-line :inherit font-lock-comment-face))
+  (setq buffer-face-mode-face '(:family "Libre Baskerville"))
+  (buffer-face-mode))
 
 (after! org
   (map! :localleader
@@ -189,7 +211,8 @@ the current one (like in Spacemacs)."
   (setq org-enforce-todo-dependencies t)
   (add-hook 'org-mode-hook (lambda ()
                              (org-indent-mode -1)
-                             (highlight-indent-guides-mode -1))))
+                             (highlight-indent-guides-mode -1)
+                             (line-number-mode -1))))
 
 
 
