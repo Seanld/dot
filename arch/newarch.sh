@@ -95,23 +95,6 @@ echo "Installing user software...";
 pacman -S firefox python3 alacritty screen htop mc amfora unzip httpie ncdu gparted wine npm;
 echo;
 
-echo "Downloading and installing Cascadia Code font...";
-wget "https://github.com/microsoft/cascadia-code/releases/download/v2105.24/CascadiaCode-2105.24.zip";
-if [[ "$?" != 0 ]]; then
-    echo "URL for Cascadia Code/Mono fonts is incorrect. Skipping.";
-else
-    echo "Downloaded Cascadia Code/Mono fonts.";
-fi
-unzip CascadiaCode-2105.24.zip;
-mkdir /home/$newusername/.local/share/fonts;
-chown /home/$newusername/.local/share/fonts $newusername;
-mv ttf/*.ttf ~/.local/share/fonts;
-chown /home/$newusername/.local/share/fonts/*.ttf $newusername;
-# Clean up files.
-rm -rf ttf woff2 otf;
-rm CascadiaCode*;
-echo;
-
 echo "Downloading, building, and installing the latest Emacs...";
 git clone -b master git://git.sv.gnu.org/emacs.git;
 # Emacs shouldn't require anything not including with the Arch setup
@@ -119,17 +102,12 @@ git clone -b master git://git.sv.gnu.org/emacs.git;
 # setup script.
 cd emacs;
 ./autogen.sh;
-./configure --with-mailutils --with-sound=yes --with-x-toolkit=gtk3
-            --with-imagemagick --with-json --with-xwidgets --with-file-notification=yes
-            --with-cairo --with-modules --with-gnutls --with-xml2 --with-xft --with-xpm
-            CFLAGS="-02 -mtune=native -march=native -fomit-frame-pointer";
+./configure --with-mailutils --with-sound=yes --with-x-toolkit=gtk3 \
+            --with-imagemagick --with-json --with-xwidgets --with-file-notification=yes \
+            --with-cairo --with-modules --with-gnutls --with-xml2 --with-xft --with-xpm \
+            CFLAGS="-O2 -mtune=native -march=native -fomit-frame-pointer";
 make bootstrap;
 make install;
-echo;
-
-echo "Installing Spacemacs...";
-git clone https://github.com/syl20bnr/spacemacs /home/$newusername/.emacs.d;
-chown /home/$newusername/.emacs.d $newusername;
 echo;
 
 echo "Installing config files...";
@@ -139,8 +117,6 @@ cp alacritty /home/$newusername/.config/alacritty/alacritty.yml;
 chown /home/$newusername/.config -R $newusername;
 cp screenrc /home/$newusername/.screenrc;
 chown /home/$newusername/.screenrc $newusername;
-cp spacemacs /home/$newusername/.spacemacs;
-chown /home/$newusername/.spacemacs $newusername;
 cp zshrc /home/$newusername/.zshrc;
 chown /home/$newusername/.zshrc $newusername;
 echo;
