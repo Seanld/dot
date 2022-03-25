@@ -22,6 +22,10 @@
 (package! company-web)
 (package! json-navigator) ;; Makes JSON files less cluttered when reading.
 (package! typescript-mode) ;; Basic TS syntax highlighting.
+(package! mermaid-mode) ;; Plaintext to graphs and flowcharts!
+(package! js2-mode)
+(package! olivetti)
+(package! paradox)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:

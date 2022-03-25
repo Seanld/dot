@@ -4,9 +4,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(doom-modeline-buffer-file-name-style 'buffer-name)
  '(elfeed-feeds '("https://lukesmith.xyz/rss.xml"))
+ '(highlight-indent-guides-auto-character-face-perc 50)
  '(package-selected-packages
-   '(olivetti typescript-mode json-navigator why-this cycle-at-point)))
+   '(org-modern commify olivetti typescript-mode json-navigator why-this cycle-at-point))
+ '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -21,6 +24,7 @@
  '(markdown-header-face-6 ((t (:inherit org-level-6))))
  '(org-document-title ((t (:inherit outline-1 :height 170))))
  '(org-headline-default ((t (:inherit org-agenda-structure))))
+ '(org-inline-src-block ((t (:inherit org-inline-src-block :family "Iosevka Custom"))))
  '(org-level-1 ((t (:inherit outline-2 :height 160))))
  '(org-level-2 ((t (:inherit outline-3 :height 150))))
  '(org-level-3 ((t (:inherit outline-4 :height 140))))

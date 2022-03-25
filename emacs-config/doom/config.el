@@ -25,7 +25,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-dracula)
+(setq doom-theme 'doom-dracula-custom)
 ;; (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 14))
 (setq doom-font (font-spec :family "Iosevka Custom Medium" :size 16))
 
@@ -184,21 +184,34 @@ font settings to look better with variable-width (like sizing)."
   (setq buffer-face-mode-face '(:family "Libre Baskerville"))
   (buffer-face-mode))
 
+(defun org-sparse-indirect ()
+  (interactive)
+  (clone-indirect-buffer "*org sparse result*" t)
+  (org-sparse-tree))
+
+(defun org-insert-timestamp-time ()
+  (interactive)
+  (org-insert-time-stamp (current-time) t))
+
 (after! org
   (map! :localleader
         :map org-mode-map
         "," #'org-ctrl-c-ctrl-c
         ";" #'org-next-link
+        "O" #'org-delete-property
+        "S" #'org-insert-timestamp-time
         (:prefix ("B" . "babel")
-         "h" #'org-babel-insert-header-arg))
-  (map! :map org-mode-map "<M-S-down>" #'scroll-up-several-lines)
-  (map! :map org-mode-map "<M-S-up>" #'scroll-down-several-lines)
+         "h" #'org-babel-insert-header-arg)
+        (:prefix ("s" . "tree/subtree")
+         "s" #'org-sparse-indirect))
+  ;; (map! :map org-mode-map "<M-S-down>" #'scroll-up-several-lines)
+  ;; (map! :map org-mode-map "<M-S-up>" #'scroll-down-several-lines)
 
   (setq org-fontify-quote-and-verse-blocks t)
   (setq org-cycle-separator-lines -1)
   (setq org-return-follows-link t)
   (setq org-superstar-headline-bullets-list '("◉" "◈" "▶"))
-  (setq org-adapt-indentation t)
+  (setq org-adapt-indentation nil)
   (setq org-export-with-toc nil)
   (setq org-todo-keywords
     '((sequence "TODO" "ACTIVE" "POSTPONED" "|" "DONE" "CANCELLED")))
@@ -210,9 +223,13 @@ font settings to look better with variable-width (like sizing)."
       ("DONE" :foreground "chartreuse" :height 0.85)))
   (setq org-enforce-todo-dependencies t)
   (add-hook 'org-mode-hook (lambda ()
-                             (org-indent-mode -1)
+                             (org-indent-mode 1)
                              (highlight-indent-guides-mode -1)
-                             (line-number-mode -1))))
+                             (display-line-numbers-mode -1)
+                             (if (= (count-windows) 1)
+                                 (progn
+                                   (olivetti-mode 1)
+                                   (olivetti-set-width 100))))))
 
 
 
@@ -229,6 +246,10 @@ font settings to look better with variable-width (like sizing)."
   '(markdown-header-face-4 :inherit org-level-4)
   '(markdown-header-face-5 :inherit org-level-5)
   '(markdown-header-face-6 :inherit org-level-6))
+
+;; I hate the message it pops up every time you open an .md file, so
+;; disable it, and then manually enable when it's actually needed.
+(setq markdown-enable-math nil)
 
 
 
@@ -311,6 +332,9 @@ font settings to look better with variable-width (like sizing)."
 ;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq lsp-eslint-enable nil)
+
+(setq js2-basic-offset 4)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
 ;; For some reason, `js-mode' wants to handle ligatures for arrow symbols
 ;; on its own, when that's not its job. Disable.
@@ -428,6 +452,17 @@ font settings to look better with variable-width (like sizing)."
 ;; Don't say the annoying "LSP connected" message every time
 ;; I open a file. It's so janky.
 (setq lsp--show-message nil)
+
+(add-to-list 'auto-mode-alist '("\\.mmd\\'" . mermaid-mode))
+
+(defhydra doom-window-resize-hydra (:hint nil)
+  ("<left>" evil-window-decrease-width)
+  ("<right>" evil-window-increase-height)
+  ("<down>" evil-window-decrease-height)
+  ("<up>" evil-window-increase-height)
+  ("q" nil))
+
+(map! (:prefix "w" :desc "Hydra resize" :n "SPC" #'doom-window-resize-hydra/body))
 
 
 
