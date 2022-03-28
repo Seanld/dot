@@ -8,6 +8,10 @@ echo "Setting time zone to MST...";
 ln -sf /usr/share/zoneinfo/America/Denver /etc/localtime;
 hwclock --systohc;
 
+echo "Setting up NTP...";
+timedatectl set-ntp 1;
+echo;
+
 echo "Writing & generating US UTF-8 locale...";
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen;
 echo "LANG=en_US.UTF-8" >> locale.conf; # May be extraneous.
@@ -31,7 +35,7 @@ echo;
 echo "Creating new user account...";
 printf "Your username: ";
 read -r newusername;
-useradd -m $newusername;
+useradd -m $newusername -g wheel;
 echo "Set a password for your new account!";
 passwd $newusername;
 echo;
@@ -60,6 +64,20 @@ pacman -S base-devel git eog gnome-backgrounds gnome-characters gnome-color-mana
        gnome-terminal gnome-themes-extra totem xdg-user-dirs-gtk;
 echo;
 
+echo "Installing Yay (AUR helper tool)/...";
+git clone https://aur.archlinux.org/yay.git;
+cd yay;
+makepkg -si;
+cd ..;
+echo;
+
+echo "Installing LibreWolf...";
+git clone https://aur.archlinux.org/librewolf-bin.git;
+cd librewolf-bin;
+makepkg -si;
+cd ..;
+echo;
+
 echo "Downloading, building, and installing Ly display manager...";
 git clone https://github.com/nullgemm/ly;
 cd ly;
@@ -82,17 +100,12 @@ mv Flatery-Dark /usr/share/icons;
 chown /usr/share/icons/Flatery-Dark $newusername;
 echo;
 
-echo "Downloading & installing Dracula GTK theme...";
-git clone https://github.com/dracula/gtk /usr/share/themes/Dracula;
-chown /usr/share/themes/Dracula $newusername;
-echo;
-
 echo "MAKE SURE TO DOWNLOAD 'USER THEMES' EXTENSION FROM GNOME WEBSITE!\nENABLE ICON AND GTK THEMES IN GNOME TWEAKS!";
 sleep 3s;
 echo;
 
 echo "Installing user software...";
-pacman -S firefox python3 alacritty screen htop mc amfora unzip httpie ncdu gparted wine npm;
+pacman -S python3 alacritty tmux htop mc amfora unzip httpie ncdu gparted wine npm;
 echo;
 
 echo "Downloading, building, and installing the latest Emacs...";
@@ -104,7 +117,7 @@ cd emacs;
 ./autogen.sh;
 ./configure --with-mailutils --with-sound=yes --with-x-toolkit=gtk3 \
             --with-imagemagick --with-json --with-xwidgets --with-file-notification=yes \
-            --with-cairo --with-modules --with-gnutls --with-xml2 --with-xft --with-xpm \
+            --with-cairo --with-modules --with-gnutls --with-xml2 --with-xft --with-xpm --with-native-compilation \
             CFLAGS="-O2 -mtune=native -march=native -fomit-frame-pointer";
 make bootstrap;
 make install;
@@ -114,11 +127,9 @@ echo "Installing config files...";
 cd; cd dot;
 mkdir -p /home/$newusername/.config/alacritty;
 cp alacritty /home/$newusername/.config/alacritty/alacritty.yml;
-chown /home/$newusername/.config -R $newusername;
-cp screenrc /home/$newusername/.screenrc;
-chown /home/$newusername/.screenrc $newusername;
+chown /home/$newusername/.config -R $newusername:wheel;
 cp zshrc /home/$newusername/.zshrc;
-chown /home/$newusername/.zshrc $newusername;
+chown /home/$newusername/.zshrc $newusername:wheel;
 echo;
 
 echo "FINISHED CONFIGURATION/SETUP SCRIPT!";
