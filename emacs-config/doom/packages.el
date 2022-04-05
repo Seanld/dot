@@ -24,6 +24,7 @@
 (package! typescript-mode) ;; Basic TS syntax highlighting.
 (package! mermaid-mode) ;; Plaintext to graphs and flowcharts!
 (package! js2-mode)
+(package! rjsx-mode)
 (package! olivetti)
 (package! paradox)
 

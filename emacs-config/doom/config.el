@@ -223,13 +223,13 @@ font settings to look better with variable-width (like sizing)."
       ("DONE" :foreground "chartreuse" :height 0.85)))
   (setq org-enforce-todo-dependencies t)
   (add-hook 'org-mode-hook (lambda ()
-                             (org-indent-mode 1)
-                             (highlight-indent-guides-mode -1)
-                             (display-line-numbers-mode -1)
                              (if (= (count-windows) 1)
                                  (progn
                                    (olivetti-mode 1)
-                                   (olivetti-set-width 100))))))
+                                   (olivetti-set-width 100)))
+                             (org-indent-mode 1)
+                             (highlight-indent-guides-mode -1)
+                             (display-line-numbers-mode -1))))
 
 
 
@@ -334,7 +334,7 @@ font settings to look better with variable-width (like sizing)."
 (setq lsp-eslint-enable nil)
 
 (setq js2-basic-offset 4)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
 
 ;; For some reason, `js-mode' wants to handle ligatures for arrow symbols
 ;; on its own, when that's not its job. Disable.

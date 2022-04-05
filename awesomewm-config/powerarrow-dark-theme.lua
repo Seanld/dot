@@ -10,7 +10,7 @@ local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/theme"
 theme.wallpaper                                 = theme.dir .. "/wall.png"
-theme.font                                      = "Delugia Italic 10"
+theme.font                                      = "Iosevka Custom SmBdObl 10" -- "Delugia Italic 10"
 theme.fg_normal                                 = "#f8f8f2"
 theme.fg_focus                                  = "#bd93f9"
 theme.fg_urgent                                 = "#ff5555"
@@ -184,6 +184,8 @@ local cpu = lain.widget.cpu({
 -- Coretemp
 local tempicon = wibox.widget.imagebox(theme.widget_temp)
 local temp = lain.widget.temp({
+    timeout = 15,
+    tempfile = "/sys/devices/virtual/thermal/thermal_zone1/temp",
     settings = function()
         widget:set_markup(markup.font(theme.font, " " .. coretemp_now .. "°C "))
     end

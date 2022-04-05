@@ -15,6 +15,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(font-lock-variable-name-face ((t (:foreground "#f8f8f2"))))
  '(markdown-header-delimiter-face ((t (:inherit org-agenda-structure))))
  '(markdown-header-face-1 ((t (:inherit org-level-1))))
  '(markdown-header-face-2 ((t (:inherit org-level-2))))
@@ -34,3 +35,5 @@
  '(org-level-7 ((t (:inherit outline-8 :height 100))))
  '(org-level-8 ((t (:inherit outline-4 :height 90))))
  '(org-meta-line ((t (:inherit font-lock-comment-face)))))
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
