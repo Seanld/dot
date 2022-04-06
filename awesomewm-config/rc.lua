@@ -84,6 +84,7 @@ awful.spawn.with_shell(
 
 -- {{{ Variable definitions
 
+local HOME         = "/home/seanld"
 local modkey       = "Mod4"
 local altkey       = "Mod1"
 local ctrlkey      = "Ctrl"
@@ -91,7 +92,7 @@ local terminal     = "alacritty"
 local vi_focus     = false -- vi-like client focus https://github.com/lcpz/awesome-copycats/issues/275
 local cycle_prev   = true  -- cycle with only the previously focused client or all https://github.com/lcpz/awesome-copycats/issues/274
 local editor       = os.getenv("EDITOR") or "nvim"
-local browser      = "firefox"
+local browser      = "librewolf"
 
 awful.util.terminal = terminal
 awful.util.tagnames = { "1", "2", "3", "4", "5" }
@@ -250,6 +251,11 @@ globalkeys = mytable.join(
             awful.spawn.easy_async("gnome-screenshot -a", function() end)
         end,
         {description = "take a screenshot", group = "hotkeys"}),
+    -- Toggle Mullvad VPN on and off.
+    awful.key({ modkey }, "v", function()
+            awful.spawn.easy_async(HOME .. "/scripts/mullvad.sh", function() end)
+        end,
+        {description = "toggle Mullvad VPN", group = "hotkeys"}),
 
     -- X screen locker
     -- awful.key({ modkey,     }, "l", function () os.execute(scrlocker) end,
@@ -330,18 +336,18 @@ globalkeys = mytable.join(
               {description = "focus the previous screen", group = "screen"}),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
-    awful.key({ modkey,           }, "Tab",
-        function ()
-            if cycle_prev then
-                awful.client.focus.history.previous()
-            else
-                awful.client.focus.byidx(-1)
-            end
-            if client.focus then
-                client.focus:raise()
-            end
-        end,
-        {description = "cycle with previous/go back", group = "client"}),
+    -- awful.key({ modkey,           }, "Tab",
+    --     function ()
+    --         if cycle_prev then
+    --             awful.client.focus.history.previous()
+    --         else
+    --             awful.client.focus.byidx(-1)
+    --         end
+    --         if client.focus then
+    --             client.focus:raise()
+    --         end
+    --     end,
+    --     {description = "cycle with previous/go back", group = "client"}),
 
     -- Show/hide wibox
     awful.key({ modkey }, "b", function ()
@@ -407,7 +413,7 @@ globalkeys = mytable.join(
     awful.key({ modkey, altkey   }, "space", function () awful.layout.inc(-1)                end,
               {description = "select previous", group = "layout"}),
 
-    awful.key({ modkey, "Control" }, "n", function ()
+    awful.key({ modkey, "Shift" }, "a", function ()
         local c = awful.client.restore()
         -- Focus restored client
         if c then
@@ -548,11 +554,11 @@ globalkeys = mytable.join(
         {description = "mpc on/off", group = "widgets"}),
 
     -- Copy primary to clipboard (terminals to gtk)
-    awful.key({ modkey }, "c", function () awful.spawn.with_shell("xsel | xsel -i -b") end,
-              {description = "copy terminal to gtk", group = "hotkeys"}),
-    -- Copy clipboard to primary (gtk to terminals)
-    awful.key({ modkey }, "v", function () awful.spawn.with_shell("xsel -b | xsel") end,
-              {description = "copy gtk to terminal", group = "hotkeys"}),
+    -- awful.key({ modkey }, "c", function () awful.spawn.with_shell("xsel | xsel -i -b") end,
+    --           {description = "copy terminal to gtk", group = "hotkeys"}),
+    -- -- Copy clipboard to primary (gtk to terminals)
+    -- awful.key({ modkey }, "v", function () awful.spawn.with_shell("xsel -b | xsel") end,
+    --           {description = "copy gtk to terminal", group = "hotkeys"}),
 
     -- User programs
     awful.key({ modkey }, "q", function () awful.spawn(browser) end,
@@ -569,7 +575,7 @@ globalkeys = mytable.join(
 
     -- Rofi
     awful.key({ modkey }, "r", function ()
-            os.execute("rofi -show run -show-icons -matching regex")
+            os.execute("rofi -show run -show-icons -matching regex -font \"Iosevka Custom 14\"")
         end,
         {description = "rofi run menu", group = "launcher"}),
 
@@ -591,6 +597,8 @@ globalkeys = mytable.join(
 )
 
 clientkeys = mytable.join(
+    awful.key({ modkey, "Shift"     }, "=",     function (c) c.height = c.height + 5 end,
+              {description = "increase client height", group = "client"}),
     awful.key({ altkey, "Shift"   }, "m",      lain.util.magnify_client,
               {description = "magnify client", group = "client"}),
     awful.key({ modkey,           }, "f",
@@ -599,16 +607,17 @@ clientkeys = mytable.join(
             c:raise()
         end,
         {description = "toggle fullscreen", group = "client"}),
-    awful.key({ modkey,           }, "k",      function (c) c:kill()                         end),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
+    awful.key({ modkey,           }, "k",      function (c) c:kill() end),
+    awful.key({ modkey, "Shift"   }, "x",      function (c) c:kill() end),
+    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle,
               {description = "toggle floating", group = "client"}),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "Tab",      function (c) c:move_to_screen()               end,
+    awful.key({ modkey, "Shift"   }, "Tab",      function (c) c:move_to_screen() end,
               {description = "move to screen", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "t",      function (c) c.ontop = not c.ontop            end,
+    awful.key({ modkey, "Shift"   }, "t",      function (c) c.ontop = not c.ontop end,
               {description = "toggle keep on top", group = "client"}),
-    awful.key({ modkey,           }, "n",
+    awful.key({ modkey,           }, "a",
         function (c)
             -- The client currently has the input focus, so it cannot be
             -- minimized, since minimized clients can't have the focus.

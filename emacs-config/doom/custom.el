@@ -8,7 +8,7 @@
  '(elfeed-feeds '("https://lukesmith.xyz/rss.xml"))
  '(highlight-indent-guides-auto-character-face-perc 50)
  '(package-selected-packages
-   '(org-modern commify olivetti typescript-mode json-navigator why-this cycle-at-point))
+   '(google-translate common-lisp-snippets org-modern commify olivetti typescript-mode json-navigator why-this cycle-at-point))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

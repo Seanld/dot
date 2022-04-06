@@ -436,7 +436,7 @@ font settings to look better with variable-width (like sizing)."
 (setq doom-modeline-height 10)
 (setq doom-modeline-env-enable-python nil)
 (setq doom-modeline-icon nil)
-(setq doom-modeline-bar-width -1)
+;; (setq doom-modeline-bar-width -1)
 
 
 
