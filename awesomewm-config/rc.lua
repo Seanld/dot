@@ -248,7 +248,7 @@ globalkeys = mytable.join(
     awful.key({ modkey }, "p", function()
             -- Run gnome-screenshot asynchronously, but don't do anything
             -- with the output. Calling it non-async freezes the WM.
-            awful.spawn.easy_async("gnome-screenshot -a", function() end)
+            awful.spawn.easy_async("gnome-screenshot -i", function() end)
         end,
         {description = "take a screenshot", group = "hotkeys"}),
     -- Toggle Mullvad VPN on and off.
