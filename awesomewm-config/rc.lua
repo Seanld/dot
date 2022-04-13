@@ -22,13 +22,13 @@ local dpi           = require("beautiful.xresources").apply_dpi
 
 -- {{{ Configure notifications and their style
 
+-- naughty.config.defaults["border_width"] = 0
 naughty.config.padding = dpi(8)
 naughty.config.spacing = dpi(8)
 naughty.config.notify_callback = function(args)
     -- If it's a Slack message, stylize it a certain way,
     -- and keep it alive so I don't miss the messsage.
-    if args.title:match("%[%a+%] from %a+") then
-        -- args.title = "New slack message"
+    if args.title and args.title:match("%[%a+%] from %a+") then
         args.border_width = dpi(1.5)
         args.border_color = "#ffb86c"
         args.timeout = 0
