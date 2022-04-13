@@ -16,6 +16,26 @@ local freedesktop   = require("freedesktop")
 local hotkeys_popup = require("awful.hotkeys_popup")
                       require("awful.hotkeys_popup.keys")
 local mytable       = awful.util.table or gears.table -- 4.{0,1} compatibility
+local dpi           = require("beautiful.xresources").apply_dpi
+
+-- }}}
+
+-- {{{ Configure notifications and their style
+
+naughty.config.padding = dpi(8)
+naughty.config.spacing = dpi(8)
+naughty.config.notify_callback = function(args)
+    -- If it's a Slack message, stylize it a certain way,
+    -- and keep it alive so I don't miss the messsage.
+    if args.title:match("%[%a+%] from %a+") then
+        -- args.title = "New slack message"
+        args.border_width = dpi(1.5)
+        args.border_color = "#ffb86c"
+        args.timeout = 0
+    end
+
+    return args
+end
 
 -- }}}
 
@@ -241,7 +261,7 @@ root.buttons(mytable.join(
 
 globalkeys = mytable.join(
     -- Destroy all notifications
-    awful.key({ altkey }, "space", function() naughty.destroy_all_notifications() end,
+    awful.key({ modkey }, "n", function() naughty.destroy_all_notifications() end,
               {description = "destroy all notifications", group = "hotkeys"}),
     -- Take a screenshot
     -- https://github.com/lcpz/dots/blob/master/bin/screenshot
