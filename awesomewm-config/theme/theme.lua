@@ -295,28 +295,33 @@ function theme.at_screen_connect(s)
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons)
 
+    local function list_update(w, buttons, label, data, objects)
+        awful.widget.common.list_update(w, buttons, label, data, objects)
+        w:set_max_widget_size(200)
+    end
+
     -- Create a tasklist widget
     s.mytasklist = awful.widget.tasklist{
-      screen = s,
-      filter = awful.widget.tasklist.filter.currenttags,
-      buttons = awful.util.tasklist_buttons,
-      layout = {
-          spacing = 15,
-          spacing_widget = {
-              {
-                  color        = theme.bg_focus,
-                  forced_width = 5,
-                  shape        = function(cr, width, height)
-                      gears.shape.parallelogram(cr, width, height, 3)
-                  end,
-                  widget       = wibox.widget.separator,
-              },
-              valign = "center",
-              halign = "center",
-              widget = wibox.container.place,
-          },
-          layout = wibox.layout.fixed.horizontal
-      }
+        screen = s,
+        filter = awful.widget.tasklist.filter.currenttags,
+        buttons = awful.util.tasklist_buttons,
+        layout = {
+            spacing = 15,
+            spacing_widget = {
+                {
+                    color        = theme.bg_focus,
+                    forced_width = 5,
+                    shape        = function(cr, width, height)
+                        gears.shape.parallelogram(cr, width, height, 3)
+                    end,
+                    widget       = wibox.widget.separator,
+                },
+                valign = "center",
+                halign = "center",
+                widget = wibox.container.place,
+            },
+            layout = wibox.layout.fixed.horizontal
+        }
     }
 
     -- The surrounding padding of the wibar.

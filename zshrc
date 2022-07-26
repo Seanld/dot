@@ -109,3 +109,10 @@ export GOPATH="$(go env GOPATH)"
 export PATH="${PATH}:${GOPATH}/bin"
 
 alias luamake=/home/seanld/repos/lua-language-server/3rd/luamake/luamake
+
+# bun completions
+[ -s "/home/seanld/.bun/_bun" ] && source "/home/seanld/.bun/_bun"
+
+# Bun
+export BUN_INSTALL="/home/seanld/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
