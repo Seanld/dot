@@ -4,11 +4,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("279cc6cfc2e7576109be286e7a1f5fc7b7b4d5c98cc034bf98b5bb7258fe76c9" default))
  '(doom-modeline-buffer-file-name-style 'buffer-name)
  '(elfeed-feeds '("https://lukesmith.xyz/rss.xml"))
  '(highlight-indent-guides-auto-character-face-perc 50)
  '(package-selected-packages
-   '(google-translate common-lisp-snippets org-modern commify olivetti typescript-mode json-navigator why-this cycle-at-point))
+   '(caddyfile-mode gemini-mode basic-mode fennel-mode hy-mode geoip graphql-mode vampyricdark-theme dired-du google-translate common-lisp-snippets org-modern commify olivetti typescript-mode json-navigator why-this cycle-at-point))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -37,3 +39,4 @@
  '(org-meta-line ((t (:inherit font-lock-comment-face)))))
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
+(put 'erase-buffer 'disabled nil)

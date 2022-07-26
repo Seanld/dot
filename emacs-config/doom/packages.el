@@ -28,6 +28,12 @@
 (package! olivetti)
 (package! paradox)
 (package! common-lisp-snippets)
+(package! graphql-mode)
+(package! fennel-mode)
+(package! basic-mode)
+(package! caddyfile-mode)
+;; (package! gemini-mode)
+;; (package! ox-gemini)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
@@ -37,6 +43,9 @@
 
 (package! cook-mode
   :recipe (:host github :repo "cooklang/cook-mode"))
+
+(package! vlang-mode
+  :recipe (:host github :repo "Naheel-Azawy/vlang-mode"))
 
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify

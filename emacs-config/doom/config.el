@@ -101,8 +101,8 @@ the current one (like in Spacemacs)."
 (map! "<f12>" #'kill-this-buffer
       "<C-f12>" #'kill-buffer-and-window
       "<f11>" #'delete-window
-      "<M-S-down>" #'scroll-up-several-lines
-      "<M-S-up>" #'scroll-down-several-lines
+      "<C-M-down>" #'scroll-up-several-lines
+      "<C-M-up>" #'scroll-down-several-lines
 
       :leader
       "y" #'yas-insert-snippet
@@ -204,8 +204,13 @@ font settings to look better with variable-width (like sizing)."
          "h" #'org-babel-insert-header-arg)
         (:prefix ("s" . "tree/subtree")
          "s" #'org-sparse-indirect))
-  ;; (map! :map org-mode-map "<M-S-down>" #'scroll-up-several-lines)
-  ;; (map! :map org-mode-map "<M-S-up>" #'scroll-down-several-lines)
+
+  (setq org-publish-project-alist
+        '(("houston-wiki"
+           :base-directory "~/repos/houston-wiki/org"
+           :base-extension "org"
+           :publishing-directory "~/repos/houston-wiki"
+           :publishing-function org-md-publish-to-md)))
 
   (setq org-fontify-quote-and-verse-blocks t)
   (setq org-cycle-separator-lines -1)
@@ -214,13 +219,14 @@ font settings to look better with variable-width (like sizing)."
   (setq org-adapt-indentation nil)
   (setq org-export-with-toc nil)
   (setq org-todo-keywords
-    '((sequence "TODO" "ACTIVE" "POSTPONED" "|" "DONE" "CANCELLED")))
+    '((sequence "TODO" "PSPN" "ACTV" "CFRM" "|" "DONE" "CNCL")))
   (setq org-todo-keyword-faces
     '(("TODO" :foreground "grey" :height 0.85)
-      ("ACTIVE" :foreground "yellow" :height 0.85)
-      ("CANCELLED" :foreground "grey" :slant italic :height 0.85)
-      ("POSTPONED" :foreground "orange" :slant italic :height 0.85)
-      ("DONE" :foreground "chartreuse" :height 0.85)))
+      ("PSPN" :foreground "orange" :slant italic :height 0.85)
+      ("ACTV" :foreground "yellow" :height 0.85)
+      ("CFRM" :foreground "light sky blue" :height 0.85)
+      ("DONE" :foreground "chartreuse" :height 0.85)
+      ("CNCL" :foreground "grey" :slant italic :height 0.85)))
   (setq org-enforce-todo-dependencies t)
   (add-hook 'org-mode-hook (lambda ()
                              (if (= (count-windows) 1)
@@ -237,6 +243,10 @@ font settings to look better with variable-width (like sizing)."
 ;; MARKDOWN CONFIG ;;
 ;;;;;;;;;;;;;;;;;;;;;
 
+(add-hook 'markdown-mode-hook (lambda ()
+                                (olivetti-mode 1)
+                                (olivetti-set-width 100)))
+
 (custom-set-faces!
   ;; Titles
   '(markdown-header-delimiter-face :inherit org-agenda-structure)
@@ -247,7 +257,7 @@ font settings to look better with variable-width (like sizing)."
   '(markdown-header-face-5 :inherit org-level-5)
   '(markdown-header-face-6 :inherit org-level-6))
 
-;; I hate the message it pops up every time you open an .md file, so
+;; I hate the message it shows every time you open an .md file, so
 ;; disable it, and then manually enable when it's actually needed.
 (setq markdown-enable-math nil)
 
@@ -286,6 +296,15 @@ font settings to look better with variable-width (like sizing)."
 ;; (add-hook 'c-mode-hook (lambda ()
 ;;                          (smartparens-mode -1)
 ;;                          (electric-pair-mode)))
+
+
+
+;;;;;;;;;;;;;;;;;;
+;; SHELL CONFIG ;;
+;;;;;;;;;;;;;;;;;;
+
+(add-hook 'sh-mode-hook (lambda ()
+                          (flycheck-mode -1)))
 
 
 
@@ -436,7 +455,6 @@ font settings to look better with variable-width (like sizing)."
 (setq doom-modeline-height 10)
 (setq doom-modeline-env-enable-python nil)
 (setq doom-modeline-icon nil)
-;; (setq doom-modeline-bar-width -1)
 
 
 
@@ -448,6 +466,7 @@ font settings to look better with variable-width (like sizing)."
 ;; Spacemacs (this is an invaluable feature to me).
 (map! :leader "v" #'er/expand-region)
 (setq expand-region-contract-fast-key "c")
+(setq expand-region-reset-fast-key "q")
 
 ;; Don't say the annoying "LSP connected" message every time
 ;; I open a file. It's so janky.
@@ -463,6 +482,14 @@ font settings to look better with variable-width (like sizing)."
   ("q" nil))
 
 (map! (:prefix "w" :desc "Hydra resize" :n "SPC" #'doom-window-resize-hydra/body))
+
+(setq recentf-max-saved-items 500)
+
+(defun my-caddyfile-hook ()
+  (setq-local tab-width 4)
+  (setq-local indent-tabs-mode t))
+
+(add-hook! 'caddyfile-mode-hook #'my-caddyfile-hook)
 
 
 
