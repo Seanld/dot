@@ -47,7 +47,7 @@ echo;
 
 echo "Installing doas and giving new user permissions...";
 pacman -S doas;
-echo "permit persist :wheel" >> /etc/doas.conf;
+echo "permit persist $newusername" >> /etc/doas.conf;
 echo;
 
 echo "Enabling multilib repository...";

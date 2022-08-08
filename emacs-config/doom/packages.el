@@ -9,6 +9,7 @@
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 
+
 (package! focus) ;; Handy for non-code writing.
 (package! tree-edit)
 (package! evil-tree-edit)
@@ -32,8 +33,10 @@
 (package! fennel-mode)
 (package! basic-mode)
 (package! caddyfile-mode)
+(package! hy-mode)
 ;; (package! gemini-mode)
 ;; (package! ox-gemini)
+
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
