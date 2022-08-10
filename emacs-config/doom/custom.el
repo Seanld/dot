@@ -10,8 +10,9 @@
  '(elfeed-feeds '("https://lukesmith.xyz/rss.xml"))
  '(highlight-indent-guides-auto-character-face-perc 50)
  '(package-selected-packages
-   '(caddyfile-mode gemini-mode basic-mode fennel-mode hy-mode geoip graphql-mode vampyricdark-theme dired-du google-translate common-lisp-snippets org-modern commify olivetti typescript-mode json-navigator why-this cycle-at-point))
- '(paradox-github-token t))
+   '(nginx-mode company-nginx caddyfile-mode gemini-mode basic-mode fennel-mode hy-mode geoip graphql-mode vampyricdark-theme dired-du google-translate common-lisp-snippets org-modern commify olivetti typescript-mode json-navigator why-this cycle-at-point))
+ '(paradox-github-token t)
+ '(recentf-max-saved-items 400))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -34,6 +34,8 @@
 (package! basic-mode)
 (package! caddyfile-mode)
 (package! hy-mode)
+(package! nginx-mode)
+(package! company-nginx)
 ;; (package! gemini-mode)
 ;; (package! ox-gemini)
 

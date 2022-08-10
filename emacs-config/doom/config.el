@@ -483,13 +483,15 @@ font settings to look better with variable-width (like sizing)."
 
 (map! (:prefix "w" :desc "Hydra resize" :n "SPC" #'doom-window-resize-hydra/body))
 
-(setq recentf-max-saved-items 500)
-
 (defun my-caddyfile-hook ()
   (setq-local tab-width 4)
   (setq-local indent-tabs-mode t))
 
 (add-hook! 'caddyfile-mode-hook #'my-caddyfile-hook)
+
+(use-package! company-nginx
+  :ensure t
+  :config (add-hook! 'nginx-mode-hook (lambda () (add-to-list 'company-backends #'company-nginx))))
 
 
 
