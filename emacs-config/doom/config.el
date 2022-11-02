@@ -43,6 +43,14 @@
 ;; CUSTOM FUNCTIONS ;;
 ;;;;;;;;;;;;;;;;;;;;;;
 
+(defun quick-align-spaced ()
+  "Auto aligns columns of regions laid-out like Linux's fstab."
+  (interactive)
+  (let* ((current-bounds (car (region-bounds)))
+         (bounds-start (car current-bounds))
+         (bounds-end (cdr current-bounds)))
+    (align-regexp bounds-start bounds-end "\\( +\\)" 1 2 t)))
+
 (defun scroll-up-several-lines ()
   (interactive)
   (scroll-up-line 5))
@@ -125,6 +133,7 @@ the current one (like in Spacemacs)."
       "c m" 'make-last-and-close
 
       "l" #'lp-get-yank
+      "|" #'quick-align-spaced
       "f m" #'make-directory
       "s E" #'iedit-mode
       "@" #'pop-global-mark
@@ -198,6 +207,7 @@ font settings to look better with variable-width (like sizing)."
         :map org-mode-map
         "," #'org-ctrl-c-ctrl-c
         ";" #'org-next-link
+        ":" #'org-previous-link
         "O" #'org-delete-property
         "S" #'org-insert-timestamp-time
         (:prefix ("B" . "babel")
@@ -268,6 +278,8 @@ font settings to look better with variable-width (like sizing)."
 ;;;;;;;;;;;;;;
 
 (add-hook 'c-mode-hook (lambda ()
+                         (setq lsp-clients-clangd-args '("--header-insertion=never"))
+                         (setq lsp-clients-clangd-library-directories '("/home/seanld/repos/os/libc"))
                          (setq c-style-indent-amount 4)))
 
 ;; (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
