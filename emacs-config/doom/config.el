@@ -43,13 +43,10 @@
 ;; CUSTOM FUNCTIONS ;;
 ;;;;;;;;;;;;;;;;;;;;;;
 
-(defun quick-align-spaced ()
+(defun quick-align-spaced (start end)
   "Auto aligns columns of regions laid-out like Linux's fstab."
-  (interactive)
-  (let* ((current-bounds (car (region-bounds)))
-         (bounds-start (car current-bounds))
-         (bounds-end (cdr current-bounds)))
-    (align-regexp bounds-start bounds-end "\\( +\\)" 1 2 t)))
+  (interactive "r")
+    (align-regexp start end "\\( +\\)" 1 2 t))
 
 (defun scroll-up-several-lines ()
   (interactive)
