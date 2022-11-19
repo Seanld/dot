@@ -116,3 +116,7 @@ alias luamake=/home/seanld/repos/lua-language-server/3rd/luamake/luamake
 # Bun
 export BUN_INSTALL="/home/seanld/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# My systemd user-level services are saying "failed to connect to bus"
+# and this fixes it. No clue why yet.
+export XDG_RUNTIME_DIR=/run/user/$(id -u)

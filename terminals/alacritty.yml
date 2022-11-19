@@ -120,7 +120,7 @@ font:
   #
   # This is a global setting and will require a log out or restart to take
   # effect.
-  use_thin_strokes: false
+  # use_thin_strokes: false
 
 # When true, bold text is drawn using the bright variant of colors.
 draw_bold_text_with_bright_colors: false
@@ -147,7 +147,7 @@ colors:
     focused_match:
       foreground: '0x44475a'
       background: '0xffb86c'
-    bar:
+    footer_bar:
       background: '0x282a36'
       foreground: '0xf8f8f2'
   line_indicator:
