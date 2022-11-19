@@ -88,7 +88,7 @@ end
 
 -- Running Picom with `--experimental-backends` allows for Gaussian blur on
 -- the background of windows, but introduces a lot of lag, at least on a GT 710.
-run_once({ "picom --experimental-backends &", "unclutter --timeout 2 &"}) -- comma-separated entries
+run_once({ "picom --config /home/$USER/.config/picom/picom-blur.conf", "unclutter --timeout 2 &"}) -- comma-separated entries
 
 -- This function implements the XDG autostart specification
 --[[
