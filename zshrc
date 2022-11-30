@@ -92,9 +92,10 @@ alias calc-term="emacs -nw -f full-calc"
 
 # Shortcuts for launching a client of a running Emacs daemon in a new
 # frame , but using Spacemacs naming, since that's the flavor I use.
-alias sm="emacsclient -c"
-alias spacemacs="emacsclient -c"
 alias ec="emacsclient"
+
+# Shortcut for arduino-cli.
+alias ard="arduino-cli"
 
 # Ensure that every time I use the `screen` command, it starts the
 # 256 color mode, because muh color.
