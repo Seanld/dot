@@ -7,7 +7,7 @@
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
 (setq user-full-name "Sean Wilkerson"
-      user-mail-address "seanldmcdonald@gmail.com")
+      user-mail-address "me@seanld.xyz")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -125,6 +125,10 @@ the current one (like in Spacemacs)."
       "w <S-left>" #'+evil/window-move-left
       "w <S-right>" #'+evil/window-move-right
       "w P" #'+popup/close-all
+
+      ;; Replace man page lookup command with
+      ;; woman, because it's just better.
+      "h W" #'woman
 
       "c M" #'+make/run
       "c m" 'make-last-and-close
@@ -502,6 +506,9 @@ font settings to look better with variable-width (like sizing)."
   :ensure t
   :config (add-hook! 'nginx-mode-hook (lambda () (add-to-list 'company-backends #'company-nginx))))
 
+;; Make woman mode use maximum width of window. By default, it's arbitrarily limited to 65
+;; characters to simulate a terminal for some reason.
+(setq woman-fill-frame 't)
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:
