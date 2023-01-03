@@ -118,6 +118,9 @@ alias luamake=/home/seanld/repos/lua-language-server/3rd/luamake/luamake
 export BUN_INSTALL="/home/seanld/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
+# Nimble executable path
+export PATH="/home/seanld/.nimble/bin:$PATH"
+
 # My systemd user-level services are saying "failed to connect to bus"
 # and this fixes it. No clue why yet.
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
