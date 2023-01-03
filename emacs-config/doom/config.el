@@ -376,6 +376,14 @@ font settings to look better with variable-width (like sizing)."
 
 
 ;;;;;;;;;;;;;;;;
+;; NIM CONFIG ;;
+;;;;;;;;;;;;;;;;
+
+(setq nim-compile-default-command '("c" "-r" "--hint[Processing]:off" "--excessiveStackTrace:on"))
+
+
+
+;;;;;;;;;;;;;;;;
 ;; CSV CONFIG ;;
 ;;;;;;;;;;;;;;;;
 
