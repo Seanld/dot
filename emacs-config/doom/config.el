@@ -495,14 +495,15 @@ font settings to look better with variable-width (like sizing)."
 
 (add-to-list 'auto-mode-alist '("\\.mmd\\'" . mermaid-mode))
 
-(defhydra doom-window-resize-hydra (:hint nil)
-  ("<left>" evil-window-decrease-width)
-  ("<right>" evil-window-increase-height)
-  ("<down>" evil-window-decrease-height)
-  ("<up>" evil-window-increase-height)
+(defhydra hydra-window-resize (:hint nil)
+  "Resize window"
+  ("<left>" evil-window-decrease-width "Decrease width")
+  ("<right>" evil-window-increase-width "Increase width")
+  ("<down>" evil-window-decrease-height "Decrease height")
+  ("<up>" evil-window-increase-height "Increase height")
   ("q" nil))
 
-(map! (:prefix "w" :desc "Hydra resize" :n "SPC" #'doom-window-resize-hydra/body))
+(map! (:prefix "SPC w" :desc "Resize window" :n "SPC" #'hydra-window-resize/body))
 
 (defun my-caddyfile-hook ()
   (setq-local tab-width 4)
