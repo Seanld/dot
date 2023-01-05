@@ -493,6 +493,9 @@ font settings to look better with variable-width (like sizing)."
 ;; I open a file. It's so janky.
 (setq lsp--show-message nil)
 
+;; Disable LSP lenses by default (they just clutter the code).
+(setq lsp-lens-enable nil)
+
 (add-to-list 'auto-mode-alist '("\\.mmd\\'" . mermaid-mode))
 
 (defhydra hydra-window-resize (:hint nil)
@@ -518,6 +521,10 @@ font settings to look better with variable-width (like sizing)."
 ;; Make woman mode use maximum width of window. By default, it's arbitrarily limited to 65
 ;; characters to simulate a terminal for some reason.
 (setq woman-fill-frame 't)
+
+;; Add `company-spell' to list of company backends, to replace `company-ispell'.
+(add-to-list 'company-backends 'company-spell t)
+
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:

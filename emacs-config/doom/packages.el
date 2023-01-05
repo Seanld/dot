@@ -52,6 +52,10 @@
 (package! vlang-mode
   :recipe (:host github :repo "Naheel-Azawy/vlang-mode"))
 
+;; More generic than `company-ispell' as it can take other backends (aspell).
+(package! company-spell
+  :recipe (:host github :repo "enzuru/company-spell"))
+
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify
 ;; `:files' in the `:recipe':
