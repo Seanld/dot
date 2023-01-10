@@ -525,6 +525,9 @@ font settings to look better with variable-width (like sizing)."
 ;; Add `company-spell' to list of company backends, to replace `company-ispell'.
 (add-to-list 'company-backends 'company-spell t)
 
+;; Make scratch buffers start in `org-mode' (much nicer to take quick notes in).
+(setq doom-scratch-initial-major-mode 'org-mode)
+
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:
