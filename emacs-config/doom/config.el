@@ -144,7 +144,8 @@ the current one (like in Spacemacs)."
       (:prefix ("A" . "applications")
        "e" #'elpher-go
        "E" #'elpher
-       "#" #'calc)
+       "#" #'calc
+       "F" #'full-calc)
 
       (:prefix ("c F" . "Flycheck")
        "[" #'flycheck-previous-error
