@@ -145,7 +145,9 @@ the current one (like in Spacemacs)."
        "e" #'elpher-go
        "E" #'elpher
        "#" #'calc
-       "F" #'full-calc)
+       "F" #'full-calc
+       "P" #'list-packages
+       "r" #'elfeed) ;; 'r' because Elfeed is an RSS reader.
 
       (:prefix ("c F" . "Flycheck")
        "[" #'flycheck-previous-error
