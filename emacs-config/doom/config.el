@@ -174,7 +174,7 @@ the current one (like in Spacemacs)."
   '(org-inline-src-block :inherit org-inline-src-block :family "Iosevka Custom")
   '(org-meta-line :inherit font-lock-comment-face))
 
-(defun org-face-mode-variable ()
+(defun org-variable-face-mode ()
   "Set Org mode to use variable-width font, and adjust some of the
 font settings to look better with variable-width (like sizing)."
   (interactive)
@@ -191,7 +191,12 @@ font settings to look better with variable-width (like sizing)."
     '(org-level-7          :inherit outline-8 :height 140)
     '(org-level-8          :inherit outline-4 :height 140)
     ;; Other
-    '(org-meta-line :inherit font-lock-comment-face))
+    '(org-meta-line :inherit font-lock-comment-face)
+    ;; Monospaced (these look bad when variable-width)
+    '(org-document-info-keyword :family "Iosevka Custom Medium")
+    '(org-block-begin-line :family "Iosevka Custom Medium")
+    '(org-block :family "Iosevka Custom Medium")
+    '(org-table :family "Iosevka Custom Medium"))
   (setq buffer-face-mode-face '(:family "Libre Baskerville"))
   (buffer-face-mode))
 
