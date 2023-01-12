@@ -198,7 +198,10 @@ font settings to look better with variable-width (like sizing)."
     '(org-document-info-keyword :family "Iosevka Custom Medium")
     '(org-block-begin-line :family "Iosevka Custom Medium")
     '(org-block :family "Iosevka Custom Medium")
-    '(org-table :family "Iosevka Custom Medium"))
+    '(org-table :family "Iosevka Custom Medium")
+    '(org-drawer :family "Iosevka Custom Medium")
+    '(org-special-keyword :family "Iosevka Custom Medium")
+    '(org-property-value :family "Iosevka Custom Medium"))
   (setq buffer-face-mode-face '(:family "Libre Baskerville"))
   (buffer-face-mode))
 
@@ -388,6 +391,11 @@ font settings to look better with variable-width (like sizing)."
 ;;;;;;;;;;;;;;;;
 
 (setq nim-compile-default-command '("c" "-r" "--hint[Processing]:off" "--excessiveStackTrace:on"))
+
+(after!
+  (add-hook 'nim-mode (lambda ()
+                        (flycheck-mode nil)
+                        (lsp nil))))
 
 
 
