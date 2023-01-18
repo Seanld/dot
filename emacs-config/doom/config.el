@@ -140,19 +140,26 @@ the current one (like in Spacemacs)."
       "@" #'pop-global-mark
       "z" #'evil-toggle-fold
 
+      ;; Frequently-used Unicode symbols.
+      (:prefix ("i S" . "symbols")
+        :desc "Pi"
+        "p" (cmd! (insert-char #x03c0))
+        :desc "Square root"
+        "q" (cmd! (insert-char #x221a)))
+
       ;; These are other bigger applications that aren't simple
       ;; small functions (RSS reader, email, browser, etc)
       (:prefix ("A" . "applications")
-       "e" #'elpher-go
-       "E" #'elpher
-       "#" #'calc
-       "F" #'full-calc
-       "P" #'list-packages
-       "r" #'elfeed) ;; 'r' because Elfeed is an RSS reader.
+        "e" #'elpher-go
+        "E" #'elpher
+        "#" #'calc
+        "F" #'full-calc
+        "P" #'list-packages
+        "r" #'elfeed) ;; 'r' because Elfeed is an RSS reader.
 
-      (:prefix ("c F" . "Flycheck")
-       "[" #'flycheck-previous-error
-       "]" #'flycheck-next-error))
+      (:prefix ("c F" . "flycheck")
+        "[" #'flycheck-previous-error
+        "]" #'flycheck-next-error))
 
 
 
@@ -482,6 +489,10 @@ font settings to look better with variable-width (like sizing)."
               ;; Open images in `sxiv'
               (setq dired-guess-shell-alist-user
                     '(("\\.\\(?:jpe?g\\|png\\|gif\\|xpm\\)\\'" "sxiv"))))))
+
+;; Use `w' key to open a file in the other window.
+(map! :map dired-mode-map
+      "w" #'dired-jump-other-window)
 
 
 
