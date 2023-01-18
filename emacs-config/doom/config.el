@@ -138,6 +138,7 @@ the current one (like in Spacemacs)."
       "f m" #'make-directory
       "s E" #'iedit-mode
       "@" #'pop-global-mark
+      "z" #'evil-toggle-fold
 
       ;; These are other bigger applications that aren't simple
       ;; small functions (RSS reader, email, browser, etc)
