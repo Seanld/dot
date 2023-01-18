@@ -285,6 +285,14 @@ font settings to look better with variable-width (like sizing)."
 
 
 
+;;;;;;;;;;;;;;;;;;;
+;; PYTHON CONFIG ;;
+;;;;;;;;;;;;;;;;;;;
+
+(setq lsp-modeline-diagnostics-enable nil)
+
+
+
 ;;;;;;;;;;;;;;
 ;; C CONFIG ;;
 ;;;;;;;;;;;;;;
