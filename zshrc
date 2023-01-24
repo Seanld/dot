@@ -127,3 +127,6 @@ export PATH="/home/seanld/.cargo/bin:$PATH"
 # My systemd user-level services are saying "failed to connect to bus"
 # and this fixes it. No clue why yet.
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
+
+# Make samurai (ninja replacement) limited to 6 cores.
+export SAMUFLAGS=-j6
