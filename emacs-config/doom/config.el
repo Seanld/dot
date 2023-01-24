@@ -230,6 +230,8 @@ font settings to look better with variable-width (like sizing)."
         ":" #'org-previous-link
         "O" #'org-delete-property
         "S" #'org-insert-timestamp-time
+        "<" #'org-previous-visible-heading
+        ">" #'org-next-visible-heading
         (:prefix ("B" . "babel")
          "h" #'org-babel-insert-header-arg)
         (:prefix ("s" . "tree/subtree")
