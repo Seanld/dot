@@ -476,6 +476,8 @@ font settings to look better with variable-width (like sizing)."
 
 (setq calc-window-height 8)
 
+(setq calc-show-banner nil)
+
 
 
 ;;;;;;;;;;;;;;;;;;
@@ -563,6 +565,15 @@ font settings to look better with variable-width (like sizing)."
 
 ;; Make scratch buffers start in `org-mode' (much nicer to take quick notes in).
 (setq doom-scratch-initial-major-mode 'org-mode)
+
+(setq hl-todo-keyword-faces '(("TODO" warning bold)
+                              ("FIXME" error bold)
+                              ("BUG" error bold)
+                              ("REVIEW" font-lock-keyword-face bold)
+                              ("HACK" font-lock-constant-face bold)
+                              ("DEPRECATED" font-lock-doc-face bold)
+                              ("NOTE" success bold)
+                              ("SOLVED" success bold)))
 
 
 
