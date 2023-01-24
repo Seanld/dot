@@ -103,6 +103,15 @@ the current one (like in Spacemacs)."
 (setq doom-localleader-key ",")
 (setq doom-localleader-alt-key "M-,")
 
+(defun insert-unicode (char-code)
+  (interactive)
+  (let* ((point-before (point))
+         (next-point (+ point-before 1)))
+    (push-mark)
+    (goto-char next-point)
+    (insert-char char-code)
+    (goto-char next-point)))
+
 (map! "<f12>" #'kill-this-buffer
       "<C-f12>" #'kill-buffer-and-window
       "<f11>" #'delete-window
@@ -143,9 +152,11 @@ the current one (like in Spacemacs)."
       ;; Frequently-used Unicode symbols.
       (:prefix ("i S" . "symbols")
         :desc "Pi"
-        "p" (cmd! (insert-char #x03c0))
+        "p" (insert-unicode #x03c0)
         :desc "Square root"
-        "q" (cmd! (insert-char #x221a)))
+        "q" (insert-unicode #x221a)
+        :desc "Degrees"
+        "d" (insert-unicode #x00b0))
 
       ;; These are other bigger applications that aren't simple
       ;; small functions (RSS reader, email, browser, etc)
