@@ -7,11 +7,12 @@
  '(custom-safe-themes
    '("279cc6cfc2e7576109be286e7a1f5fc7b7b4d5c98cc034bf98b5bb7258fe76c9" default))
  '(doom-modeline-buffer-file-name-style 'buffer-name)
- '(elfeed-feeds '("https://lukesmith.xyz/rss.xml"))
+ '(elfeed-feeds
+   '("https://tomfasano.net/rss.xml" "https://raypatrick.xyz/rss.xml" "https://lukesmith.xyz/rss.xml" "https://jacobwsmith.xyz/feed.xml"))
  '(highlight-indent-guides-auto-character-face-perc 50)
  '(highlight-indent-guides-method 'character)
  '(package-selected-packages
-   '(prettier visual-regexp-steroids lorem-ipsum v-mode nginx-mode company-nginx caddyfile-mode gemini-mode basic-mode fennel-mode hy-mode geoip graphql-mode vampyricdark-theme dired-du google-translate common-lisp-snippets org-modern commify olivetti typescript-mode json-navigator why-this cycle-at-point))
+   '(hnreader prettier visual-regexp-steroids lorem-ipsum v-mode nginx-mode company-nginx caddyfile-mode gemini-mode basic-mode fennel-mode hy-mode geoip graphql-mode vampyricdark-theme dired-du google-translate common-lisp-snippets org-modern commify olivetti typescript-mode json-navigator why-this cycle-at-point))
  '(paradox-github-token t)
  '(projectile-ignored-projects nil)
  '(recentf-max-saved-items 400))
@@ -43,3 +44,4 @@
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'erase-buffer 'disabled nil)
+(put 'customize-group 'disabled nil)
