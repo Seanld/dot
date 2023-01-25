@@ -36,8 +36,9 @@
 (package! hy-mode)
 (package! nginx-mode)
 (package! company-nginx)
-;; (package! gemini-mode)
-;; (package! ox-gemini)
+(package! gemini-mode)
+(package! ox-gemini)
+(package! dockerfile-mode)
 
 
 ;; To install a package directly from a remote git repo, you must specify a
