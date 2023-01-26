@@ -487,7 +487,7 @@ font settings to look better with variable-width (like sizing)."
   (bit nil "Binary digit")
 ))
 
-(setq calc-window-height 8)
+(setq calc-window-height 12)
 
 (setq calc-show-banner nil)
 
