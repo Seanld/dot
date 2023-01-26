@@ -12,7 +12,7 @@
  '(highlight-indent-guides-auto-character-face-perc 50)
  '(highlight-indent-guides-method 'character)
  '(package-selected-packages
-   '(hnreader prettier visual-regexp-steroids lorem-ipsum v-mode nginx-mode company-nginx caddyfile-mode gemini-mode basic-mode fennel-mode hy-mode geoip graphql-mode vampyricdark-theme dired-du google-translate common-lisp-snippets org-modern commify olivetti typescript-mode json-navigator why-this cycle-at-point))
+   '(literate-calc-mode calc-at-point calc-prog-utils dockerfile-mode hnreader prettier visual-regexp-steroids lorem-ipsum v-mode nginx-mode company-nginx caddyfile-mode gemini-mode basic-mode fennel-mode hy-mode geoip graphql-mode vampyricdark-theme dired-du google-translate common-lisp-snippets org-modern commify olivetti typescript-mode json-navigator why-this cycle-at-point))
  '(paradox-github-token t)
  '(projectile-ignored-projects nil)
  '(recentf-max-saved-items 400))

@@ -39,7 +39,8 @@
 (package! gemini-mode)
 (package! ox-gemini)
 (package! dockerfile-mode)
-
+(package! calc-at-point) ;; Do mathematical operations on numbers in-place in buffers, via Calc.
+(package! literate-calc-mode) ;; Inline calculation results (can be handy in markup doc buffers).
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
