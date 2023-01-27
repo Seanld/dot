@@ -312,6 +312,8 @@ font settings to look better with variable-width (like sizing)."
 
 (setq lsp-modeline-diagnostics-enable nil)
 
+(setq lsp-progress-function #'ignore)
+
 
 
 ;;;;;;;;;;;;;;
