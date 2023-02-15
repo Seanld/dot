@@ -94,6 +94,12 @@ the current one (like in Spacemacs)."
   (+make/run-last)
   (+popup/close-all))
 
+(defun pop-global-mark-centered ()
+  "Same as `pop-global-mark' but centers the line in the window as well."
+  (interactive)
+  (pop-global-mark)
+  (evil-scroll-line-to-center (line-number-at-pos)))
+
 
 
 ;;;;;;;;;;;;;;
@@ -146,17 +152,18 @@ the current one (like in Spacemacs)."
       "|" #'quick-align-spaced
       "f m" #'make-directory
       "s E" #'iedit-mode
-      "@" #'pop-global-mark
+      "@" #'pop-global-mark-centered
       "z" #'evil-toggle-fold
+      "g j" #'vc-refresh-state
 
-      ;; Frequently-used Unicode symbols.
-      (:prefix ("i S" . "symbols")
-        :desc "Pi"
-        "p" (insert-unicode #x03c0)
-        :desc "Square root"
-        "q" (insert-unicode #x221a)
-        :desc "Degrees"
-        "d" (insert-unicode #x00b0))
+      ;; ;; Frequently-used Unicode symbols.
+      ;; (:prefix ("i S" . "symbols")
+      ;;   :desc "Pi"
+      ;;   "p" (insert-unicode #x03c0)
+      ;;   :desc "Square root"
+      ;;   "q" (insert-unicode #x221a)
+      ;;   :desc "Degrees"
+      ;;   "d" (insert-unicode #x00b0))
 
       ;; These are other bigger applications that aren't simple
       ;; small functions (RSS reader, email, browser, etc)
@@ -541,6 +548,14 @@ font settings to look better with variable-width (like sizing)."
 (map! :leader "v" #'er/expand-region)
 (setq expand-region-contract-fast-key "c")
 (setq expand-region-reset-fast-key "q")
+
+;; These are primarily done for lsp-mode performance reasons.
+(setq gc-cons-threshold 80000000)
+(setq lsp-idle-delay 0.25)
+
+;; Make the indent lines more blocky (and possibly more performant).
+(setq highlight-indent-guides-method 'column)
+(setq highlight-indent-guides-delay 0.2)
 
 ;; Don't say the annoying "LSP connected" message every time
 ;; I open a file. It's so janky.
