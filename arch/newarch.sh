@@ -115,8 +115,8 @@ git clone -b master git://git.sv.gnu.org/emacs.git;
 # setup script.
 cd emacs;
 ./autogen.sh;
-./configure --with-mailutils --with-sound=yes --with-x-toolkit=gtk3 \
-            --with-imagemagick --with-json --with-xwidgets --with-file-notification=yes \
+./configure --with-mailutils --with-pop --with-sound --with-x-toolkit=gtk3 \
+            --with-imagemagick --with-tree-sitter --with-json --with-xwidgets --with-file-notification \
             --with-cairo --with-modules --with-gnutls --with-xml2 --with-xft --with-xpm --with-native-compilation \
             CFLAGS="-O2 -mtune=native -march=native -fomit-frame-pointer";
 make bootstrap;
