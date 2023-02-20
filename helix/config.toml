@@ -1,0 +1,17 @@
+theme = "dracula"
+
+[editor]
+shell = ["zsh", "-c"]
+scrolloff = 5
+idle-timeout = 500 # Timeout for e.g. autocomplete.
+bufferline = "multiple" # Display bufferline if multiple buffers are open.
+color-modes = true # Change mode indicator color depending on active mode.
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.indent-guides]
+render = true
+character = "┊"
