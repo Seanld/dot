@@ -553,9 +553,12 @@ font settings to look better with variable-width (like sizing)."
 (setq gc-cons-threshold 80000000)
 (setq lsp-idle-delay 0.25)
 
-;; Make the indent lines more blocky (and possibly more performant).
-(setq highlight-indent-guides-method 'column)
-(setq highlight-indent-guides-delay 0.2)
+;; ;; Make the indent lines more blocky (and possibly more performant).
+;; (setq highlight-indent-guides-method 'column)
+;; (setq highlight-indent-guides-delay 0.2)
+
+;; Dotted line for indent guides.
+(setq highlight-indent-guides-character 9482)
 
 ;; Don't say the annoying "LSP connected" message every time
 ;; I open a file. It's so janky.
