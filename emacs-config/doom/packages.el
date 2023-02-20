@@ -15,7 +15,6 @@
 (package! evil-tree-edit)
 (package! nasm-mode)
 (package! flymake-nasm)
-(package! csv-mode)
 (package! company-irony)
 (package! elpher)
 (package! cycle-at-point)
@@ -30,10 +29,8 @@
 (package! paradox)
 (package! common-lisp-snippets)
 (package! graphql-mode)
-(package! fennel-mode)
 (package! basic-mode)
 (package! caddyfile-mode)
-(package! hy-mode)
 (package! nginx-mode)
 (package! company-nginx)
 (package! gemini-mode)
@@ -58,6 +55,11 @@
 ;; More generic than `company-ispell' as it can take other backends (aspell).
 (package! company-spell
   :recipe (:host github :repo "enzuru/company-spell"))
+
+;; ;; Pin to fix issue with package update.
+;; (package! transient :pin "c2bdf7e12c530eb85476d3aef317eb2941ab9440")
+;; (package! with-editor :pin "391e76a256aeec6b9e4cbd733088f30c677d965b")
+;; (package! vertico :pin "af1c893f3891902162e32f73f062213436636567")
 
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify
