@@ -605,6 +605,9 @@ font settings to look better with variable-width (like sizing)."
                               ("NOTE" success bold)
                               ("SOLVED" success bold)))
 
+;; The default of 1 second is too sluggish to me.
+(setq flycheck-idle-change-delay 0.6)
+
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:
