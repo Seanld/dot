@@ -458,6 +458,9 @@ font settings to look better with variable-width (like sizing)."
 ;; inserting extraneous symbols, and add handy `:localleader' keys.
 (add-hook 'web-mode-hook (lambda ()
                            (smartparens-mode -1)
+                           ;; Disable dtrt-indent-mode silently (it outputs a message normally).
+                           (let ((inhibit-message t))
+                             (dtrt-indent-mode -1))
                            (setq company-backends '(company-web-html))))
 
 ;; This is the indentation value used by `mhtml-mode' as well.
