@@ -240,6 +240,12 @@ font settings to look better with variable-width (like sizing)."
   (interactive)
   (org-insert-time-stamp (current-time) t))
 
+;; Used for markup modes (Markdown, Org) that I want centered on the
+;; screen to make it easier to read, and prevent lines from being too long.
+(defun markup-centerize ()
+  (olivetti-mode 1)
+  (olivetti-set-width 100))
+
 (after! org
   (map! :localleader
         :map org-mode-map
@@ -253,8 +259,8 @@ font settings to look better with variable-width (like sizing)."
         (:prefix ("B" . "babel")
          "h" #'org-babel-insert-header-arg)
         (:prefix ("s" . "tree/subtree")
-         "s" #'org-sparse-indirect))
 
+         "s" #'org-sparse-indirect))
   (setq org-publish-project-alist
         '(("houston-wiki"
            :base-directory "~/repos/houston-wiki/org"
@@ -280,9 +286,7 @@ font settings to look better with variable-width (like sizing)."
   (setq org-enforce-todo-dependencies t)
   (add-hook 'org-mode-hook (lambda ()
                              (if (= (count-windows) 1)
-                                 (progn
-                                   (olivetti-mode 1)
-                                   (olivetti-set-width 100)))
+                                 (markup-centerize))
                              (org-indent-mode 1)
                              (highlight-indent-guides-mode -1)
                              (display-line-numbers-mode -1))))
@@ -294,8 +298,7 @@ font settings to look better with variable-width (like sizing)."
 ;;;;;;;;;;;;;;;;;;;;;
 
 (add-hook 'markdown-mode-hook (lambda ()
-                                (olivetti-mode 1)
-                                (olivetti-set-width 100)))
+                                (markup-centerize)))
 
 (custom-set-faces!
   ;; Titles
@@ -457,7 +460,7 @@ font settings to look better with variable-width (like sizing)."
 ;; TODO make `web-mode' more effective at auto-complete, without
 ;; inserting extraneous symbols, and add handy `:localleader' keys.
 (add-hook 'web-mode-hook (lambda ()
-                           (smartparens-mode -1)
+                           ;; (smartparens-mode -1)
                            ;; Disable dtrt-indent-mode silently (it outputs a message normally).
                            (let ((inhibit-message t))
                              (dtrt-indent-mode -1))
