@@ -54,6 +54,7 @@ source $ZSH/oh-my-zsh.sh
 
 export PATH=$PATH:/home/seanld/repos/lua-language-server/bin/Linux
 export PATH=$PATH:/home/seanld/.emacs.d/bin # Doom Emacs command
+export PATH=$PATH:/home/seanld/.config/emacs/bin
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
