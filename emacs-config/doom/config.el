@@ -100,6 +100,14 @@ the current one (like in Spacemacs)."
   (pop-global-mark)
   (evil-scroll-line-to-center (line-number-at-pos)))
 
+(defun micro-beginning-of-line ()
+  "Imitates beginning-of-line functionality from Micro."
+  (interactive)
+  (let ((col (evil-column)))
+    (if (= col 0)
+        (back-to-indentation)
+      (beginning-of-line))))
+
 
 
 ;;;;;;;;;;;;;;
@@ -178,6 +186,9 @@ the current one (like in Spacemacs)."
       (:prefix ("c F" . "flycheck")
         "[" #'flycheck-previous-error
         "]" #'flycheck-next-error))
+
+(map! :after evil
+      :gni "<home>" #'micro-beginning-of-line)
 
 
 
