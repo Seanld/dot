@@ -112,6 +112,8 @@ export PATH="${PATH}:${GOPATH}/bin"
 
 alias luamake=/home/seanld/repos/lua-language-server/3rd/luamake/luamake
 
+alias ntfydone="ntfy pub \"http://seanld.xyz:4447/cmdalert\" \"It's done bitch\" &> /dev/null"
+
 # bun completions
 [ -s "/home/seanld/.bun/_bun" ] && source "/home/seanld/.bun/_bun"
 
