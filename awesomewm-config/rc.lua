@@ -477,6 +477,24 @@ globalkeys = mytable.join(
             beautiful.volume.update()
         end,
         {description = "volume 0%", group = "hotkeys"}),
+    awful.key({ altkey, "Control" }, "0",
+        function ()
+            os.execute(string.format("amixer -q set %s 0%%", beautiful.volume.channel))
+            beautiful.volume.update()
+        end,
+        {description = "volume 0%", group = "hotkeys"}),
+    awful.key({}, "XF86AudioLowerVolume",
+        function ()
+            os.execute("amixer set Master 5%-")
+            beautiful.volume.update()
+        end,
+        {description = "Lower volume by 5%", group = "hotkeys"}),
+    awful.key({}, "XF86AudioRaiseVolume",
+        function ()
+            os.execute("amixer set Master 5%+")
+            beautiful.volume.update()
+        end,
+        {description = "Raise volume by 5%", group = "hotkeys"}),
 
     -- Firefox-specific media control bindings.
     awful.key({}, "XF86AudioPlay",
