@@ -50,6 +50,15 @@ function notify_formatted {
 }
 
 
+function killport {
+    if [[ -z $1 ]]; then
+        echo "No port given!";
+    else
+        sudo kill -9 $(sudo lsof -t -i:$1);
+    fi
+}
+
+
 source $ZSH/oh-my-zsh.sh
 
 export PATH=$PATH:/home/seanld/repos/lua-language-server/bin/Linux
