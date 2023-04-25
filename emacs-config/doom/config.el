@@ -562,8 +562,8 @@ font settings to look better with variable-width (like sizing)."
 
 ;; Expand region bindings, similar to those in
 ;; Spacemacs (this is way better than the default).
-(map! :leader "v" #'er/expand-region)
-(setq expand-region-contract-fast-key "c")
+(map! :leader "j" #'er/expand-region)
+(setq expand-region-contract-fast-key "k")
 (setq expand-region-reset-fast-key "q")
 
 ;; These are primarily done for lsp-mode performance reasons.
