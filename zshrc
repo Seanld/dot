@@ -126,7 +126,6 @@ function ntfysend {
 }
 
 function ntfydone {
-    # ntfy pub "http://seanld.xyz:4447/cmdalert" $1 &> /dev/null
     ntfysend "cmdalert" "It's done bitch";
 }
 
