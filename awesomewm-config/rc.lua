@@ -266,9 +266,9 @@ globalkeys = mytable.join(
     -- Take a screenshot
     -- https://github.com/lcpz/dots/blob/master/bin/screenshot
     awful.key({ modkey }, "p", function()
-            -- Run gnome-screenshot asynchronously, but don't do anything
-            -- with the output. Calling it non-async freezes the WM.
-            awful.spawn.easy_async("gnome-screenshot -i", function() end)
+            -- Use escrotum to screenshot a selected screen region,
+            -- and copy it to the clipboard.
+            awful.spawn.easy_async("escrotum -sC", function() end)
         end,
         {description = "take a screenshot", group = "hotkeys"}),
     -- Toggle Mullvad VPN on and off.
