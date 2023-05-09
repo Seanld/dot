@@ -327,6 +327,15 @@ font settings to look better with variable-width (like sizing)."
 
 
 
+;;;;;;;;;;;;;;;;;
+;; YAML CONFIG ;;
+;;;;;;;;;;;;;;;;;
+
+(add-hook 'yaml-mode-hook (lambda ()
+                            (face-remap-add-relative 'font-lock-variable-name-face '(:foreground "#bd93f9"))))
+
+
+
 ;;;;;;;;;;;;;;;;;;;
 ;; PYTHON CONFIG ;;
 ;;;;;;;;;;;;;;;;;;;
