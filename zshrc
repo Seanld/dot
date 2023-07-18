@@ -115,6 +115,8 @@ alias screen="screen -T screen-256color"
 # "gc" is already a commonly-installed command name.
 alias qc="git clone ";
 
+alias pat="bat -p"
+
 # Add Go stuff to make it function properly.
 export GOPATH="$(go env GOPATH)"
 export PATH="${PATH}:${GOPATH}/bin"
@@ -127,6 +129,10 @@ function ntfysend {
 
 function ntfydone {
     ntfysend "cmdalert" "It's done bitch";
+}
+
+function colorpick {
+    xcolor | xclip -sel clip
 }
 
 # bun completions
