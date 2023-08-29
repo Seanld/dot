@@ -497,6 +497,7 @@ font settings to look better with variable-width (like sizing)."
 
 ;; This is the indentation value used by `mhtml-mode' as well.
 (setq sgml-basic-offset 4)
+(setq web-mode-script-padding 4)
 
 
 
