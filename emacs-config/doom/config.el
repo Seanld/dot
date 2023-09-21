@@ -498,6 +498,8 @@ font settings to look better with variable-width (like sizing)."
 ;; This is the indentation value used by `mhtml-mode' as well.
 (setq sgml-basic-offset 4)
 (setq web-mode-script-padding 4)
+(setq web-mode-style-padding 4)
+(setq web-mode-part-padding 4)
 
 
 
@@ -647,6 +649,10 @@ font settings to look better with variable-width (like sizing)."
 
 ;; The default of 1 second is too sluggish to me.
 (setq flycheck-idle-change-delay 0.6)
+
+;; Set threshold above which so-long-mode is invoked and corners are cut
+;; to improve performance.
+(setq so-long-threshold 1000)
 
 
 
