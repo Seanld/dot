@@ -9,6 +9,7 @@
   (B "byte" "8 bit byte")
   (byte "8 * bit" "8 bit byte")
   (bit nil "Binary digit")
+  (tau "2 * pi" "Tau")
 ))
 ;;; End of custom units
 
