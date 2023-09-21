@@ -154,3 +154,13 @@ export XDG_RUNTIME_DIR=/run/user/$(id -u)
 
 # Make samurai (ninja replacement) limited to 6 cores.
 export SAMUFLAGS=-j6
+
+# if [[ "$TERM" == "dumb" ]]
+# then
+#     unsetopt zle
+#     unsetopt prompt_cr
+#     unsetopt prompt_subst
+#     unfunction precmd
+#     unfunction preexec
+#     PS1='$ '
+# fi
