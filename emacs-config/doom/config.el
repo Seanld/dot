@@ -454,6 +454,9 @@ font settings to look better with variable-width (like sizing)."
 (eval-after-load 'js '(progn
                         (setq js--prettify-symbols-alist nil)))
 
+(add-hook! rjsx-mode-hook (lambda ()
+                            (setq sgml-basic-offset 2)))
+
 
 
 ;;;;;;;;;;;;;;;;
