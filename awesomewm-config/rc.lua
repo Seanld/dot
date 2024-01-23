@@ -88,7 +88,7 @@ end
 
 -- Running Picom with `--experimental-backends` allows for Gaussian blur on
 -- the background of windows, but introduces a lot of lag, at least on a GT 710.
-run_once({ "picom --config /home/$USER/.config/picom/picom-blur.conf", "unclutter --timeout 2 &"}) -- comma-separated entries
+run_once({ "picom &", "unclutter --timeout 2 &"}) -- comma-separated entries
 
 -- This function implements the XDG autostart specification
 --[[
@@ -271,6 +271,11 @@ globalkeys = mytable.join(
             awful.spawn.easy_async("escrotum -sC", function() end)
         end,
         {description = "take a screenshot", group = "hotkeys"}),
+    -- Open color picker, and copy color hex to clipboard.
+    awful.key({ modkey, altkey }, "c", function()
+            awful.spawn.easy_async("xcolor | xclip -sel clip", function() end)
+        end,
+        {description = "take a screenshot", group = "hotkeys"}),
     -- Toggle Mullvad VPN on and off.
     awful.key({ modkey }, "v", function()
             awful.spawn.easy_async(HOME .. "/scripts/mullvad.sh", function() end)
@@ -415,6 +420,8 @@ globalkeys = mytable.join(
               {description = "quit awesome", group = "awesome"}),
     awful.key({ modkey }, "e", function () awful.spawn("emacs") end,
               {description = "start emacs", group = "launcher"}),
+    awful.key({ modkey, altkey }, "t", function () awful.spawn.with_shell('timeclock') end,
+              {description = "start timeclock", group = "launcher"}),
 
     awful.key({ modkey, "Control" }, "Up",     function () awful.tag.incmwfact(0.02)         end,
               {description = "increase master width factor", group = "layout"}),
@@ -446,7 +453,7 @@ globalkeys = mytable.join(
               {description = "dropdown application", group = "launcher"}),
 
     -- Widgets popups
-    awful.key({ altkey, }, "c", function () if beautiful.cal then beautiful.cal.show(7) end end,
+    awful.key({ modkey, }, "c", function () if beautiful.cal then beautiful.cal.show(7) end end,
               {description = "show calendar", group = "widgets"}),
     awful.key({ altkey, }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,
               {description = "show filesystem", group = "widgets"}),
@@ -477,24 +484,6 @@ globalkeys = mytable.join(
             beautiful.volume.update()
         end,
         {description = "volume 0%", group = "hotkeys"}),
-    awful.key({ altkey, "Control" }, "0",
-        function ()
-            os.execute(string.format("amixer -q set %s 0%%", beautiful.volume.channel))
-            beautiful.volume.update()
-        end,
-        {description = "volume 0%", group = "hotkeys"}),
-    awful.key({}, "XF86AudioLowerVolume",
-        function ()
-            os.execute("amixer set Master 5%-")
-            beautiful.volume.update()
-        end,
-        {description = "Lower volume by 5%", group = "hotkeys"}),
-    awful.key({}, "XF86AudioRaiseVolume",
-        function ()
-            os.execute("amixer set Master 5%+")
-            beautiful.volume.update()
-        end,
-        {description = "Raise volume by 5%", group = "hotkeys"}),
 
     -- Firefox-specific media control bindings.
     awful.key({}, "XF86AudioPlay",
@@ -549,6 +538,18 @@ globalkeys = mytable.join(
             os.execute("playerctl position 5- -p spotify")
         end,
         {description = "Spotify seek 5 seconds backward", group = "hotkeys"}),
+
+    -- Display-switching keybinds.
+    awful.key({ modkey }, "F1",
+        function ()
+            os.execute("doas /home/seanld/scripts/display-switcher.sh set host")
+        end,
+        {description = "Set monitor to host display", group = "hotkeys"}),
+    awful.key({ modkey }, "F2",
+        function ()
+            os.execute("doas /home/seanld/scripts/display-switcher.sh set vm")
+        end,
+        {description = "Set monitor to guest display", group = "hotkeys"}),
 
 
 
@@ -784,6 +785,7 @@ awful.rules.rules = {
           "Kruler",
           "MessageWin",  -- kalarm.
           "Sxiv",
+          "Nsxiv",
           "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
           "Wpa_gui",
           "veromix",
@@ -797,6 +799,7 @@ awful.rules.rules = {
         -- and the name shown there might not match defined rules here.
         name = {
           "Event Tester",  -- xev.
+          "Library", -- Librewolf bookmarks browser (need a better solution).
         },
         role = {
           "AlarmWindow",  -- Thunderbird's calendar.
