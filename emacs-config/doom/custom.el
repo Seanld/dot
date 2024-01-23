@@ -8,10 +8,11 @@
    '("279cc6cfc2e7576109be286e7a1f5fc7b7b4d5c98cc034bf98b5bb7258fe76c9" default))
  '(doom-modeline-buffer-file-name-style 'buffer-name)
  '(elfeed-feeds
-   '("https://jacobwsmith.xyz/rss.xml" "https://tomfasano.net/articles/rss.xml" "https://raypatrick.xyz/rss.xml"))
+   '("https://raypatrick.xyz/rss.xml" "https://tomfasano.net/articles/rss.xml" "https://jacobwsmith.xyz/rss.xml"))
  '(highlight-indent-guides-auto-character-face-perc 50)
  '(highlight-indent-guides-method 'character)
- '(lsp-progress-function 'ignore t)
+ '(lsp-progress-function 'ignore)
+ '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
  '(package-selected-packages
    '(systemd spice-mode literate-calc-mode calc-at-point calc-prog-utils dockerfile-mode prettier visual-regexp-steroids lorem-ipsum v-mode nginx-mode company-nginx caddyfile-mode gemini-mode basic-mode fennel-mode hy-mode geoip graphql-mode vampyricdark-theme dired-du google-translate common-lisp-snippets org-modern commify olivetti typescript-mode json-navigator why-this cycle-at-point))
  '(paradox-github-token t)
