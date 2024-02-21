@@ -452,10 +452,11 @@ font settings to look better with variable-width (like sizing)."
 ;; For some reason, `js-mode' wants to handle ligatures for arrow symbols
 ;; on its own, when that's not its job. Disable.
 (eval-after-load 'js '(progn
-                        (setq js--prettify-symbols-alist nil)))
+                        (setq js--prettify-symbols-alist nil)
+                        (setq standard-indent 2)))
 
-(add-hook! rjsx-mode-hook (lambda ()
-                            (setq sgml-basic-offset 2)))
+(setq sgml-basic-offset 2)
+(setq js-indent-level 2)
 
 
 
@@ -657,6 +658,16 @@ font settings to look better with variable-width (like sizing)."
 ;; to improve performance.
 (setq so-long-threshold 1000)
 
+;; These are enabled because the dev says they
+;; have them enabled on the README.
+(setq typst-ts-mode-watch-options "--open")
+(setq typst-ts-mode-enable-raw-blocks-highlight t)
+(setq typst-ts-mode-highlight-raw-blocks-at-startup t)
+
+(map! :map typst-ts-mode-map
+      :localleader
+      "," #'typst-ts-mode-compile
+      "." #'typst-ts-mode-compile-and-preview)
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:

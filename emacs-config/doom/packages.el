@@ -62,6 +62,19 @@
 (package! company-spell
   :recipe (:host github :repo "enzuru/company-spell"))
 
+
+;; Typst is a modern alternative to LaTeX.
+;; --------------
+;; This needs to be run once on a new setup to install the grammar:
+;;
+;; (add-to-list 'treesit-language-source-alist
+;;              '(typst "https://github.com/uben0/tree-sitter-typst"))
+;; (treesit-install-language-grammar 'typst)
+(package! typst-ts-mode
+  :recipe (:host sourcehut :repo "meow_king/typst-ts-mode"))
+
+
+
 ;; ;; Pin to fix issue with package update.
 ;; (package! transient :pin "c2bdf7e12c530eb85476d3aef317eb2941ab9440")
 ;; (package! with-editor :pin "391e76a256aeec6b9e4cbd733088f30c677d965b")
