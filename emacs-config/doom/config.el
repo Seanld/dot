@@ -669,6 +669,14 @@ font settings to look better with variable-width (like sizing)."
       "," #'typst-ts-mode-compile
       "." #'typst-ts-mode-compile-and-preview)
 
+;; Make `exec-path' match shell $PATH.
+(let ((path-from-shell (replace-regexp-in-string
+                        "[ \t\n]*$" "" (shell-command-to-string
+                                        "$SHELL --login -c 'echo $PATH'"
+                                        ))))
+  (setenv "PATH" path-from-shell)
+  (setq exec-path (split-string path-from-shell path-separator)))
+
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;

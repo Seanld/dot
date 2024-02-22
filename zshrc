@@ -145,9 +145,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # Nimble executable path
 export PATH="/home/seanld/.nimble/bin:$PATH"
 
-# Rust executable path
-export PATH="/home/seanld/.cargo/bin:$PATH"
-
 # My systemd user-level services are saying "failed to connect to bus"
 # and this fixes it. No clue why yet.
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
