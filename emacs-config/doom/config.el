@@ -446,7 +446,7 @@ font settings to look better with variable-width (like sizing)."
 
 (setq lsp-eslint-enable nil)
 
-(setq js2-basic-offset 4)
+(setq js2-basic-offset 2)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
 
 ;; For some reason, `js-mode' wants to handle ligatures for arrow symbols
@@ -454,6 +454,9 @@ font settings to look better with variable-width (like sizing)."
 (eval-after-load 'js '(progn
                         (setq js--prettify-symbols-alist nil)
                         (setq standard-indent 2)))
+
+(eval-after-load 'rjsx-mode '(progn
+                               (setq sgml-basic-offset 2)))
 
 (setq sgml-basic-offset 2)
 (setq js-indent-level 2)
