@@ -335,6 +335,25 @@ font settings to look better with variable-width (like sizing)."
 
 
 
+;;;;;;;;;;;;;;;;;;
+;; TYPST CONFIG ;;
+;;;;;;;;;;;;;;;;;;
+
+;; These are enabled because the dev says they
+;; have them enabled on the README.
+(setq typst-ts-mode-watch-options "--open")
+(setq typst-ts-mode-enable-raw-blocks-highlight t)
+(setq typst-ts-mode-highlight-raw-blocks-at-startup t)
+
+(map! :map typst-ts-mode-map
+      :localleader
+      "," #'typst-ts-mode-compile
+      "." #'typst-ts-mode-compile-and-preview)
+
+(setq typst-ts-mode-indent-offset 2)
+
+
+
 ;;;;;;;;;;;;;;;;;
 ;; YAML CONFIG ;;
 ;;;;;;;;;;;;;;;;;
@@ -660,17 +679,6 @@ font settings to look better with variable-width (like sizing)."
 ;; Set threshold above which so-long-mode is invoked and corners are cut
 ;; to improve performance.
 (setq so-long-threshold 1000)
-
-;; These are enabled because the dev says they
-;; have them enabled on the README.
-(setq typst-ts-mode-watch-options "--open")
-(setq typst-ts-mode-enable-raw-blocks-highlight t)
-(setq typst-ts-mode-highlight-raw-blocks-at-startup t)
-
-(map! :map typst-ts-mode-map
-      :localleader
-      "," #'typst-ts-mode-compile
-      "." #'typst-ts-mode-compile-and-preview)
 
 ;; Make `exec-path' match shell $PATH.
 (let ((path-from-shell (replace-regexp-in-string
