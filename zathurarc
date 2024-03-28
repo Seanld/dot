@@ -1,2 +1,3 @@
 set window-width 1200
-set window-height 800
+set window-height 864
+set database sqlite
