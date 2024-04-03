@@ -463,9 +463,11 @@ font settings to look better with variable-width (like sizing)."
 ;; JAVASCRIPT CONFIG ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq lsp-eslint-enable nil)
+(setq sgml-basic-offset 2
+      js-indent-level 2
+      js2-basic-offset 2
+      lsp-eslint-enable nil)
 
-(setq js2-basic-offset 2)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
 
 ;; For some reason, `js-mode' wants to handle ligatures for arrow symbols
@@ -477,21 +479,25 @@ font settings to look better with variable-width (like sizing)."
 (eval-after-load 'rjsx-mode '(progn
                                (setq sgml-basic-offset 2)))
 
-(setq sgml-basic-offset 2)
-(setq js-indent-level 2)
-
 
 
 ;;;;;;;;;;;;;;;;
 ;; NIM CONFIG ;;
 ;;;;;;;;;;;;;;;;
 
-(setq nim-compile-default-command '("c" "-r" "--hint[Processing]:off" "--excessiveStackTrace:on"))
+;; (after!
+;;   (add-hook 'nim-mode (lambda ()
+;;                         (flycheck-mode nil)
+;;                         (lsp nil))))
 
-(after!
-  (add-hook 'nim-mode (lambda ()
-                        (flycheck-mode nil)
-                        (lsp nil))))
+(setq nim-use-flycheck-nimsuggest nil
+      nimsuggest-path ""
+      nim-compile-default-command '("c" "-r" "--hint[Processing]:off" "--excessiveStackTrace:on"))
+
+(use-package! nim-mode
+  :ensure t
+  :hook
+  (nim-mode . lsp))
 
 
 
