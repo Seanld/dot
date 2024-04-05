@@ -138,7 +138,8 @@ awful.layout.layouts = {
     lain.layout.centerwork,
     lain.layout.centerwork.horizontal,
     -- lain.layout.termfair,
-    -- lain.layout.termfair.center
+    -- lain.layout.termfair.center,
+    lain.layout.termfair.stable,
 }
 
 lain.layout.termfair.nmaster           = 3
