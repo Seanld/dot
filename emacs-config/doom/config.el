@@ -171,6 +171,7 @@ the current one (like in Spacemacs)."
       "@" #'pop-global-mark-centered
       "z" #'evil-toggle-fold
       "g j" #'vc-refresh-state
+      "c R" #'lsp-workspace-restart
 
       ;; ;; Frequently-used Unicode symbols.
       ;; (:prefix ("i S" . "symbols")
@@ -499,6 +500,8 @@ font settings to look better with variable-width (like sizing)."
   :hook
   (nim-mode . lsp))
 
+(add-hook! 'nim-mode-hook #'lsp)
+
 
 
 ;;;;;;;;;;;;;;;;
@@ -622,7 +625,7 @@ font settings to look better with variable-width (like sizing)."
 
 ;; These are primarily done for lsp-mode performance reasons.
 (setq gc-cons-threshold 80000000)
-(setq lsp-idle-delay 0.25)
+(setq lsp-idle-delay 0.15)
 
 ;; ;; Make the indent lines more blocky (and possibly more performant).
 ;; (setq highlight-indent-guides-method 'column)
