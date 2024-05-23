@@ -100,9 +100,8 @@ alias dbeaver="/usr/share/dbeaver/dbeaver"
 alias calc-mode="emacs -f full-calc"
 alias calc-term="emacs -nw -f full-calc"
 
-# Shortcuts for launching a client of a running Emacs daemon in a new
-# frame , but using Spacemacs naming, since that's the flavor I use.
 alias ec="emacsclient"
+alias ee="emacsclient -n"
 
 # Shortcut for arduino-cli.
 alias ard="arduino-cli"
