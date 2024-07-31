@@ -40,14 +40,9 @@ echo "Set a password for your new account!";
 passwd $newusername;
 echo;
 
-echo "Enabling DHCPCD, to gain ethernet..."
+echo "Enabling DHCPCD, to gain ethernet connection..."
 pacman -S dhcpcd;
 systemctl enable dhcpcd.service;
-echo;
-
-echo "Installing doas and giving new user permissions...";
-pacman -S doas;
-echo "permit persist $newusername" >> /etc/doas.conf;
 echo;
 
 echo "Enabling multilib repository...";
@@ -105,7 +100,8 @@ sleep 3s;
 echo;
 
 echo "Installing user software...";
-pacman -S python3 alacritty tmux htop mc amfora unzip httpie ncdu gparted wine npm;
+pacman -S python alacritty tmux htop unzip ncdu gparted wine
+          rofi btop neovim zsh qalc;
 echo;
 
 echo "Downloading, building, and installing the latest Emacs...";
