@@ -26,8 +26,11 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-dracula-custom)
-;; (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 14))
+;; (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 15))
 (setq doom-font (font-spec :family "Iosevka Custom Medium" :size 16))
+;; (setq doom-font (font-spec :family "BlexMono Nerd Font" :size 16 :width 'condensed :height (lambda (starting-height)
+;;                                                                                              (message starting-height)
+;;                                                                                              (* starting-height 2))))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -47,14 +50,6 @@
   "Auto aligns columns of regions laid-out like Linux's fstab."
   (interactive "r")
     (align-regexp start end "\\( +\\)" 1 2 t))
-
-(defun sum-line ()
-  (interactive)
-  (evil-append-line 0)
-  (insert "  =")
-  (insert (number-to-string (-sum (mapcar (lambda (x) (string-to-number x))
-                                          (split-string (thing-at-point 'line t)
-                                                        " "))))))
 
 (defun scroll-up-several-lines ()
   (interactive)
@@ -262,9 +257,10 @@ font settings to look better with variable-width (like sizing)."
 
 ;; Used for markup modes (Markdown, Org) that I want centered on the
 ;; screen to make it easier to read, and prevent lines from being too long.
-(defun markup-centerize ()
-  (olivetti-mode 1)
-  (olivetti-set-width 100))
+;; (defun markup-centerize ()
+;;   (olivetti-mode 1)
+;;   (olivetti-set-width 100))
+(defun markup-centerize ())
 
 (after! org
   (map! :localleader
@@ -369,9 +365,8 @@ font settings to look better with variable-width (like sizing)."
 ;; PYTHON CONFIG ;;
 ;;;;;;;;;;;;;;;;;;;
 
-(setq lsp-modeline-diagnostics-enable nil)
-
-(setq lsp-progress-function #'ignore)
+(setq lsp-modeline-diagnostics-enable nil
+      lsp-progress-function #'ignore)
 
 
 
@@ -480,6 +475,11 @@ font settings to look better with variable-width (like sizing)."
 (eval-after-load 'rjsx-mode '(progn
                                (setq sgml-basic-offset 2)))
 
+(setq typescript-indent-level 2
+      web-mode-code-indent-offset 2
+      web-mode-css-indent-offset 2
+      web-mode-markup-indent-offset 2)
+
 
 
 ;;;;;;;;;;;;;;;;
@@ -568,6 +568,7 @@ font settings to look better with variable-width (like sizing)."
   (byte "8 * bit" "8 bit byte")
   (bit nil "Binary digit")
   (tau "2 * pi" "Tau")
+  ;; (W "V * A")
 ))
 
 (setq calc-window-height 12)
@@ -617,6 +618,15 @@ font settings to look better with variable-width (like sizing)."
 ;; MISC CONFIG ;;
 ;;;;;;;;;;;;;;;;;
 
+(setq flycheck-xml-xmlstarlet-executable "xsd")
+
+(add-hook! 'prog-mode-hook
+           (lambda ()
+             (setq prettify-symbols-alist
+                   '(("lambda" . ?λ)
+                     ("sqrt"   . ?√)))
+             (prettify-symbols-mode 1)))
+
 ;; Expand region bindings, similar to those in
 ;; Spacemacs (this is way better than the default).
 (map! :leader "j" #'er/expand-region)
@@ -626,6 +636,7 @@ font settings to look better with variable-width (like sizing)."
 ;; These are primarily done for lsp-mode performance reasons.
 (setq gc-cons-threshold 80000000)
 (setq lsp-idle-delay 0.15)
+(setq lsp-ui-doc-delay 0.3)
 
 ;; ;; Make the indent lines more blocky (and possibly more performant).
 ;; (setq highlight-indent-guides-method 'column)
