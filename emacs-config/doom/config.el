@@ -652,6 +652,9 @@ font settings to look better with variable-width (like sizing)."
 ;; Disable LSP lenses by default (they just clutter the code).
 (setq lsp-lens-enable nil)
 
+;; LSP action modeline symbol is missing, so replace it.
+(setq lsp-modeline-code-action-fallback-icon "ACTIONS")
+
 (add-to-list 'auto-mode-alist '("\\.mmd\\'" . mermaid-mode))
 
 (defhydra hydra-window-resize (:hint nil)
