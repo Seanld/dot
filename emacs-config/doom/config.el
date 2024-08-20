@@ -623,6 +623,8 @@ font settings to look better with variable-width (like sizing)."
 ;; MISC CONFIG ;;
 ;;;;;;;;;;;;;;;;;
 
+(setq mode-require-final-newline nil)
+
 (add-hook 'eglot-managed-mode-hook (lambda ()
                                      ;; Make Eglot show Yasnippet snippets in completion prompt.
                                      (add-to-list 'company-backends
