@@ -130,6 +130,10 @@ function ntfydone {
     ntfysend "cmdalert" "It's done bitch";
 }
 
+function alerttime {
+    notify-send "$(date)"
+}
+
 function colorpick {
     xcolor | xclip -sel clip
 }
