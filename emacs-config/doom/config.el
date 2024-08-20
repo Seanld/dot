@@ -618,6 +618,17 @@ font settings to look better with variable-width (like sizing)."
 ;; MISC CONFIG ;;
 ;;;;;;;;;;;;;;;;;
 
+
+;; Make Eglot show Yasnippet snippets in completion prompt.
+(add-hook 'eglot-managed-mode-hook (lambda ()
+                                     (add-to-list 'company-backends
+                                                  '(company-capf :with company-yasnippet))
+                                     ;; Make Eglot symbol highlight match lsp-mode.
+                                     (set-face-attribute 'eglot-highlight-symbol-face
+                                                         nil
+                                                         :underline t)))
+
+
 (setq flycheck-xml-xmlstarlet-executable "xsd")
 
 (add-hook! 'prog-mode-hook
