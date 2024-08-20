@@ -194,6 +194,11 @@ the current one (like in Spacemacs)."
 (map! :after evil
       :gni "<home>" #'micro-beginning-of-line)
 
+(map! :after company
+      :map company-active-map
+      "C-TAB" 'yas-next-field-or-maybe-expand
+      "C-<tab>" 'yas-next-field-or-maybe-expand)
+
 
 
 ;;;;;;;;;;;;;;;;
@@ -618,7 +623,6 @@ font settings to look better with variable-width (like sizing)."
 ;; MISC CONFIG ;;
 ;;;;;;;;;;;;;;;;;
 
-
 (add-hook 'eglot-managed-mode-hook (lambda ()
                                      ;; Make Eglot show Yasnippet snippets in completion prompt.
                                      (add-to-list 'company-backends
@@ -627,11 +631,6 @@ font settings to look better with variable-width (like sizing)."
                                      (set-face-attribute 'eglot-highlight-symbol-face
                                                          nil
                                                          :underline t)))
-
-(map! :after company
-      :map company-active-map
-      "C-TAB" 'yas-next-field-or-maybe-expand
-      "C-<tab>" 'yas-next-field-or-maybe-expand)
 
 (setq flycheck-xml-xmlstarlet-executable "xsd")
 
