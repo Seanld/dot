@@ -558,26 +558,28 @@ font settings to look better with variable-width (like sizing)."
 ;; CALC CONFIG ;;
 ;;;;;;;;;;;;;;;;;
 
-(setq math-additional-units '(
-  (PiB "1024 * TB" "Pebibyte")
-  (TiB "1024 * GB" "Tebibyte")
-  (GiB "1024 * MB" "Gibibyte")
-  (MiB "1024 * KB" "Mebibyte")
-  (KiB "1024 * byte" "Kibibyte")
-  (PB "1000 * TB" "Petabyte")
-  (TB "1000 * GB" "Terabyte")
-  (GB "1000 * MB" "Gigabyte")
-  (MB "1000 * KB" "Megabyte")
-  (KB "1000 * byte" "Kilobyte")
-  (B "byte" "8 bit byte")
-  (byte "8 * bit" "8 bit byte")
-  (bit nil "Binary digit")
-  (tau "2 * pi" "Tau")
-  ;; (W "V * A")
-))
+(eval-after-load "calc-units"
+  '(progn
+     (setq math-additional-units '(
+                                   (bit  nil           "Binary digit")
+                                   (byte "8 * bit"     "8 bit byte")
+                                   (B    "byte"        "8 bit byte")
+                                   (KB   "1000 * byte" "Kilobyte")
+                                   (MB   "1000 * KB"   "Megabyte")
+                                   (GB   "1000 * MB"   "Gigabyte")
+                                   (TB   "1000 * GB"   "Terabyte")
+                                   (PB   "1000 * TB"   "Petabyte")
+                                   (KiB  "1024 * byte" "Kibibyte")
+                                   (MiB  "1024 * KiB"   "Mebibyte")
+                                   (GiB  "1024 * MiB"   "Gibibyte")
+                                   (TiB  "1024 * GiB"   "Tebibyte")
+                                   (PiB  "1024 * TiB"   "Pebibyte")
+                                   (tau  "2 * pi"      "Tau")
+                                   ;; (W "V * A")
+                                   ))
+     (setq math-units-table nil)))
 
 (setq calc-window-height 12)
-
 (setq calc-show-banner nil)
 
 
