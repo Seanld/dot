@@ -343,16 +343,15 @@ font settings to look better with variable-width (like sizing)."
 
 ;; These are enabled because the dev says they
 ;; have them enabled on the README.
-(setq typst-ts-mode-watch-options "--open")
-(setq typst-ts-mode-enable-raw-blocks-highlight t)
-(setq typst-ts-mode-highlight-raw-blocks-at-startup t)
+(setq typst-ts-mode-watch-options "--open"
+      typst-ts-mode-enable-raw-blocks-highlight t
+      typst-ts-mode-highlight-raw-blocks-at-startup t
+      typst-ts-mode-indent-offset 2)
 
 (map! :map typst-ts-mode-map
       :localleader
       "," #'typst-ts-mode-compile
       "." #'typst-ts-mode-compile-and-preview)
-
-(setq typst-ts-mode-indent-offset 2)
 
 
 
@@ -536,10 +535,10 @@ font settings to look better with variable-width (like sizing)."
                            (setq company-backends '(company-web-html))))
 
 ;; This is the indentation value used by `mhtml-mode' as well.
-(setq sgml-basic-offset 4)
-(setq web-mode-script-padding 4)
-(setq web-mode-style-padding 4)
-(setq web-mode-part-padding 4)
+(setq sgml-basic-offset 4
+      web-mode-script-padding 4
+      web-mode-style-padding 4
+      web-mode-part-padding 4)
 
 
 
@@ -576,8 +575,8 @@ font settings to look better with variable-width (like sizing)."
                                    (tau  "2 * pi"      "Tau")))
      (setq math-units-table nil)))
 
-(setq calc-window-height 12)
-(setq calc-show-banner nil)
+(setq calc-window-height 12
+      calc-show-banner nil)
 
 
 
@@ -603,8 +602,8 @@ font settings to look better with variable-width (like sizing)."
 ;; ELPHER CONFIG ;;
 ;;;;;;;;;;;;;;;;;;;
 
-(setq elpher-ipv4-always t)
-(setq elpher-default-url-type "gemini")
+(setq elpher-ipv4-always t
+      elpher-default-url-type "gemini")
 
 
 
@@ -612,9 +611,9 @@ font settings to look better with variable-width (like sizing)."
 ;; MODELINE CONFIG ;;
 ;;;;;;;;;;;;;;;;;;;;;
 
-(setq doom-modeline-height 10)
-(setq doom-modeline-env-enable-python nil)
-(setq doom-modeline-icon nil)
+(setq doom-modeline-height 10
+      doom-modeline-env-enable-python nil
+      doom-modeline-icon nil)
 
 
 
