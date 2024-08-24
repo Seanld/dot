@@ -560,8 +560,7 @@ font settings to look better with variable-width (like sizing)."
 
 (eval-after-load "calc-units"
   '(progn
-     (setq math-additional-units '(
-                                   (bit  nil           "Binary digit")
+     (setq math-additional-units '((bit  nil           "Binary digit")
                                    (byte "8 * bit"     "8 bit byte")
                                    (B    "byte"        "8 bit byte")
                                    (KB   "1000 * byte" "Kilobyte")
@@ -574,9 +573,7 @@ font settings to look better with variable-width (like sizing)."
                                    (GiB  "1024 * MiB"   "Gibibyte")
                                    (TiB  "1024 * GiB"   "Tebibyte")
                                    (PiB  "1024 * TiB"   "Pebibyte")
-                                   (tau  "2 * pi"      "Tau")
-                                   ;; (W "V * A")
-                                   ))
+                                   (tau  "2 * pi"      "Tau")))
      (setq math-units-table nil)))
 
 (setq calc-window-height 12)
