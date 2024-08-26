@@ -499,12 +499,20 @@ font settings to look better with variable-width (like sizing)."
       nimsuggest-path ""
       nim-compile-default-command '("c" "-r" "--hint[Processing]:off" "--excessiveStackTrace:on"))
 
-(use-package! nim-mode
-  :ensure t
-  :hook
-  (nim-mode . lsp))
+(after! eglot
+  (defclass eglot-nim (eglot-lsp-server) ()
+    :documentation "A custom class for Nim lsp.")
+  (add-to-list 'eglot-server-programs '((nim-mode) . (eglot-nim "nimlangserver")))
+  (cl-defmethod eglot-initialization-options ((server eglot-nim))
+    "Passes through required initialization options"
+    (list :enable t :lint t)))
 
-(add-hook! 'nim-mode-hook #'lsp)
+;; (use-package! nim-mode
+;;   :ensure t
+;;   :hook
+;;   (nim-mode . lsp))
+
+;; (add-hook! 'nim-mode-hook #'lsp)
 
 
 
