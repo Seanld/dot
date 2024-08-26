@@ -161,3 +161,6 @@ export SAMUFLAGS=-j6
 #     unfunction preexec
 #     PS1='$ '
 # fi
+
+export DENO_INSTALL="/home/seanld/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
