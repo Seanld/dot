@@ -479,10 +479,26 @@ font settings to look better with variable-width (like sizing)."
 (eval-after-load 'rjsx-mode '(progn
                                (setq sgml-basic-offset 2)))
 
+
+
+;;;;;;;;;;;;;;;;;;;;;;;
+;; TYPESCRIPT CONFIG ;;
+;;;;;;;;;;;;;;;;;;;;;;;
+
 (setq typescript-indent-level 2
       web-mode-code-indent-offset 2
       web-mode-css-indent-offset 2
+      web-mode-sql-indent-offset 2
       web-mode-markup-indent-offset 2)
+
+
+(after! eglot
+  (defclass eglot-deno (eglot-lsp-server) ()
+    :documentation "A custom class for deno lsp.")
+  (add-to-list 'eglot-server-programs '((js-mode typescript-mode typescript-tsx-mode) . (eglot-deno "deno" "lsp")))
+  (cl-defmethod eglot-initialization-options ((server eglot-deno))
+    "Passes through required deno initialization options"
+    (list :enable t :lint t)))
 
 
 
