@@ -508,11 +508,6 @@ font settings to look better with variable-width (like sizing)."
 ;; NIM CONFIG ;;
 ;;;;;;;;;;;;;;;;
 
-;; (after!
-;;   (add-hook 'nim-mode (lambda ()
-;;                         (flycheck-mode nil)
-;;                         (lsp nil))))
-
 (setq nim-use-flycheck-nimsuggest nil
       nimsuggest-path ""
       nim-compile-default-command '("c" "-r" "--hint[Processing]:off" "--excessiveStackTrace:on"))
