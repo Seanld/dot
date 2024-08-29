@@ -658,6 +658,20 @@ font settings to look better with variable-width (like sizing)."
                                                          nil
                                                          :underline t)))
 
+(add-hook! 'eglot-managed-mode-hook (lambda ()
+                                      (setq eglot--change-idle-timer 0.25)))
+
+;; Disable eglot-inlay-hints-mode by default, because it throws me off.
+(setq eglot-ignored-server-capabilities '(:inlayHintProvider))
+
+
+
+;;;;;;;;;;;;;;;;;
+;; MISC CONFIG ;;
+;;;;;;;;;;;;;;;;;
+
+(setq mode-require-final-newline nil)
+
 (setq flycheck-xml-xmlstarlet-executable "xsd")
 
 (add-hook! 'prog-mode-hook
