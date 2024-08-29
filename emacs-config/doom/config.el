@@ -158,6 +158,8 @@ the current one (like in Spacemacs)."
 
       "c M" #'+make/run
       "c m" 'make-last-and-close
+      "c [" #'flycheck-previous-error
+      "c ]" #'flycheck-next-error
 
       "l" #'lp-get-yank
       "|" #'quick-align-spaced
