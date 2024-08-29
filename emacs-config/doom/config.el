@@ -525,12 +525,8 @@ font settings to look better with variable-width (like sizing)."
     "Passes through required initialization options"
     (list :enable t :lint t)))
 
-;; (use-package! nim-mode
-;;   :ensure t
-;;   :hook
-;;   (nim-mode . lsp))
+(add-hook! 'nim-mode-hook #'lsp!)
 
-;; (add-hook! 'nim-mode-hook #'lsp)
 
 
 
