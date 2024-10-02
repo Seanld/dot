@@ -264,14 +264,16 @@ globalkeys = mytable.join(
     -- Destroy all notifications
     awful.key({ modkey }, "n", function() naughty.destroy_all_notifications() end,
               {description = "destroy all notifications", group = "hotkeys"}),
-    -- Take a screenshot
-    -- https://github.com/lcpz/dots/blob/master/bin/screenshot
+    -- Take a screenshot, save to clipboard.
     awful.key({ modkey }, "p", function()
-            -- Use escrotum to screenshot a selected screen region,
-            -- and copy it to the clipboard.
             awful.spawn.easy_async("escrotum -sC", function() end)
         end,
-        {description = "take a screenshot", group = "hotkeys"}),
+        {description = "screenshot to clipboard", group = "hotkeys"}),
+    -- Take a screenshot, save to file.
+    awful.key({ modkey }, "[", function()
+            awful.spawn.easy_async("mkdir -p ~/Pictures && escrotum -s ~/Pictures/%Y-%m-%d-%H%M%S_$wx$h_escrotum.png", function() end)
+        end,
+        {description = "screenshot to file", group = "hotkeys"}),
     -- Open color picker, and copy color hex to clipboard.
     awful.key({ modkey, altkey }, "c", function()
             awful.spawn.easy_async("xcolor | xclip -sel clip", function() end)
