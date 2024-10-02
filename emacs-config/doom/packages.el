@@ -45,6 +45,8 @@
 (package! systemd)
 (package! justl)
 (package! just-mode)
+(package! drag-stuff) ;; Doom broke this, so add back.
+(package! forth-mode)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
