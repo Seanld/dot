@@ -135,6 +135,13 @@ the current one (like in Spacemacs)."
       "<C-M-down>" #'scroll-up-several-lines
       "<C-M-up>" #'scroll-down-several-lines
 
+      ;; Doom got rid of this functionality for some reason.
+      ;; Have to add it back manually.
+      "<M-left>" #'drag-stuff-left
+      "<M-right>" #'drag-stuff-right
+      "<M-down>" #'drag-stuff-down
+      "<M-up>" #'drag-stuff-up
+
       :leader
       "y" #'yas-insert-snippet
       "S" #'replace-string
@@ -380,37 +387,18 @@ font settings to look better with variable-width (like sizing)."
 ;; C CONFIG ;;
 ;;;;;;;;;;;;;;
 
-(add-hook 'c-mode-hook (lambda ()
-                         (setq lsp-clients-clangd-args '("--header-insertion=never"))
-                         (setq lsp-clients-clangd-library-directories '("/home/seanld/repos/os/libc"))
-                         (setq c-style-indent-amount 4)))
-
-;; (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-
-;; ;; Will check to see if everything preceding the cursor is whitespace. If so,
-;; ;; then unindent to the previous indentation level.
-;; (defun unindent-or-backspace (ARG &optional KILLP)
-;;   (interactive)
-;;   (let ((current-column (current-column)))
-;;     (if (eq 0 current-column)
-;;         (evil-delete-backward-char-and-join 1)
-;;       (let* ((all-spaces (equal (string-limit
-;;                                  (thing-at-point 'line t)
-;;                                  (1- current-column))
-;;                                 (make-string (1- current-column) 32)))
-;;              (column-remainder (% current-column c-style-indent-amount))
-;;              (delete-amount (if (eq 0 column-remainder)
-;;                                 c-style-indent-amount
-;;                               column-remainder)))
-;;         (if all-spaces
-;;             (delete-char (- delete-amount))
-;;           (delete-char -1))))))
-
-;; (setq c-backspace-function 'unindent-or-backspace)
-
 ;; (add-hook 'c-mode-hook (lambda ()
-;;                          (smartparens-mode -1)
-;;                          (electric-pair-mode)))
+;;                          (setq lsp-clients-clangd-args '("--header-insertion=never"))
+;;                          (setq lsp-clients-clangd-library-directories '("/home/seanld/repos/os/libc"))
+;;                          (setq c-style-indent-amount 4)))
+
+(after! eglot
+  (defclass eglot-c (eglot-lsp-server) ()
+    :documentation "A custom class for C lsp.")
+  (add-to-list 'eglot-server-programs '((c-mode) . (eglot-c "ccls")))
+  (cl-defmethod eglot-initialization-options ((server eglot-c))
+    "Passes through required initialization options"
+    (list :enable t :lint t)))
 
 
 
@@ -513,9 +501,10 @@ font settings to look better with variable-width (like sizing)."
       nim-compile-default-command '("c" "-r" "--hint[Processing]:off" "--excessiveStackTrace:on"))
 
 (after! eglot
+  (setq eglot-send-changes-idle-time 0.15)
   (defclass eglot-nim (eglot-lsp-server) ()
     :documentation "A custom class for Nim lsp.")
-  (add-to-list 'eglot-server-programs '((nim-mode) . (eglot-nim "nimlangserver")))
+  (add-to-list 'eglot-server-programs '((nim-mode) . (eglot-nim "/home/seanld/repos/langserver/nimlangserver")))
   (cl-defmethod eglot-initialization-options ((server eglot-nim))
     "Passes through required initialization options"
     (list :enable t :lint t)))
@@ -634,11 +623,9 @@ font settings to look better with variable-width (like sizing)."
 
 
 
-;;;;;;;;;;;;;;;;;
-;; MISC CONFIG ;;
-;;;;;;;;;;;;;;;;;
-
-(setq mode-require-final-newline nil)
+;;;;;;;;;;;;;;;;;;
+;; EGLOT CONFIG ;;
+;;;;;;;;;;;;;;;;;;
 
 (add-hook 'eglot-managed-mode-hook (lambda ()
                                      ;; Make Eglot show Yasnippet snippets in completion prompt.
