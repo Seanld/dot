@@ -146,6 +146,7 @@ the current one (like in Spacemacs)."
       "y" #'yas-insert-snippet
       "S" #'replace-string
       "R" #'replace-regexp
+      "+" #'+popup/raise
 
       "w /" #'+evil/window-vsplit-and-follow
       "w -" #'+evil/window-split-and-follow
@@ -502,15 +503,29 @@ font settings to look better with variable-width (like sizing)."
 
 (after! eglot
   (setq eglot-send-changes-idle-time 0.15)
+  (setq flymake-no-changes-timeout 0.2)
   (defclass eglot-nim (eglot-lsp-server) ()
     :documentation "A custom class for Nim lsp.")
-  (add-to-list 'eglot-server-programs '((nim-mode) . (eglot-nim "/home/seanld/repos/langserver/nimlangserver")))
+  (add-to-list 'eglot-server-programs '((nim-mode) . (eglot-nim "/home/seanld/.nimble/bin/nimlangserver")))
   (cl-defmethod eglot-initialization-options ((server eglot-nim))
     "Passes through required initialization options"
     (list :enable t :lint t)))
 
 (add-hook! 'nim-mode-hook #'lsp!)
 
+;;;;;;;;;;;;;;;
+;; GO CONFIG ;;
+;;;;;;;;;;;;;;;
+
+(defun go-project-gofmt ()
+  (interactive)
+  "Format entire project with gofmt"
+  (projectile-run-shell-command-in-root "gofmt -w $(fd .go)"))
+
+(map! :after go
+      :map go-mode-map
+      :localleader
+      "f" #'go-project-gofmt)
 
 
 
