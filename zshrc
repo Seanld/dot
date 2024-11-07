@@ -1,6 +1,8 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+export PATH="/home/seanld/.local/bin:$PATH"
+
 # Path to your oh-my-zsh installation.
 export ZSH="/home/seanld/.oh-my-zsh"
 
@@ -164,3 +166,5 @@ export SAMUFLAGS=-j6
 
 export DENO_INSTALL="/home/seanld/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
+
+export PATH="/home/seanld/.cargo/bin:$PATH"
